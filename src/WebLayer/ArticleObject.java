@@ -15,6 +15,8 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.Calendar;
 import org.apache.commons.io.IOUtils;
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
 
 public abstract class ArticleObject {
 
@@ -75,6 +77,21 @@ public abstract class ArticleObject {
                                 && art.getArticleDate().getTime() < newtime.getTime())
             return true;
         return false;
+    }
+    
+    // connect jsou
+    protected Document JsoupConnect(String source_url){
+        Document doc = null;
+        try {
+            doc = Jsoup.connect(source_url).timeout(10000).followRedirects(true)
+                    .userAgent(
+                            "Mozilla/5.0 (Windows NT 6.3; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/43.0.2357.134 Safari/537.36")
+                    .get();
+        } catch (IOException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+        return doc;
     }
     
     

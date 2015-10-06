@@ -42,22 +42,52 @@ public class ArticleVnexpress extends  ArticleObject {
         String url = null;
        
         
-        Document doc = null;
         String tempt = null;
-        try //<editor-fold defaultstate="collapsed" desc="jsoup connect to source_url">
-        {
-            doc = Jsoup.connect(source_url).timeout(5000).followRedirects(true)
-                    .userAgent(
-                            "Mozilla/5.0 (Windows NT 6.3; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/43.0.2357.134 Safari/537.36")
-                    .get();
-
-        } catch (IOException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        }
-//</editor-fold>
+        Document doc =JsoupConnect(source_url);
+        if(doc == null)
+            return null;
 
         
+//</editor-fold>
+
+        // Category ID
+            //<editor-fold defaultstate="collapsed" desc="Category id">
+            Element meta = doc.select("#menu_web > .active").first();
+            tempt = meta.text();
+            tempt = tempt.trim();
+            CategoryCommon cate;
+            switch (tempt) {
+                case "Thời sự":
+                case "Pháp luật" :
+                    cate = CategoryCommon.THOI_SU;
+                    break;
+                case "Thế giới":
+                    cate = CategoryCommon.THE_GIOI;
+                    break;
+                case "Kinh doanh":
+                    cate = CategoryCommon.KINH_DOANH;
+                    break;
+                case "Giáo dục":
+                    cate = CategoryCommon.GIAO_DUC;
+                    break;
+                case "Thể thao":
+                    cate = CategoryCommon.THE_THAO;
+                    break;
+                case "Giải trí":
+                    cate = CategoryCommon.GIAI_TRI;
+                    break;
+                case "Khoa học":
+                    cate = CategoryCommon.KHOA_HOC_CONG_NGHE;
+                    break;
+                default:
+                    cate = CategoryCommon.DEFAULT;
+                    break;
+            }
+            if (cate.getValue() == 0) {
+                return null;
+            }
+            art.setIDTableCategory(cate.getValue());
+//</editor-fold>
             // remove all &nbsp
             // Elements metas = doc.select(":containsOwn(\u00a0)").remove();
             Elements metas = doc.select("meta[name]");
@@ -68,7 +98,7 @@ public class ArticleVnexpress extends  ArticleObject {
             // set magazine
             art.setIDTableMagazine(2);
             // Date
-            Element meta = doc.select(".block_timer_share > .block_timer").first();
+            meta = doc.select(".block_timer_share > .block_timer").first();
             // System.out.println(source_url);
             tempt = meta.text();
             tempt = tempt.replace('|', ' ');
@@ -100,50 +130,7 @@ public class ArticleVnexpress extends  ArticleObject {
             meta = metas.select("meta[name=tt_article_id").first();
             art.setObjectID(Integer.parseInt(meta.attr("content")));
             
-            // Category ID
-            meta = doc.select("#menu_web > .active").first();
-            tempt = meta.text();
-//        if (tempt.matches("^[A-Z]") == false) {
-//            tempt = tempt.substring(1);
-//        }
-            tempt = tempt.trim();
-            CategoryCommon cate;
-            switch (tempt) {
-                case "Thời sự":
-                    cate = CategoryCommon.THOI_SU;
-                    break;
-                case "Thế giới":
-                    cate = CategoryCommon.THE_GIOI;
-                    break;
-                case "Kinh doanh":
-                    cate = CategoryCommon.KINH_DOANH;
-                    break;
-                case "Giáo dục":
-                    cate = CategoryCommon.GIAO_DUC;
-                    break;
-                case "Thể thao":
-                    cate = CategoryCommon.THE_THAO;
-                    break;
-                case "Giải trí":
-                    cate = CategoryCommon.GIAI_TRI;
-                    break;
-                case "Khoa học":
-                    cate = CategoryCommon.KHOA_HOC_CONG_NGHE;
-                    break;
-                default:
-                    cate = CategoryCommon.DEFAULT;
-                    break;
-            }
-            if (cate.getValue() == 0) {
-                try {
-                    this.finalize();
-                } catch (Throwable ex) {
-                    Logger.getLogger(ArticleVnexpress.class.getName()).log(Level.SEVERE, null, ex);
-                }
-                return null;
-                
-            }
-            art.setIDTableCategory(cate.getValue());
+            
             
             // url picture
             meta = doc.select("meta[property=og:image").first();
@@ -154,10 +141,6 @@ public class ArticleVnexpress extends  ArticleObject {
             tempt = meta.attr("content");
             art.setTitle(tempt.substring(0, tempt.lastIndexOf('-')));
             
-            
-            
- 
-        
         // article like
             art.setArticleLike(getArticleLike(art.getObjectID()));
             
@@ -206,19 +189,9 @@ public class ArticleVnexpress extends  ArticleObject {
 
     // Get menu Web
     public List<String> getMenuWeb(String source_url) {
-        Document doc = null;
+        Document doc = JsoupConnect(source_url);
         List<String> arrayMenu = new ArrayList<String>();
-        try {
-            // PrintWriter writer = new PrintWriter("vnexpress_menu_web.txt",
-            // "UTF-8");
-            // connect source
-            doc = Jsoup.connect(source_url).timeout(5000)
-                    .userAgent(
-                            "Mozilla/5.0 (Windows NT 6.3; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/43.0.2357.134 Safari/537.36")
-                    .get();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        
         // get all category
         Elements categories = doc.select("ul#menu_web");
         // Elements categories = doc.select("ul#mainMenu");
@@ -231,7 +204,8 @@ public class ArticleVnexpress extends  ArticleObject {
             if (category.text().length() == 0) {
                 continue;
             }
-            String realCate = "Thời sự, Thế giới, Kinh doanh, Giáo dục, Thể thao, Giải trí, Khoa học";
+            String realCate = "Thời sự, Thế giới, Kinh doanh, Giáo dục,Giải trí,Pháp luật, Thể thao,  Khoa học";
+           // String realCate = "Khoa học";
 
             if (realCate.matches("(.*)" + category.text() + "(.*)") == false) {
                 continue;
@@ -272,34 +246,22 @@ public class ArticleVnexpress extends  ArticleObject {
             outLoop:
             while (true) {
 
-                try {
-                    // connect source
-                    doc = Jsoup.connect(String.format(menuUrl + "%d.html", pageCount)).timeout(5000)
-                            .userAgent(
-                                    "Mozilla/5.0 (Windows NT 6.3; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/43.0.2357.134 Safari/537.36")
-                            .get();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
+                doc = JsoupConnect(String.format(menuUrl + "%d.html", pageCount));
                 Elements temptElements = null;
                 Element temptElement = null;
                 if (pageCount == 1) {
 
                     //<editor-fold defaultstate="collapsed" desc="div box_hot_news">
-                    temptElements = doc.select("div.box_hot_news");
+                    temptElements = doc.select(".box_hot_news");
 
-                    temptElement = temptElements.select("div.title_news").first();
-                    temptElement = temptElement.select("a").first();
+                    temptElement = temptElements.select(".title_news").first();
+                    temptElement = temptElement.select("a[href]").first();
                     url = temptElement.attr("href");
-                    // art = getAriticleInformationDependOnTime(url, lasttime);
-                    // don't get info of article isn't in category
-                    // if (url.matches(arrayMenu.get(i) + "(.*)") == false)
-                    // continue;
+                    
                     System.out.println(url);
                     art = getArticleInformation(url);
                     if (art != null && isTheDayOfMonthValid(art, lasttime) != false) {
                         if (isTimeValid(art, newtime, lasttime)) {
-
                             artArray.add(art);
                         }
                     }
@@ -310,11 +272,9 @@ public class ArticleVnexpress extends  ArticleObject {
 
                     for (int j = 0; j < temptElements.size(); j++) {
                         temptElement = temptElements.get(j);
-                        temptElement = temptElement.select("a").first();
+                        temptElement = temptElement.select("a[href]").first();
                         url = temptElement.attr("href");
-                        // don't get info of article isn't in category
-                        // if (url.matches(arrayMenu.get(i) + "(.*)") == false)
-                        // continue;
+                        
                         System.out.println(url);
                         art = getArticleInformation(url);
                         if (art != null) {

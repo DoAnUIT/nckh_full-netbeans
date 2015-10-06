@@ -32,16 +32,54 @@ public class ArticleThanhNien extends ArticleObject {
         Date d = null;
         Timestamp time = null;
 
-        Document doc = null;
-        try {
-            doc = Jsoup.connect(source_url).timeout(5000).followRedirects(true)
-                    .userAgent(
-                            "Mozilla/5.0 (Windows NT 6.3; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/43.0.2357.134 Safari/537.36")
-                    .get();
-        } catch (IOException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
+         // get category id. and convert it to number
+        
+        //<editor-fold defaultstate="collapsed" desc="category id">
+        tempt = source_url;
+        tempt = tempt.substring(tempt.indexOf('/', tempt.indexOf('/') + 2) + 1);
+        tempt = tempt.substring(0, tempt.indexOf('/'));
+        
+        // tempt = tempt.trim();
+        // Chính trị - Xã hội, Quân sự , Thế giới, Kinh tế, Giáo dục, Thể thao,
+        // Văn hóa - Giải trí, Công nghệ
+        CategoryCommon cate;
+        switch (tempt) {
+            case "chinh-tri-xa-hoi":
+            case "quan-su":
+            case "doi-song":
+                cate = CategoryCommon.THOI_SU;
+                break;
+            case "the-gioi":
+                cate = CategoryCommon.THE_GIOI;
+                break;
+            case "kinh-te":
+                cate = CategoryCommon.KINH_DOANH;
+                break;
+            case "giao-duc":
+                cate = CategoryCommon.GIAO_DUC;
+                break;
+            case "the-thao":
+                cate = CategoryCommon.THE_THAO;
+                break;
+            case "van-hoa-giai-tri":
+                cate = CategoryCommon.GIAI_TRI;
+                break;
+            case "cong-nghe-thong-tin":
+                cate = CategoryCommon.KHOA_HOC_CONG_NGHE;
+                break;
+            default:
+                cate = CategoryCommon.DEFAULT;
+                break;
         }
+        
+        if (cate.getValue() == 0) {
+            return null;
+        }
+        art.setIDTableCategory(cate.getValue());
+//</editor-fold>
+        Document doc = JsoupConnect(source_url);  
+        if(doc == null)
+            return null;
 
         // set article url
         art.setUrl(source_url);
@@ -90,52 +128,7 @@ public class ArticleThanhNien extends ArticleObject {
         }
         art.setObjectID(objectID);
 
-            // get category id. and convert it to number
-        // meta = doc.select("#mainMenu .active > a").first();
-        // if (meta == null)
-        // return null;
-        tempt = source_url;
-        tempt = tempt.substring(tempt.indexOf('/', tempt.indexOf('/') + 2) + 1);
-        tempt = tempt.substring(0, tempt.indexOf('/'));
-
-            // tempt = tempt.trim();
-        // Chính trị - Xã hội, Quân sự , Thế giới, Kinh tế, Giáo dục, Thể thao,
-        // Văn hóa - Giải trí, Công nghệ
-        CategoryCommon cate;
-        switch (tempt) {
-            case "chinh-tri-xa-hoi":
-            case "quan-su":
-            case "doi-song":
-                cate = CategoryCommon.THOI_SU;
-                break;
-            case "the-gioi":
-                cate = CategoryCommon.THE_GIOI;
-                break;
-            case "kinh-te":
-                cate = CategoryCommon.KINH_DOANH;
-                break;
-            case "giao-duc":
-                cate = CategoryCommon.GIAO_DUC;
-                break;
-            case "the-thao":
-                cate = CategoryCommon.THE_THAO;
-                break;
-            case "van-hoa-giai-tri":
-                cate = CategoryCommon.GIAI_TRI;
-                break;
-            case "cong-nghe":
-                cate = CategoryCommon.KHOA_HOC_CONG_NGHE;
-                break;
-            default:
-                cate = CategoryCommon.DEFAULT;
-                break;
-        }
-            // if (source_url.matches("http://thethao.thanhnien.com.vn(.*)"))
-        // cate = CategoryCommon.THE_THAO;
-        if (cate.getValue() == 0) {
-            return null;
-        }
-        art.setIDTableCategory(cate.getValue());
+           
         // URl Image
         meta = metas.select("meta[property=og:image").first(); // ok
         art.setUrlPicture(meta.attr("content"));
@@ -153,19 +146,10 @@ public class ArticleThanhNien extends ArticleObject {
     // Get menu Web
     @Override
     public List<String> getMenuWeb(String source_url) {
-        Document doc = null;
+        
         List<String> arrayMenu = new ArrayList<String>();
-        try {
-            // PrintWriter writer = new PrintWriter("vnexpress_menu_web.txt",
-            // "UTF-8");
-            // connect source
-            doc = Jsoup.connect(source_url).timeout(5000)
-                    .userAgent(
-                            "Mozilla/5.0 (Windows NT 6.3; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/43.0.2357.134 Safari/537.36")
-                    .get();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        Document doc = JsoupConnect(source_url);
+        
         // get all category
         Elements categories = doc.select("#mainMenu .top-level > a");
         // categories = categories.select("li.top-level");
@@ -191,7 +175,6 @@ public class ArticleThanhNien extends ArticleObject {
             } else {
                 arrayMenu.add(source_url + tempt);
             }
-            // writer.println();
         }
 
         return arrayMenu;
@@ -218,19 +201,8 @@ public class ArticleThanhNien extends ArticleObject {
             pageCount = 0;
             outLoop:
             while (true) {
-
-                //<editor-fold defaultstate="collapsed" desc="jsoup connect">
-                try {
-                    // connect source
-                    doc = Jsoup.connect(String.format(menuUrl + "%d.html", pageCount)).timeout(5000)
-                            .userAgent(
-                                    "Mozilla/5.0 (Windows NT 6.3; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/43.0.2357.134 Safari/537.36")
-                            .get();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-//</editor-fold>
-
+                doc = JsoupConnect(String.format(menuUrl + "%d.html", pageCount));
+             
                 Elements temptElements = null;
                 Element temptElement = null;
 

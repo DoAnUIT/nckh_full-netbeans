@@ -60,7 +60,7 @@ public class test2 {
         //calendar.set(Calendar.DAY_OF_MONTH, calendar.get(Calendar.DAY_OF_MONTH));
         calendar.set(Calendar.HOUR_OF_DAY, 1);
         Timestamp lasttime = new Timestamp(calendar.getTimeInMillis());
-        List<ArticleDTO> larticle = ar.getNewsOfEachMenuDependOnTime(url, newtime, lasttime);
+        //List<ArticleDTO> larticle = ar.getNewsOfEachMenuDependOnTime(url, newtime, lasttime);
 
 //        for (int i = 0; i < larticle.size(); i++) {
 //            System.out.println(
@@ -72,7 +72,7 @@ public class test2 {
         //String a = "http://vnexpress.net/tin-tuc/thoi-su/chanh-long-vi-biet-danh-xa-an-may-3274793.html";
         //String a = "http://tuoitre.vn/tin/phap-luat/20150510/vu-kien-neo-xe-ca-tiep-tuc-bi-toa-neo-ho-so/745056.html";
 //        String a = "http://www.thanhnien.com.vn/giao-duc/con-bi-duoi-hoc-vi-me-len-facebook-che-dong-phuc-cua-truong-605950.html";
-        String a = "http://tuoitre.vn/tin/giao-duc/20150910/hieu-truong-lap-bai-thi-khong-cho-hs-rut-kinh-nghiem/966480.html";
+        String a = "http://thethao.tuoitre.vn/tin/20151006/doi-tuyen-iraq-den-de-gianh-chien-thang/980461.html";
         ArticleDTO article = ar.getArticleInformation(a);
         if (article != null) {
             System.out.println("Time : " + article.getArticleDate() + "\nObjectId : " + article.getObjectID() + "\nTitile :"
