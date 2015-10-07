@@ -9,6 +9,7 @@ import DTO.ArticleDTO;
 import DTO.CategoryCommon;
 import com.sun.org.apache.xalan.internal.lib.ExsltDatetime;
 import java.io.IOException;
+import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -33,25 +34,33 @@ public class ArticleTuoiTre extends ArticleObject {
     String apiTuoiTreArticleLike = "http://cm.tuoitre.vn/like/ttocreateiframe?app_id=6&object_id=";
     String apiTuoiTreMenu = "http://tuoitre.vn/page?ajax=169---tto_custom_list&slug=";
 
+    public ArticleTuoiTre(String username, String password) {
+        this.username = username;
+        this.password = password;
+        this.parCmt = new ParentCmtTuoiTre();
+        this.subCmt = new SubCmtTuoiTre();
+    }
+
     @Override
     public ArticleDTO getArticleInformation(String source_url) {
-        
+
         // TODO Auto-generated method stub
         ArticleDTO art = new ArticleDTO();
         String tempt = null;
         String url = null;
 
         Document doc = JsoupConnect(source_url);
-        if(doc == null)
+        if (doc == null) {
             return null;
-        
-         // get category id. and convert it to number
+        }
+
+        // get category id. and convert it to number
         //<editor-fold defaultstate="collapsed" desc="category id">
         tempt = source_url;
         tempt = tempt.substring(tempt.indexOf('/', tempt.indexOf('/') + 2) + 1);
         tempt = tempt.substring(tempt.indexOf('/') + 1);
         tempt = tempt.substring(0, tempt.indexOf('/'));
-        
+
         // tempt = tempt.trim();
         // Chính trị - Xã hội, Quân sự , Thế giới, Kinh tế, Giáo dục, Thể thao,
         // Văn hóa - Giải trí, Công nghệ
@@ -84,7 +93,7 @@ public class ArticleTuoiTre extends ArticleObject {
                 cate = CategoryCommon.DEFAULT;
                 break;
         }
-        
+
         if (cate.getValue() == 0) {
             return null;
         }
@@ -106,7 +115,7 @@ public class ArticleTuoiTre extends ArticleObject {
         tempt = meta.text();
         tempt = tempt.substring(0, tempt.indexOf('G'));
         tempt = tempt.trim();
-            //tempt = tempt.replace('T', ' ');
+        //tempt = tempt.replace('T', ' ');
         // tempt = tempt + ".000";
         SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy HH:mm");
         try {
@@ -127,7 +136,6 @@ public class ArticleTuoiTre extends ArticleObject {
         tempt = tempt.substring(tempt.lastIndexOf('/') + 1);
         art.setObjectID(Integer.parseInt(tempt));
 
-       
         // URl Image
         meta = metas.select("meta[property=og:image").first(); // ok
         art.setUrlPicture(meta.attr("content"));
@@ -188,10 +196,9 @@ public class ArticleTuoiTre extends ArticleObject {
 
     // get article of each menu
     @Override
-    public List<ArticleDTO> getNewsOfEachMenuDependOnTime(String source_url, Timestamp newtime, Timestamp lasttime) {
+    public void setNewsOfEachMenuDependOnTime(String source_url, Timestamp newtime, Timestamp lasttime) {
         Document doc = null;
         ArticleDTO art = new ArticleDTO();
-        ArrayList<ArticleDTO> artArray = new ArrayList<ArticleDTO>();
         // Document subDoc = null;
         String url = null;
         String menuUrl = null;
@@ -211,11 +218,16 @@ public class ArticleTuoiTre extends ArticleObject {
             // block-feature
             temptElement = doc.select(".block-feature > a").first();
             url = temptElement.attr("href");
-            System.out.println(url);
             art = getArticleInformation(url);
             if (art != null && isTheDayOfMonthValid(art, lasttime) != false) {
                 if (isTimeValid(art, newtime, lasttime)) {
-                    artArray.add(art);
+                    System.out.println(url);
+
+                    try {
+                        this.insertDatabase(art);
+                    } catch (SQLException ex) {
+                        Logger.getLogger(ArticleTuoiTre.class.getName()).log(Level.SEVERE, null, ex);
+                    }
                 }
             }
 
@@ -224,11 +236,16 @@ public class ArticleTuoiTre extends ArticleObject {
             for (int j = 0; j < temptElements.size(); j++) {
                 temptElement = temptElements.get(j);
                 url = temptElement.attr("href");
-                System.out.println(url);
                 art = getArticleInformation(url);
                 if (art != null && isTheDayOfMonthValid(art, lasttime) != false) {
                     if (isTimeValid(art, newtime, lasttime)) {
-                        artArray.add(art);
+                        System.out.println(url);
+
+                        try {
+                            this.insertDatabase(art);
+                        } catch (SQLException ex) {
+                            Logger.getLogger(ArticleTuoiTre.class.getName()).log(Level.SEVERE, null, ex);
+                        }
                     }
                 }
             }
@@ -261,7 +278,6 @@ public class ArticleTuoiTre extends ArticleObject {
                 for (Element element : temptElements) {
                     temptElement = element.select("a[href]").first();
                     url = temptElement.attr("href");
-                    System.out.println(url);
                     // don't get info of article isn't in category
                     art = getArticleInformation(url);
                     if (art != null) {
@@ -270,7 +286,13 @@ public class ArticleTuoiTre extends ArticleObject {
                         }
 
                         if (isTimeValid(art, newtime, lasttime)) {
-                            artArray.add(art);
+                            System.out.println(url);
+
+                            try {
+                                this.insertDatabase(art);
+                            } catch (SQLException ex) {
+                                Logger.getLogger(ArticleTuoiTre.class.getName()).log(Level.SEVERE, null, ex);
+                            }
                         }
                     }
                 }
@@ -280,7 +302,6 @@ public class ArticleTuoiTre extends ArticleObject {
             } // end while loop
 
         }
-        return artArray;
     }
 
     // get article like

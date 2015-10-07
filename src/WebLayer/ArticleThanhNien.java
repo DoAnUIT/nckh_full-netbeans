@@ -18,11 +18,23 @@ import org.jsoup.select.Elements;
 
 import DTO.ArticleDTO;
 import DTO.CategoryCommon;
+import java.sql.SQLException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /*
  * Bao thanh nien khong co luot like cho tung bao bao
  * */
 public class ArticleThanhNien extends ArticleObject {
+//    private String username = null;
+//    private String password = null;
+    
+    public ArticleThanhNien(String username, String password){
+        this.username = username;
+        this.password= password;
+        this.parCmt = new ParentCmtThanhNien();
+        this.subCmt = new SubCmtThanhNien();
+    }
 
     @Override
     public ArticleDTO getArticleInformation(String source_url) {
@@ -32,13 +44,12 @@ public class ArticleThanhNien extends ArticleObject {
         Date d = null;
         Timestamp time = null;
 
-         // get category id. and convert it to number
-        
+        // get category id. and convert it to number
         //<editor-fold defaultstate="collapsed" desc="category id">
         tempt = source_url;
         tempt = tempt.substring(tempt.indexOf('/', tempt.indexOf('/') + 2) + 1);
         tempt = tempt.substring(0, tempt.indexOf('/'));
-        
+
         // tempt = tempt.trim();
         // Chính trị - Xã hội, Quân sự , Thế giới, Kinh tế, Giáo dục, Thể thao,
         // Văn hóa - Giải trí, Công nghệ
@@ -71,15 +82,16 @@ public class ArticleThanhNien extends ArticleObject {
                 cate = CategoryCommon.DEFAULT;
                 break;
         }
-        
+
         if (cate.getValue() == 0) {
             return null;
         }
         art.setIDTableCategory(cate.getValue());
 //</editor-fold>
-        Document doc = JsoupConnect(source_url);  
-        if(doc == null)
+        Document doc = JsoupConnect(source_url);
+        if (doc == null) {
             return null;
+        }
 
         // set article url
         art.setUrl(source_url);
@@ -128,7 +140,6 @@ public class ArticleThanhNien extends ArticleObject {
         }
         art.setObjectID(objectID);
 
-           
         // URl Image
         meta = metas.select("meta[property=og:image").first(); // ok
         art.setUrlPicture(meta.attr("content"));
@@ -146,10 +157,10 @@ public class ArticleThanhNien extends ArticleObject {
     // Get menu Web
     @Override
     public List<String> getMenuWeb(String source_url) {
-        
+
         List<String> arrayMenu = new ArrayList<String>();
         Document doc = JsoupConnect(source_url);
-        
+
         // get all category
         Elements categories = doc.select("#mainMenu .top-level > a");
         // categories = categories.select("li.top-level");
@@ -182,10 +193,9 @@ public class ArticleThanhNien extends ArticleObject {
 
     // Get news of each menu depend on time
     @Override
-    public List<ArticleDTO> getNewsOfEachMenuDependOnTime(String source_url, Timestamp newtime, Timestamp lasttime) {
+    public void setNewsOfEachMenuDependOnTime(String source_url, Timestamp newtime, Timestamp lasttime) {
         Document doc = null;
         ArticleDTO art = new ArticleDTO();
-        ArrayList<ArticleDTO> artArray = new ArrayList<ArticleDTO>();
         // Document subDoc = null;
         String url = null;
         String menuUrl = null;
@@ -202,76 +212,44 @@ public class ArticleThanhNien extends ArticleObject {
             outLoop:
             while (true) {
                 doc = JsoupConnect(String.format(menuUrl + "%d.html", pageCount));
-             
+
                 Elements temptElements = null;
                 Element temptElement = null;
 
-//                if (pageCount == 1) {
-//
-//                    //<editor-fold defaultstate="collapsed" desc="id divshowothers">
-//                    temptElement = doc.select("#divshowothers").first();
-//                    temptElements = temptElement.select(".bottom-tt-one");
-//
-//                    for (int j = 0; j < temptElements.size(); j++) {
-//                        temptElement = temptElements.get(j);
-//                        temptElement = temptElement.select("a").first();
-//                        url = temptElement.attr("href");
-//                        url = source_url + url;
-//
-//                        // don't get info of article isn't in category
-//                        // if (url.matches(arrayMenu.get(i) + "(.*)") == false)
-//                        // continue;
-//                        art = getArticleInformation(url);
-//                        if (art != null) {
-//
-//                            if (isTheDayOfMonthValid(art, lasttime) == false) {
-//                                break;
-//                            }
-//                            if (art.getArticleDate().getTime() > lasttime.getTime()
-//                                    && art.getArticleDate().getTime() < newtime.getTime()) {
-//
-//                                artArray.add(art);
-//                            }
-//                        }
-//
-//                    }
-////</editor-fold>
-//
-//                } // end if (pageCount == 1) condition
-
                 //<editor-fold defaultstate="collapsed" desc="class lvkd-content id divtoptin">
+                // parse html để lấy link
                 temptElement = doc.select(".lvkd-content").first();
                 temptElements = temptElement.select("#divtoptin");
-                // String subUrl;
                 for (Element element : temptElements) {
                     temptElement = element.select("a[href]").first();
                     url = temptElement.attr("href");
                     url = source_url + url;
-                    // art = getAriticleInformationDependOnTime(url, lasttime);
-                    // don't get info of article isn't in category
-                    // if (url.matches(arrayMenu.get(i) + "(.*)") == false)
-                    // break;
-                    System.out.println(url);
+
+                    //System.out.println(url);
+                    // lấy nội dung của tin tương ứng với url
                     art = getArticleInformation(url);
                     if (art != null) {
                         // if date of month of art - day of month of lasttime =
                         // -1 => break outloop
-                        if (isTheDayOfMonthValid(art, lasttime) == false) {
+                        if (isTheDayOfMonthValid(art, lasttime) == false && pageCount != 0) {
                             break outLoop;
                         }
                         // if time gets art > lasttime => get art
                         if (isTimeValid(art, newtime, lasttime)) {
-                            artArray.add(art);
+                            System.out.println(url);
+                            try {
+                                this.insertDatabase(art);
+                            } catch (SQLException ex) {
+                                Logger.getLogger(ArticleThanhNien.class.getName()).log(Level.SEVERE, null, ex);
+                            }
                         }
                     }
                 }
 //</editor-fold>
 
-                // writer.println("End page " + pageCount);
                 pageCount++;
             } // end while loop
         }
-        return artArray;
     }
 
     @Override

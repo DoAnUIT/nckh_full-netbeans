@@ -23,36 +23,33 @@ public class ParentCmtVnexpress implements IParentCmt {
     public List<ParentCmtDTO> getContentParentComment(ArticleDTO article, List<Integer> parentIDHasSub) {
         List<ParentCmtDTO> lpar = new ArrayList<ParentCmtDTO>();
 
+        // Parse json
+        String json = null;
         // parse url to get objecttype
-        int objecttype = 0;
-        if (article.getUrl().matches("(.*)/tin-tuc/(.*)")) {
-            objecttype = 1;
-        }
-        if (article.getUrl().matches("(.*)/photo/(.*)")) {
-            objecttype = 3;
-        }
-        if (article.getUrl().matches("(.*)/infographic/(.*)")) {
-            objecttype = 4;
-        }
+        int objecttype = 1;
+       while(objecttype < 6){
         // create url to get comment
         String url = source_url + "&objectid=" + article.getObjectID() + "&objecttype=" + objecttype + "&siteid=1" + "&categoryid="
                 + article.getIDTableCategory();
 
-        // Parse json
-        String json = null;
         try {
             json = IOUtils.toString(new URL(url).openStream(), "UTF-8");
         } catch (IOException e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
         }
+        
+       
+        // parse json
         JsonParser parser = new JsonParser();
         JsonObject jsonObject = parser.parse(json).getAsJsonObject();
-        // JsonArray datas = jsonObject.getAsJsonObject("data");
         JsonObject data = jsonObject.getAsJsonObject("data");
-        //article.setTotalComment(data.get("totalitem").getAsInt());
-
         JsonArray datas = data.getAsJsonArray("items");
+        
+        if(datas.size() == 0){
+            objecttype++;
+            continue;
+        }
         for (int i = 0; i < datas.size(); i++) {
             data = datas.get(i).getAsJsonObject();
 
@@ -71,6 +68,8 @@ public class ParentCmtVnexpress implements IParentCmt {
             // add parent comment to List<ParentComentDTO>
             lpar.add(temptParentCmt);
         }
+        break;
+       }
 
         if (lpar.isEmpty()) {
             return null;

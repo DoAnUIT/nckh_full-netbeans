@@ -8,27 +8,20 @@ import java.sql.Types;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-public class SubCmtDAO extends OpenDBConnection {
+public class SubCmtDAO extends DataSource {
 
     CallableStatement call = null;
-
-    public SubCmtDAO() throws SQLException {
-        super();
-        // TODO Auto-generated constructor stub
-    }
     
-    public SubCmtDAO(String username, String password) throws SQLException{
-        super(username, password);
+    public SubCmtDAO(String username, String password) {
+        this.username= username;
+        this.password= password;
     }
 
-    public boolean insertSubCmt(String username, String password, SubCmtDTO sub) {
+    public boolean insertSubCmt(SubCmtDTO sub) {
         try {
-            if (connection.isClosed()) {
-				// ds = (MysqlConnectionPoolDataSource)
-                // context.lookup("jbdc/pool/nckhDB");
-                openConnection(username, password);
-                
-            }
+            connection = DataSource.getInstance().getConnection();
+            while(connection == null)
+                connection = DataSource.getInstance().getConnection();
 //IDTableSubCmt int, IDTableParentCmt int,  ChildID int, CmtLike int, Content
             call = connection.prepareCall("{call insertSubCmt(?,?,?,?,?)}");
 
@@ -66,13 +59,11 @@ public class SubCmtDAO extends OpenDBConnection {
         return false;
     }
 
-    public boolean updateSubCmt(String username, String password, SubCmtDTO sub) {
+    public boolean updateSubCmt(SubCmtDTO sub) {
         try {
-            if (connection.isClosed()) {
-				// ds = (MysqlConnectionPoolDataSource)
-                // context.lookup("jbdc/pool/nckhDB");
-                openConnection(username, password);
-            }
+            connection = DataSource.getInstance().getConnection();
+            while(connection == null)
+                connection = DataSource.getInstance().getConnection();
             //IDTableParentCmt int, in ChildID int, in CmtLike int, Content 
             call = connection.prepareCall("{call updateSubCmt(?,?,?,?)}");
 
@@ -109,10 +100,11 @@ public class SubCmtDAO extends OpenDBConnection {
         return false;
     }
     
-    public int getMaxIDTableSubCmt (String username, String password)    {
+    public int getMaxIDTableSubCmt ()    {
         try {
-            if(connection.isClosed())
-                openConnection(username, password);
+            connection = DataSource.getInstance().getConnection();
+            while(connection == null)
+                connection = DataSource.getInstance().getConnection();
             
             call = connection.prepareCall("{call getMaxIDTableSubCmt(?)}");
             
@@ -124,6 +116,7 @@ public class SubCmtDAO extends OpenDBConnection {
         } catch (SQLException ex) {
             Logger.getLogger(ArticleDAO.class.getName()).log(Level.SEVERE, null, ex);
         }
+        finally
         {
             try {
                 if (connection != null) {
@@ -147,12 +140,13 @@ public class SubCmtDAO extends OpenDBConnection {
     }
     
     // 1 => exist
-    public int isSubCmtExits(String username, String password, SubCmtDTO sub ){
+    public int isSubCmtExists(SubCmtDTO sub ){
         try {
-            if(connection.isClosed())
-                openConnection(username, password);
+            connection = DataSource.getInstance().getConnection();
+            while(connection == null)
+                connection = DataSource.getInstance().getConnection();
             //isSubCmntExits(IDTableArticle int, ParentID int, ChildID int, out Result int
-            call = connection.prepareCall("{call isSubCmtExits(?,?,?,?)}");
+            call = connection.prepareCall("{call isSubCmtExists(?,?,?,?)}");
             
             call.setInt(1, sub.getIDTableArticle());
             call.setInt(2, sub.getParentID());
@@ -165,6 +159,7 @@ public class SubCmtDAO extends OpenDBConnection {
         } catch (SQLException ex) {
             Logger.getLogger(ArticleDAO.class.getName()).log(Level.SEVERE, null, ex);
         }
+        finally
         {
             try {
                 if (connection != null) {
@@ -187,12 +182,12 @@ public class SubCmtDAO extends OpenDBConnection {
         return -1;
     }
     
-    public int getIDTableParentCmtWithArgument(String username, String password, SubCmtDTO sub) {
+    public int getIDTableParentCmtWithArgument(SubCmtDTO sub) {
         //getIDTableParentCmtWithArgument(IDTableArticle int, ParentID int, out IDTableParentCmt int)
         try {
-            if (connection.isClosed()) {
-                openConnection(username, password);
-            }
+            connection = DataSource.getInstance().getConnection();
+            while(connection == null)
+                connection = DataSource.getInstance().getConnection();
              //IDTableArticle int, ParentID int, out IDTableParentCmt 
             call = connection.prepareCall("{call getIDTableParentCmtWithArgument(?,?,?)}");
 
@@ -206,6 +201,7 @@ public class SubCmtDAO extends OpenDBConnection {
         } catch (SQLException ex) {
             Logger.getLogger(ArticleDAO.class.getName()).log(Level.SEVERE, null, ex);
         }
+        finally
         {
             try {
                 if (connection != null) {

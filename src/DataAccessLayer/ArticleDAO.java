@@ -21,26 +21,20 @@ import java.util.logging.Logger;
  *
  * @author Minh Nhat
  */
-public class ArticleDAO extends OpenDBConnection {
+public class ArticleDAO extends DataSource {
 
     CallableStatement call = null;
 
-    public ArticleDAO() {
-        super();
+    public ArticleDAO(String username, String password){
+            this.username = username;
+            this.password = password;
     }
 
-    public ArticleDAO(String username, String password) throws SQLException {
-        super(username, password);
-    }
-
-    public boolean insertArticle(String username, String password, ArticleDTO art) {
+    public boolean insertArticle(ArticleDTO art) {
         try {
-            if (connection.isClosed()) {
-                // ds = (MysqlConnectionPoolDataSource)
-                // context.lookup("jbdc/pool/nckhDB");
-                openConnection(username, password);
-
-            }
+            connection = DataSource.getInstance().getConnection();
+            while(connection == null)
+                connection = DataSource.getInstance().getConnection();
             call = connection.prepareCall("{call insertArticle(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)}");
 
             call.setInt("IDTableArticle", art.getIDTableArticle());
@@ -89,13 +83,11 @@ public class ArticleDAO extends OpenDBConnection {
         return false;
     }
 
-    public boolean updateArticle(String username, String password, ArticleDTO art) {
+    public boolean updateArticle(ArticleDTO art) {
         try {
-            if (connection.isClosed()) {
-                // ds = (MysqlConnectionPoolDataSource)
-                // context.lookup("jbdc/pool/nckhDB");
-                openConnection(username, password);
-            }
+            connection = DataSource.getInstance().getConnection();
+            while(connection == null)
+                connection = DataSource.getInstance().getConnection();
             call = connection.prepareCall("{call updateArticle(?,?,?,?,?,?,?)}");
 
             // (IDTableArticle int, IDTableUpdateTime int, CountOfUpdate int, FbLike int, FbCmt int,
@@ -136,10 +128,11 @@ public class ArticleDAO extends OpenDBConnection {
         return false;
     }
     
-    public int getMaxIDTableArticle (String username, String password)    {
+    public int getMaxIDTableArticle ()    {
         try {
-            if(connection.isClosed())
-                openConnection(username, password);
+            connection = DataSource.getInstance().getConnection();
+            while(connection == null)
+                connection = DataSource.getInstance().getConnection();
             
             call = connection.prepareCall("{call getMaxIDTableArticle(?)}");
             
@@ -174,14 +167,14 @@ public class ArticleDAO extends OpenDBConnection {
         return -1;
     }
     
-    public List<ArticleDTO> getArticleToUpdate(String username, String password,
-            int IDTableUpdateTime , int IDTableMagazine){
+    public List<ArticleDTO> getArticleToUpdate( int IDTableUpdateTime , int IDTableMagazine){
         List<ArticleDTO> lart = new ArrayList<ArticleDTO>();
         ArticleDTO art = null;
         FacebookDTO fb = null;
         try {
-            if(connection.isClosed())
-                openConnection(username, password);
+            connection = DataSource.getInstance().getConnection();
+            while(connection == null)
+                connection = DataSource.getInstance().getConnection();
             // getArticleToUpdate(IDTableUpdateTime int, IDTableMagazine int)
             call = connection.prepareCall("{call getArticleToUpdate(?,?)}");
             
@@ -236,10 +229,11 @@ public class ArticleDAO extends OpenDBConnection {
     }
     
     // isArticleExistsForUpdate
-      public int isArticleExistsForUpdate (String username, String password, ArticleDTO art)    {
+      public int isArticleExistsForUpdate (ArticleDTO art)    {
         try {
-            if(connection.isClosed())
-                openConnection(username, password);
+            connection = DataSource.getInstance().getConnection();
+            while(connection == null)
+                connection = DataSource.getInstance().getConnection();
             // getArticleToUpdate(IDTableUpdateTime int, IDTableMagazine int)
 
             call = connection.prepareCall("{call isArticleExistsForUpdate(?,?)}");
@@ -277,10 +271,11 @@ public class ArticleDAO extends OpenDBConnection {
     }
       
       // isArticleExistsForInsert
-       public int isArticleExistsForInsert (String username, String password, ArticleDTO art)    {
+       public int isArticleExistsForInsert (ArticleDTO art)    {
         try {
-            if(connection.isClosed())
-                openConnection(username, password);
+            connection = DataSource.getInstance().getConnection();
+            while(connection == null)
+                connection = DataSource.getInstance().getConnection();
             // isArticleExistsForInsert(magazine int, objectid int, out Result int)
 
             call = connection.prepareCall("{call isArticleExistsForInsert(?,?,?)}");

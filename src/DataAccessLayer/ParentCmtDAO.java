@@ -10,25 +10,20 @@ import java.sql.Types;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-public class ParentCmtDAO extends OpenDBConnection {
+public class ParentCmtDAO extends DataSource {
 
     CallableStatement call = null;
 
-    // constructor
-    public ParentCmtDAO() throws NamingException, SQLException {
-        super();
+    public ParentCmtDAO(String username, String password) {
+        this.username = username;
+        this.password = password;
     }
 
-    public ParentCmtDAO(String username, String password) throws SQLException {
-        super(username, password);
-    }
-
-    public boolean insertParentCmt(String username, String password, ParentCmtDTO par) {
+    public boolean insertParentCmt(ParentCmtDTO par) {
         try {
-            if (connection.isClosed()) {
-                // ds = (MysqlConnectionPoolDataSource)
-                // context.lookup("jbdc/pool/nckhDB");
-                openConnection(username, password);
+            connection = DataSource.getInstance().getConnection();
+            while (connection == null) {
+                connection = DataSource.getInstance().getConnection();
             }
             //IDTableParentCmt int, IDTableArticle int, parentID int, CmtLike int, Content
             call = connection.prepareCall("{call insertParentCmt(?,?,?,?,?)}");
@@ -67,12 +62,11 @@ public class ParentCmtDAO extends OpenDBConnection {
         return false;
     }
 
-    public boolean updateParentCmt(String username, String password, ParentCmtDTO par) {
+    public boolean updateParentCmt(ParentCmtDTO par) {
         try {
-            if (connection.isClosed()) {
-                // ds = (MysqlConnectionPoolDataSource)
-                // context.lookup("jbdc/pool/nckhDB");
-                openConnection(username, password);
+            connection = DataSource.getInstance().getConnection();
+            while (connection == null) {
+                connection = DataSource.getInstance().getConnection();
             }
             //IDTableArticle int,  parentID int,  CmtLike int, Content varchar
             call = connection.prepareCall("{call updateParentCmt(?,?,?,?)}");
@@ -110,10 +104,11 @@ public class ParentCmtDAO extends OpenDBConnection {
         return false;
     }
 
-    public int getMaxIDTableParentCmt(String username, String password) {
+    public int getMaxIDTableParentCmt() {
         try {
-            if (connection.isClosed()) {
-                openConnection(username, password);
+            connection = DataSource.getInstance().getConnection();
+            while (connection == null) {
+                connection = DataSource.getInstance().getConnection();
             }
 
             call = connection.prepareCall("{call getMaxIDTableParentCmt(?)}");
@@ -125,8 +120,7 @@ public class ParentCmtDAO extends OpenDBConnection {
             return call.getInt(1);
         } catch (SQLException ex) {
             Logger.getLogger(ArticleDAO.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        {
+        } finally {
             try {
                 if (connection != null) {
                     connection.close();
@@ -149,13 +143,14 @@ public class ParentCmtDAO extends OpenDBConnection {
     }
 
     // exist => 1
-    public int isParentCmtExits(String username, String password, ParentCmtDTO par) {
+    public int isParentCmtExists(ParentCmtDTO par) {
         try {
-            if (connection.isClosed()) {
-                openConnection(username, password);
+            connection = DataSource.getInstance().getConnection();
+            while (connection == null) {
+                connection = DataSource.getInstance().getConnection();
             }
             //IDTableArticle int, ParentID int, out Result int
-            call = connection.prepareCall("{call isParentCmtExits(?,?,?)}");
+            call = connection.prepareCall("{call isParentCmtExists(?,?,?)}");
 
             call.setInt("IDTableArticle", par.getIDTableArticle());
             call.setInt("ParentID", par.getParentID());
@@ -166,8 +161,7 @@ public class ParentCmtDAO extends OpenDBConnection {
             return call.getInt("Result");
         } catch (SQLException ex) {
             Logger.getLogger(ArticleDAO.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        {
+        } finally {
             try {
                 if (connection != null) {
                     connection.close();
@@ -188,6 +182,5 @@ public class ParentCmtDAO extends OpenDBConnection {
         }
         return -1;
     }
-    
-    
+
 }
