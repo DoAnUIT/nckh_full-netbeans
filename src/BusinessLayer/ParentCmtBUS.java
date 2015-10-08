@@ -30,26 +30,26 @@ public class ParentCmtBUS {
         // generated idtable parent cmt
         int maxid = getMaxIDTableParentCmt();
         par.setIDTableParentCmt(maxid + 1);
-        return pcmtDAO.insertParentCmt(username, password, par);
+        return pcmtDAO.insertParentCmt(par);
     }
 
     public boolean updateParentCmt(ParentCmtDTO par) {
-        return pcmtDAO.updateParentCmt(username, password, par);
+        return pcmtDAO.updateParentCmt(par);
     }
 
     public int getMaxIDTableParentCmt() {
-        return pcmtDAO.getMaxIDTableParentCmt(username, password);
+        return pcmtDAO.getMaxIDTableParentCmt();
     }
 
-    public int isParentCmtExits(ParentCmtDTO par) {
-        return pcmtDAO.isParentCmtExits(username, password, par);
+    public int isParentCmtExists(ParentCmtDTO par) {
+        return pcmtDAO.isParentCmtExists(par);
     }
 
     // working with list
     // kiem tra co ton tai hay khong roi moi them vao co so du lieu
     public boolean insert(List<ParentCmtDTO> lpar) {
         for (ParentCmtDTO par : lpar) {
-            if (isParentCmtExits(par) == 0) {
+            if (isParentCmtExists(par) == 0) {
                 if (insertParentCmt(par) == false) {
                     return false;
                 }
@@ -60,7 +60,7 @@ public class ParentCmtBUS {
 
     public boolean update(List<ParentCmtDTO> lpar) {
         for (ParentCmtDTO par : lpar) {
-            if (isParentCmtExits(par) == 1) {
+            if (isParentCmtExists(par) == 1) {
                 if (updateParentCmt(par) == false) {
                     return false;
                 }

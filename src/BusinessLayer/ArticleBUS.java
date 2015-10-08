@@ -41,7 +41,7 @@ public class ArticleBUS {
         art.setIDTableArticle(maxIDTableArticle + 1);
         art.setIDTableUpdateTime(1);
         art.setCountOfUpdate(0);
-        return artDAO.insertArticle(username, password, art);
+        return artDAO.insertArticle(art);
     }
 
     public boolean updateArticle(ArticleDTO art) {
@@ -49,67 +49,44 @@ public class ArticleBUS {
         if (art.getCountOfUpdate() < maxCount - 1) {
             art.setCountOfUpdate(art.getCountOfUpdate() + 1);
         } else {
-//            if (art.getCountOfUpdate() == 5) {
-//                art.setCountOfUpdate(-1);
-//            } else {
-//                art.setCountOfUpdate(0);
-//            }
-//            art.setIDTableUpdateTime(art.getIDTableUpdateTime() + 1);
-            //if (art.getIDTableUpdateTime() != 5) {
-                art.setCountOfUpdate(0);
-                art.setIDTableUpdateTime(art.getIDTableUpdateTime() + 1);
-            //}
+            art.setCountOfUpdate(0);
+            art.setIDTableUpdateTime(art.getIDTableUpdateTime() + 1);
         }
-        return artDAO.updateArticle(username, password, art);
+        return artDAO.updateArticle(art);
     }
 
     public int getMaxIDTableArticle() {
-        return artDAO.getMaxIDTableArticle(username, password);
+        return artDAO.getMaxIDTableArticle();
     }
 
     public List<ArticleDTO> getArticleToUpdate(int IDTableUpdateTime, int IDTableMagazine) {
-        return artDAO.getArticleToUpdate(username, password, IDTableUpdateTime, IDTableMagazine);
+        return artDAO.getArticleToUpdate(IDTableUpdateTime, IDTableMagazine);
     }
 
     public int isArticleExistsForInsert(ArticleDTO art) {
-        return artDAO.isArticleExistsForInsert(username, password, art);
+        return artDAO.isArticleExistsForInsert(art);
     }
-    
+
     public int isArticleExistsForUpdate(ArticleDTO art) {
-        return artDAO.isArticleExistsForUpdate(username, password, art);
+        return artDAO.isArticleExistsForUpdate(art);
     }
 
     // working with list
-    // if article don't exist => insert
-    public boolean insert(List<ArticleDTO> lart) {
-        for(int i = 0; i < lart.size(); i++) {
-            if (isArticleExistsForInsert(lart.get(i)) == 0) { // phải gọi kiểm tra liên tục => truy suất database liên tục
-                if (insertArticle(lart.get(i)) == false) {
-                    return false;
-                }
-            }
-            else{
-                lart.remove(i);
-                i--;
-            }
+    public boolean insert(ArticleDTO art) {
+        if (isArticleExistsForInsert(art) == 0) {
+            return insertArticle(art);
         }
-        return true;
+        return false;
     }
 
-    public boolean update(List<ArticleDTO> lart) {
-        for (ArticleDTO art : lart) {
-            if (isArticleExistsForUpdate(art) == 1) {
-                if (updateArticle(art) == false) {
-                    return false;
-                } }
-            else {
-                    if (insertArticle(art) == false) {
-                        return false;
-                    }
-                }
-            }
+    public boolean update(ArticleDTO art) {
 
-        return true;
+        if (isArticleExistsForUpdate(art) == 1) {
+            return updateArticle(art);
+             
+        } else {
+            return insertArticle(art);
+        }
 
     }
 

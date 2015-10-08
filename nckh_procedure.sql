@@ -74,7 +74,7 @@ insert into PARENTCMT (IDTableParentCmt, IDTableArticle, parentid, CmtLike, Cont
 end//
 /* check if the parent comment has been existed */
 delimiter //
-create procedure isParentCmtExits(IDTableArticle int, ParentID int, out Result int)
+create procedure isParentCmtExists(IDTableArticle int, ParentID int, out Result int)
 begin 
 if(exists(select * from PARENTCMT as p 	where p.IDTableArticle = IDTableArticle and p.ParentID = ParentID))
             then
@@ -121,7 +121,7 @@ end//
 /* check if the sub comment has been existed */
 
 delimiter //
-create procedure isSubCmtExits(IDTableArticle int, ParentID int, ChildID int, out Result int)
+create procedure isSubCmtExists(IDTableArticle int, ParentID int, ChildID int, out Result int)
 begin 
 if(exists(select * from (SUBCMT as s join PARENTCMT as p 
 					ON s.IDTableParentCmt = p.IDTableParentCmt) join ARTICLE as a

@@ -36,7 +36,7 @@ public class test2 {
 //        IParentComment parComment = new ParentCmtVnexpress();
 //        ISubComment subComment = new SubCmtVnexpress();
 
-        ArticleObject ar = new ArticleTuoiTre();
+        ArticleObject ar = new ArticleTuoiTre(username,password);
         IParentCmt parComment = new ParentCmtTuoiTre();
         ISubCmt subComment = new SubCmtTuoiTre();
 

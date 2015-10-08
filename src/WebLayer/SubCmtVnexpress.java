@@ -18,7 +18,7 @@ import DTO.SubCmtDTO;
 public class SubCmtVnexpress implements ISubCmt {
 
     // url get subcomment of vnexpress
-    private String source_url = "http://usi.saas.vnexpress.net/index/getreplay?&limit=0&offset=0&objecttype=";
+    private String source_url = "http://usi.saas.vnexpress.net/index/getreplay?&limit=0&offset=0";
 	// &siteid=1000000&objectid=3259146&objecttype=1&id=12819274";
 
     // function get content of subcomment
@@ -27,16 +27,16 @@ public class SubCmtVnexpress implements ISubCmt {
         SubCmtDTO temtSubComment = null;
        
          // parse article url to get objecttype
-        int objecttype = 0;
-        if(article.getUrl().matches("(.*)/tin-tuc/(.*)"))
-            objecttype = 1;
-        if(article.getUrl().matches("(.*)/photo/(.*)"))
-            objecttype = 3;
-        if(article.getUrl().matches("(.*)/infographic/(.*)"))
-            objecttype = 4;
+//        int objecttype = 0;
+//        if(article.getUrl().matches("(.*)/tin-tuc/(.*)"))
+//            objecttype = 1;
+//        if(article.getUrl().matches("(.*)/photo/(.*)"))
+//            objecttype = 3;
+//        if(article.getUrl().matches("(.*)/infographic/(.*)"))
+//            objecttype = 4;
         // create url
         
-        String url = source_url + objecttype + "&objectid=" + article.getObjectID() + "&id=";
+        String url = source_url+  "&id=";
         for (int i = 0; i < parentcomment.size(); i++) {
 
             String json = null;

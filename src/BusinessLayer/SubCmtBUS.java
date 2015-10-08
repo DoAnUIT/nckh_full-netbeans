@@ -28,23 +28,23 @@ public class SubCmtBUS {
 
         int idTableParentCmt = getIDTableParentCmtWithArgument(child);
         child.setIDTableParentCmt(idTableParentCmt);
-        return scmtDAO.insertSubCmt(username, password, child);
+        return scmtDAO.insertSubCmt(child);
     }
 
     public boolean updateSubCmt(SubCmtDTO child) {
-        return scmtDAO.updateSubCmt(username, password, child);
+        return scmtDAO.updateSubCmt(child);
     }
 
     public int getMaxIDTableSubCmt() {
-        return scmtDAO.getMaxIDTableSubCmt(username, password);
+        return scmtDAO.getMaxIDTableSubCmt();
     }
 
     public int isSubCmtExits(SubCmtDTO child) {
-        return scmtDAO.isSubCmtExits(username, password, child);
+        return scmtDAO.isSubCmtExists(child);
     }
 
     public int getIDTableParentCmtWithArgument(SubCmtDTO sub) {
-        return scmtDAO.getIDTableParentCmtWithArgument(username, password, sub);
+        return scmtDAO.getIDTableParentCmtWithArgument(sub);
     }
 
     // Working with list
