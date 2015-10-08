@@ -245,8 +245,10 @@ public class ArticleVnexpress extends  ArticleObject {
             pageCount = 1;
             outLoop:
             while (true) {
-
                 doc = JsoupConnect(String.format(menuUrl + "%d.html", pageCount));
+                if (doc == null) {
+                    continue;
+                }
                 Elements temptElements = null;
                 Element temptElement = null;
                 if (pageCount == 1) {
