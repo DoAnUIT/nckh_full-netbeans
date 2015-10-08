@@ -166,6 +166,94 @@ public class ArticleDAO extends DataSource {
         }
         return -1;
     }
+
+    public void deleteArticle(String _user, String _pass, int _id)
+    {
+        try {
+            connection = DataSource.getInstance().getConnection();
+            while(connection == null)
+                connection = DataSource.getInstance().getConnection();
+            call = connection.prepareCall("delete * from article where article.IDTableArticle = _id");
+            call.executeQuery();
+        } catch (Exception e) {
+        }
+    }
+
+    public ArticleDTO GetArticle(String _userName, String _password, int _id)
+    {
+        ArticleDTO result = new ArticleDTO();
+        FacebookDTO rsFB = new FacebookDTO();
+        try {
+            connection = DataSource.getInstance().getConnection();
+            while(connection == null)
+                connection = DataSource.getInstance().getConnection();
+            
+            call = connection.prepareCall("Select * from article where article.IDTableArticle = " + _id);
+            ResultSet rs = call.executeQuery();
+            while (rs.next()) {                
+                result.setIDTableArticle(rs.getInt("IDTableArticle"));
+                result.setIDTableUpdateTime(rs.getInt("IDTableUpdateTime"));
+                result.setIDTableMagazine(rs.getInt("IDTableMagazine"));
+                result.setIDTableCategory(rs.getInt("IDTableCategory"));
+                result.setCountOfUpdate(rs.getInt("CountOfUpdate"));
+                result.setArticleDate(rs.getTimestamp("ArticleDate"));
+                result.setTitle(rs.getNString("Title"));
+                result.setUrlPicture(rs.getString("UrlPicture"));
+                result.setUrl(rs.getString("Url"));
+                result.setObjectID(rs.getInt("ObjectID"));
+                result.setDescription(rs.getNString("Description"));
+                result.setArticleLike(rs.getInt("ArticleLike"));
+                rsFB.setFBCmt(rs.getInt("FBCmt"));
+                rsFB.setFBLike(rs.getInt("FBLike"));
+                rsFB.setFBShare(rs.getInt("FBShare"));
+                result.facebook = rsFB;
+            }
+            return result;
+        } catch (Exception e) {
+            
+        }
+        return null;
+    }
+
+    public List<ArticleDTO> getAllArticleByIndex(String _user, String _pass)
+    {
+        List<ArticleDTO> result = new ArrayList<ArticleDTO>();
+//        for (int i = 0; i < getMaxIDTableArticle(_user, _pass) + 2; i++) {
+//            result.add(GetArticle(_user, _pass, i));
+//        }
+        FacebookDTO rsFB = new FacebookDTO();
+        try {
+            connection = DataSource.getInstance().getConnection();
+            while(connection == null)
+                connection = DataSource.getInstance().getConnection();
+            call = connection.prepareCall("Select * from Article");
+            ResultSet rs = call.executeQuery();
+            while (rs.next()) {
+                ArticleDTO temp = new ArticleDTO();
+                temp.setIDTableArticle(rs.getInt("IDTableArticle"));
+                temp.setIDTableUpdateTime(rs.getInt("IDTableUpdateTime"));
+                temp.setIDTableMagazine(rs.getInt("IDTableMagazine"));
+                temp.setIDTableCategory(rs.getInt("IDTableCategory"));
+                temp.setCountOfUpdate(rs.getInt("CountOfUpdate"));
+                temp.setArticleDate(rs.getTimestamp("ArticleDate"));
+                temp.setTitle(rs.getNString("Title"));
+                temp.setUrlPicture(rs.getString("UrlPicture"));
+                temp.setUrl(rs.getString("Url"));
+                temp.setObjectID(rs.getInt("ObjectID"));
+                temp.setDescription(rs.getNString("Description"));
+                temp.setArticleLike(rs.getInt("ArticleLike"));
+                rsFB.setFBCmt(rs.getInt("FBCmt"));
+                rsFB.setFBLike(rs.getInt("FBLike"));
+                rsFB.setFBShare(rs.getInt("FBShare"));
+                temp.facebook = rsFB;
+                result.add(temp);
+            }
+        }
+        catch (Exception e) {
+        }
+        
+        return result;
+    }
     
     public List<ArticleDTO> getArticleToUpdate( int IDTableUpdateTime , int IDTableMagazine){
         List<ArticleDTO> lart = new ArrayList<ArticleDTO>();

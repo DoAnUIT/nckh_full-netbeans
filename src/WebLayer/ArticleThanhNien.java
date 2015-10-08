@@ -212,7 +212,9 @@ public class ArticleThanhNien extends ArticleObject {
             outLoop:
             while (true) {
                 doc = JsoupConnect(String.format(menuUrl + "%d.html", pageCount));
-
+                if (doc == null) {
+                    continue;
+                }
                 Elements temptElements = null;
                 Element temptElement = null;
 

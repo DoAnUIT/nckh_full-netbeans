@@ -270,6 +270,9 @@ public class ArticleTuoiTre extends ArticleObject {
                     e.printStackTrace();
                 }
 //</editor-fold>
+                if (doc == null) {
+                    continue;
+                }
 
                 //<editor-fold defaultstate="collapsed" desc="class highligh">
                 //temptElement = doc.select("#newhot_most_content").first();

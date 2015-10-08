@@ -33,13 +33,16 @@ import java.io.IOException;
 public class TestUpdate {
 
     public static void main(String[] args) throws SQLException, IOException {
-        //System.setProperty("java.net.preferIPv4Stack" , "true");
-        String username = "nhat";
-        String password = "mysql!@3";
+
+        String username = "root";
+        String password = "";
+
 
         Calendar calendar = new GregorianCalendar();
         calendar.set(Calendar.MINUTE, 0);
         calendar.set(Calendar.SECOND, 0);
+
+        calendar.set(Calendar.DAY_OF_MONTH, 6);
         calendar.set(Calendar.HOUR_OF_DAY, 6);
         calendar.set(Calendar.DAY_OF_MONTH, 7);
         calendar.set(Calendar.MONTH, 10-1);
