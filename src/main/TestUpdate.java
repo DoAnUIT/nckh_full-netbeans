@@ -57,15 +57,15 @@ public class TestUpdate {
         //String url = "http://www.thanhnien.com.vn";
         // String url = "http://tuoitre.vn";
         //wl.update(url, 1);
-//        for (String url : lurl) {
-//        System.out.println("\nBắt đầu insert : " + url + "\n");
-//            wl.insert(url, newtime, lasttime);
-//        }
-
         for (String url : lurl) {
-            System.out.println("\nBắt đầu update : " + url +"\n");
-            wl.update(url, 1);
+        System.out.println("\nBắt đầu insert : " + url + "\n");
+            wl.insert(url, newtime, lasttime);
         }
+
+//        for (String url : lurl) {
+//            System.out.println("\nBắt đầu update : " + url +"\n");
+//            wl.update(url, 1);
+//        }
         System.out.println("Finished");
 
     }

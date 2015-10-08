@@ -74,20 +74,32 @@ public class ArticleBUS {
     // working with list
     public boolean insert(ArticleDTO art) {
         if (isArticleExistsForInsert(art) == 0) {
-            return insertArticle(art);
+            if(!insertArticle(art))
+            {
+                System.out.println("insert article vao database that bai");
+                return false;
+            }
         }
-        return false;
+        return true;
     }
 
     public boolean update(ArticleDTO art) {
 
         if (isArticleExistsForUpdate(art) == 1) {
-            return updateArticle(art);
-             
-        } else {
-            return insertArticle(art);
-        }
+            if (updateArticle(art) == false) {
+                System.out.println("Cap nhat article vao database that bai");
+                return false;
+            }
+            else return true;
 
+        } else {
+            if (!insertArticle(art)) {
+                System.out.println("Cap nhat article vao database that bai");
+                return false;
+            }
+            else
+                return true;
+        }
     }
 
 }

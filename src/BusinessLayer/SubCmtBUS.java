@@ -52,6 +52,7 @@ public class SubCmtBUS {
         for (SubCmtDTO child : lchild) {
             if (isSubCmtExits(child) == 0) {
                 if (insertSubCmt(child) == false) {
+                    System.out.println("insert subcmt vao database that bai");
                     return false;
                 }
             }
@@ -63,9 +64,11 @@ public class SubCmtBUS {
         for (SubCmtDTO sub : lSub) {
             if (isSubCmtExits(sub) == 1) {
                 if (updateSubCmt(sub) == false) {
+                    System.out.println("Cap nhat subcmt vao database that bai");
                     return false;
                 }
             } else if (insertSubCmt(sub) == false) {
+                System.out.println("Cap nhat subcmt vao database that bai");
                 return false;
             }
         }

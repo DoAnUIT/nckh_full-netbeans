@@ -51,6 +51,7 @@ public class ParentCmtBUS {
         for (ParentCmtDTO par : lpar) {
             if (isParentCmtExists(par) == 0) {
                 if (insertParentCmt(par) == false) {
+                    System.out.println("insert parentcmt vao database that bai");
                     return false;
                 }
             }
@@ -62,9 +63,11 @@ public class ParentCmtBUS {
         for (ParentCmtDTO par : lpar) {
             if (isParentCmtExists(par) == 1) {
                 if (updateParentCmt(par) == false) {
+                    System.out.println("Cap nhat parentcmt vao database that bai");
                     return false;
                 }
             } else if (insertParentCmt(par) == false) {
+                System.out.println("Cap nhat parentcmt vao database that bai");
                 return false;
             }
         }

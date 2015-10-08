@@ -78,7 +78,7 @@ public abstract class ArticleObject {
 
         Calendar calLast = Calendar.getInstance();
         calLast.setTime(lasttime);
-        
+
         if (calArt.get(Calendar.DAY_OF_YEAR) - calLast.get((Calendar.DAY_OF_YEAR)) >= 0) {
             return true;
         }
@@ -120,19 +120,26 @@ public abstract class ArticleObject {
         SubCmtBUS subBUS = new SubCmtBUS(username, password);
 
         // insert art to database => art have idtablearticle
-        if(!artBUS.insert(art))
+        // nếu đã tồn tại thì return
+        if (!artBUS.insert(art)) {
             return;
+        }
         temptPar = parCmt.getContentParentComment(art, parentIDHasSub);
         // nếu temptPar != null => insert vào database
         // có parentcmt thì mới có subcmt
         if (temptPar != null) {
-            parBUS.insert(temptPar);
-
-            if(parentIDHasSub != null){
-            temptSub = subCmt.getContentSubComment(art, parentIDHasSub);
-            if (temptSub != null) {
-                subBUS.insert(temptSub);
+            // insert that bai => return => tranh loi phia sau
+            if (!parBUS.insert(temptPar)) {
+                temptPar = null;
+                parentIDHasSub.clear();
+                return;
             }
+
+            if (parentIDHasSub != null) {
+                temptSub = subCmt.getContentSubComment(art, parentIDHasSub);
+                if (temptSub != null) {
+                    subBUS.insert(temptSub);
+                }
             }
         }
         temptPar = null;
@@ -147,12 +154,16 @@ public abstract class ArticleObject {
         SubCmtBUS subBUS = new SubCmtBUS(username, password);
 
         // update art to database 
-        artBUS.update(art);
+        if(!artBUS.update(art))
+            return;
         temptPar = parCmt.getContentParentComment(art, parentIDHasSub);
         // nếu temptPar != null => insert vào database. Có parentcmt thì mới có subcmt
         if (temptPar != null) {
-            parBUS.update(temptPar);
-
+            if (!parBUS.update(temptPar)) {
+                temptPar = null;
+                parentIDHasSub.clear();
+                return;
+            }
             temptSub = subCmt.getContentSubComment(art, parentIDHasSub);
             if (temptSub != null) {
                 subBUS.update(temptSub);
