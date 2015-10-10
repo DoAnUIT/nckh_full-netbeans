@@ -266,7 +266,7 @@ public class ArticleVnexpress extends ArticleObject {
 
                     art = getArticleInformation(url);
                     if (art != null && isTheDayOfMonthValid(art, lasttime) != false) {
-                        if (isTimeValid(art, newtime, lasttime)) {
+                        //if (isTimeValid(art, newtime, lasttime)) {
                             System.out.println(url);
 
                             try {
@@ -274,7 +274,7 @@ public class ArticleVnexpress extends ArticleObject {
                             } catch (SQLException ex) {
                                 Logger.getLogger(ArticleVnexpress.class.getName()).log(Level.SEVERE, null, ex);
                             }
-                        }
+                        //}
                     }
 //</editor-fold>
 

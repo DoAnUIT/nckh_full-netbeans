@@ -220,7 +220,7 @@ public class ArticleTuoiTre extends ArticleObject {
             url = temptElement.attr("href");
             art = getArticleInformation(url);
             if (art != null && isTheDayOfMonthValid(art, lasttime) != false) {
-                if (isTimeValid(art, newtime, lasttime)) {
+                //if (isTimeValid(art, newtime, lasttime)) {
                     System.out.println(url);
 
                     try {
@@ -228,7 +228,7 @@ public class ArticleTuoiTre extends ArticleObject {
                     } catch (SQLException ex) {
                         Logger.getLogger(ArticleTuoiTre.class.getName()).log(Level.SEVERE, null, ex);
                     }
-                }
+                //}
             }
 
             // block list-news

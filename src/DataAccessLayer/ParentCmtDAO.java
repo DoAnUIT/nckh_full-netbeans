@@ -150,7 +150,7 @@ public class ParentCmtDAO extends DataSource {
                 connection = DataSource.getInstance().getConnection();
             }
             //IDTableArticle int, ParentID int, out Result int
-            call = connection.prepareCall("{call isParentCmtExists(?,?,?)}");
+            call = connection.prepareCall("{call isParentCmtExits(?,?,?)}");
 
             call.setInt("IDTableArticle", par.getIDTableArticle());
             call.setInt("ParentID", par.getParentID());

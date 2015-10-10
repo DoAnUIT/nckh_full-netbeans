@@ -237,14 +237,14 @@ public class ArticleThanhNien extends ArticleObject {
                             break outLoop;
                         }
                         // if time gets art > lasttime => get art
-                        if (isTimeValid(art, newtime, lasttime)) {
+                        //if (isTimeValid(art, newtime, lasttime)) {
                             System.out.println(url);
                             try {
                                 this.insertDatabase(art);
                             } catch (SQLException ex) {
                                 Logger.getLogger(ArticleThanhNien.class.getName()).log(Level.SEVERE, null, ex);
                             }
-                        }
+                        //}
                     }
                 }
 //</editor-fold>

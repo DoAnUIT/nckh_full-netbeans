@@ -92,13 +92,13 @@ public class ArticleDAO extends DataSource {
 
             // (IDTableArticle int, IDTableUpdateTime int, CountOfUpdate int, FbLike int, FbCmt int,
 	//FbShare int, ArticleLikeupdateArticle int
-            call.setInt("IDTableArticle", art.getIDTableArticle());
-            call.setInt("IDTableUpdateTime", art.getIDTableUpdateTime());
-            call.setInt("CountOfUpdate", art.getCountOfUpdate());
-            call.setInt("FbLike", art.facebook.getFBLike());
-            call.setInt("FbCmt", art.facebook.getFBCmt());
-            call.setInt("FbShare", art.facebook.getFBShare());
-            call.setInt("ArticleLike", art.getArticleLike());
+            call.setInt("_IDTableArticle", art.getIDTableArticle());
+            call.setInt("_IDTableUpdateTime", art.getIDTableUpdateTime());
+            call.setInt("_CountOfUpdate", art.getCountOfUpdate());
+            call.setInt("_FbLike", art.facebook.getFBLike());
+            call.setInt("_FbCmt", art.facebook.getFBCmt());
+            call.setInt("_FbShare", art.facebook.getFBShare());
+            call.setInt("_ArticleLike", art.getArticleLike());
 
             call.execute();
             return true;
@@ -167,7 +167,7 @@ public class ArticleDAO extends DataSource {
         return -1;
     }
 
-    public void deleteArticle(String _user, String _pass, int _id)
+    public void deleteArticle(int _id)
     {
         try {
             connection = DataSource.getInstance().getConnection();
@@ -179,7 +179,7 @@ public class ArticleDAO extends DataSource {
         }
     }
 
-    public ArticleDTO GetArticle(String _userName, String _password, int _id)
+    public ArticleDTO GetArticle(int _id)
     {
         ArticleDTO result = new ArticleDTO();
         FacebookDTO rsFB = new FacebookDTO();
@@ -215,7 +215,7 @@ public class ArticleDAO extends DataSource {
         return null;
     }
 
-    public List<ArticleDTO> getAllArticleByIndex(String _user, String _pass)
+    public List<ArticleDTO> getAllArticleByIndex()
     {
         List<ArticleDTO> result = new ArrayList<ArticleDTO>();
 //        for (int i = 0; i < getMaxIDTableArticle(_user, _pass) + 2; i++) {
@@ -357,9 +357,45 @@ public class ArticleDAO extends DataSource {
         }
         return -1;
     }
+    
+    public List<ArticleDTO> getArticleDTOByUpdateType(int _idUpdateType)
+    {
+        List<ArticleDTO> resultList = new ArrayList<ArticleDTO>();
+        try {
+            connection = DataSource.getInstance().getConnection();
+            while (connection == null) {                
+                connection = DataSource.getInstance().getConnection();
+            }
+            call = connection.prepareCall("select * from article where article.IDTableUpdateTime =" + _idUpdateType);
+            ResultSet rs = call.executeQuery();
+            while (rs.next()) {
+                ArticleDTO temp = new ArticleDTO();
+                temp.setIDTableArticle(rs.getInt("IDTableArticle"));
+                temp.setIDTableUpdateTime(rs.getInt("IDTableUpdateTime"));
+                temp.setIDTableMagazine(rs.getInt("IDTableMagazine"));
+                temp.setIDTableCategory(rs.getInt("IDTableCategory"));
+                temp.setCountOfUpdate(rs.getInt("CountOfUpdate"));
+                temp.setArticleDate(rs.getTimestamp("ArticleDate"));
+                temp.setTitle(rs.getNString("Title"));
+                temp.setUrlPicture(rs.getString("UrlPicture"));
+                temp.setUrl(rs.getString("Url"));
+                temp.setObjectID(rs.getInt("ObjectID"));
+                temp.setDescription(rs.getNString("Description"));
+                temp.setArticleLike(rs.getInt("ArticleLike"));
+                FacebookDTO fb = new FacebookDTO();
+                fb.setFBCmt(rs.getInt("FBCmt"));
+                fb.setFBLike(rs.getInt("FBLike"));
+                fb.setFBShare(rs.getInt("FBShare"));
+                temp.facebook = fb;
+                resultList.add(temp);
+            }
+        } catch (Exception e) {
+        }
+        return resultList;
+    }
       
       // isArticleExistsForInsert
-       public int isArticleExistsForInsert (ArticleDTO art)    {
+    public int isArticleExistsForInsert (ArticleDTO art)    {
         try {
             connection = DataSource.getInstance().getConnection();
             while(connection == null)

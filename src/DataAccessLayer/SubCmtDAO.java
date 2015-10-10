@@ -146,7 +146,7 @@ public class SubCmtDAO extends DataSource {
             while(connection == null)
                 connection = DataSource.getInstance().getConnection();
             //isSubCmntExits(IDTableArticle int, ParentID int, ChildID int, out Result int
-            call = connection.prepareCall("{call isSubCmtExists(?,?,?,?)}");
+            call = connection.prepareCall("{call isSubCmtExits(?,?,?,?)}");
             
             call.setInt(1, sub.getIDTableArticle());
             call.setInt(2, sub.getParentID());

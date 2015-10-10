@@ -46,7 +46,6 @@ public class WebLayer {
         {
             case "http://vnexpress.net":
                 art = new ArticleVnexpress(username,password);
-                break;
             case "http://www.thanhnien.com.vn":
                 art = new ArticleThanhNien(username,password);
                 break;

@@ -29,6 +29,9 @@ import java.util.GregorianCalendar;
 import java.util.List;
 import WebLayer.*;
 import java.io.IOException;
+import java.sql.Array;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class TestUpdate {
 
@@ -53,21 +56,28 @@ public class TestUpdate {
         calendar.set(Calendar.HOUR_OF_DAY, 9);
         Timestamp newtime = new Timestamp(calendar.getTimeInMillis());
 
-        WebLayer wl = new WebLayer(username, password);
-        String lurl[] = {"http://tuoitre.vn","http://vnexpress.net", "http://www.thanhnien.com.vn"
-        };
-        //String url = "http://vnexpress.net";
-        //String url = "http://www.thanhnien.com.vn";
-        // String url = "http://tuoitre.vn";
-        //wl.update(url, 1);
+        String lurl[] = {"http://tuoitre.vn","http://vnexpress.net", "http://www.thanhnien.com.vn"};
+        
+        
+        //insert news
+//        List<ThreadInsert> listInsertMagazine = new ArrayList<ThreadInsert>();
+//        int i = 0;
 //        for (String url : lurl) {
-//        System.out.println("\nBắt đầu insert : " + url + "\n");
-//            wl.insert(url, newtime, lasttime);
+//            System.out.println("\nBắt đầu insert : " + url + "\n");
+//            ThreadInsert x = new ThreadInsert(username, password, url, newtime, newtime);
+//            //x.ThreadInsertByTypeNews.setPriority(i);
+//            listInsertMagazine.add(x);
+//            i++;
 //        }
-
-        for (String url : lurl) {
-            System.out.println("\nBắt đầu update : " + url +"\n");
-            wl.update(url, 1);
+        //end insert news 
+        
+        //update
+//        for (String url : lurl) {
+//            System.out.println("\nBắt đầu update : " + url +"\n");
+//            wl.update(url, 1);
+//        }
+        for (int i = 1; i <= 1; i++) {
+            ThreadUpdate a = new ThreadUpdate(i, username, password);
         }
         System.out.println("Finished");
 
