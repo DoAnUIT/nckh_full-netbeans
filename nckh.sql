@@ -1,4 +1,4 @@
--- drop database nckh;
+﻿-- drop database nckh;
 create database nckh;
 use nckh;
 
@@ -28,9 +28,9 @@ create table ARTICLE(
     IDTableCategory int,
     CountOfUpdate int,
 	ArticleDate TIMESTAMP,
-	Title nvarchar(200) ,
-	UrlPicture varchar(200),
-	Url varchar(200),
+	Title nvarchar(300) ,
+	UrlPicture varchar(300),
+	Url varchar(300),
 	ObjectID int ,
 	Description text ,
 	FbLike int,

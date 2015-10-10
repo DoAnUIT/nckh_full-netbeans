@@ -34,34 +34,33 @@ public class TestUpdate {
 
     public static void main(String[] args) throws SQLException, IOException {
 
-        String username = "root";
-        String password = "";
-
+        String username = "nhat";
+        String password = "mysql!@3";
 
         Calendar calendar = new GregorianCalendar();
         calendar.set(Calendar.MINUTE, 0);
         calendar.set(Calendar.SECOND, 0);
 
-        calendar.set(Calendar.DAY_OF_MONTH, 6);
-        calendar.set(Calendar.HOUR_OF_DAY, 6);
-        calendar.set(Calendar.DAY_OF_MONTH, 7);
-        calendar.set(Calendar.MONTH, 10-1);
+        calendar.set(Calendar.HOUR_OF_DAY, 0);
+        calendar.set(Calendar.DAY_OF_MONTH, 10);
+        calendar.set(Calendar.MONTH, 7 - 1);
         Timestamp lasttime = new Timestamp(calendar.getTimeInMillis());
 
-        calendar.set(Calendar.DAY_OF_MONTH, 7);
-        calendar.set(Calendar.MONTH, 10-1);
-        calendar.set(Calendar.HOUR_OF_DAY, 9);
+        calendar.set(Calendar.HOUR_OF_DAY, 15);
+        calendar.set(Calendar.DAY_OF_MONTH, 9);
+        calendar.set(Calendar.MONTH, 10 - 1);
         Timestamp newtime = new Timestamp(calendar.getTimeInMillis());
 
+        // 0h ngay 10.7 den 15h ngay 9.10
         WebLayer wl = new WebLayer(username, password);
-        String lurl[] = {"http://tuoitre.vn","http://vnexpress.net", "http://www.thanhnien.com.vn"
+        String lurl[] = { "http://vnexpress.net", "http://www.thanhnien.com.vn"
         };
         //String url = "http://vnexpress.net";
         //String url = "http://www.thanhnien.com.vn";
         // String url = "http://tuoitre.vn";
         //wl.update(url, 1);
         for (String url : lurl) {
-        System.out.println("\nBắt đầu insert : " + url + "\n");
+            System.out.println("\nBắt đầu insert : " + url + "\n");
             wl.insert(url, newtime, lasttime);
         }
 

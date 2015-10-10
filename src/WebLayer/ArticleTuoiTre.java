@@ -111,7 +111,7 @@ public class ArticleTuoiTre extends ArticleObject {
         Date d = null;
         Timestamp time = null;
         // date => chua lam
-        Element meta = doc.select("span.date").first();
+        Element meta = doc.select(".date").first();
         tempt = meta.text();
         tempt = tempt.substring(0, tempt.indexOf('G'));
         tempt = tempt.trim();
@@ -177,7 +177,8 @@ public class ArticleTuoiTre extends ArticleObject {
             if (category.text().length() == 0) {
                 continue;
             }
-            String realCate = "Chính trị - Xã hội, Thế giới, Pháp luật, Kinh tế, Giáo dục, Đời sống, Văn hóa - Giải trí";
+            String realCate = "Chính trị - Xã hội, Thế giới, Pháp luật, Kinh tế, Giáo dục, Văn hóa - Giải trí";
+
             if (realCate.matches("(.*)" + category.text() + "(.*)") == false) {
                 continue;
             }
@@ -207,7 +208,7 @@ public class ArticleTuoiTre extends ArticleObject {
         List<String> arrayMenu = getMenuWeb(source_url);
 
         // get article each menu
-        int pageCount = 0;
+        int pageCount = 1;
         Elements temptElements = null;
         Element temptElement = null;
         for (int i = 0; i < arrayMenu.size(); i++) {

@@ -1,8 +1,9 @@
 delimiter //
 -- article --------
+
 create procedure insertArticle(IDTableArticle int , IDTableUpdateTime int, IDTableMagazine int,
-    IDTableCategory int, CountOfUpdate int, ArticleDate TIMESTAMP,	Title nvarchar(200) ,UrlPicture varchar(200),
-	Url varchar(200),	ObjectID int ,	Description text ,	FbLike int,
+    IDTableCategory int, CountOfUpdate int, ArticleDate TIMESTAMP,	Title nvarchar(300) ,UrlPicture varchar(300),
+	Url varchar(300),	ObjectID int ,	Description text ,	FbLike int,
 	FbCmt int,	FbShare int,	ArticleLike int)
 begin
 insert into ARTICLE (IDTableArticle ,   IDTableUpdateTime ,  IDTableMagazine ,
@@ -74,7 +75,7 @@ insert into PARENTCMT (IDTableParentCmt, IDTableArticle, parentid, CmtLike, Cont
 end//
 /* check if the parent comment has been existed */
 delimiter //
-create procedure isParentCmtExists(IDTableArticle int, ParentID int, out Result int)
+create procedure isParentCmtExits(IDTableArticle int, ParentID int, out Result int)
 begin 
 if(exists(select * from PARENTCMT as p 	where p.IDTableArticle = IDTableArticle and p.ParentID = ParentID))
             then
@@ -121,7 +122,7 @@ end//
 /* check if the sub comment has been existed */
 
 delimiter //
-create procedure isSubCmtExists(IDTableArticle int, ParentID int, ChildID int, out Result int)
+create procedure isSubCmtExits(IDTableArticle int, ParentID int, ChildID int, out Result int)
 begin 
 if(exists(select * from (SUBCMT as s join PARENTCMT as p 
 					ON s.IDTableParentCmt = p.IDTableParentCmt) join ARTICLE as a

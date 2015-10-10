@@ -38,6 +38,8 @@ public abstract class ArticleObject {
     protected String password = null;
     protected IParentCmt parCmt = null;
     protected ISubCmt subCmt = null;
+    private int count = 0;
+    private boolean flag = true;
 
     // Lấy thông tin của từng bài báo
     public abstract ArticleDTO getArticleInformation(String source_url);
@@ -96,6 +98,23 @@ public abstract class ArticleObject {
 
     // connect jsou
     protected Document JsoupConnect(String source_url) {
+        // flag flase and count > 500 => default proxy
+//        if (count > 500 && flag == false) {
+//            //System.setProperty("java.net.useSystemProxies", "true");
+//            System.getProperties().remove("http.proxyHost");
+//            System.getProperties().remove("http.proxyPort");
+//            count = 0;
+//            flag = true;
+//        }
+//        
+//        ////////////// co gang dua proxy vao file xml
+//        if (count > 500 && flag == true) {
+//            System.setProperty("http.proxyHost", "125.212.219.221");
+//            System.setProperty("http.proxyPort", "3128");
+//            count = 0;
+//            flag = false;
+//        }
+//        count++;
         Document doc = null;
         try {
             doc = Jsoup.connect(source_url).timeout(10000).followRedirects(true)
@@ -106,11 +125,7 @@ public abstract class ArticleObject {
             // TODO Auto-generated catch block
             e.printStackTrace();
         }
-        try {
-            Thread.sleep(10);
-        } catch (InterruptedException ex) {
-            Logger.getLogger(ArticleObject.class.getName()).log(Level.SEVERE, null, ex);
-        }
+
         return doc;
     }
 
@@ -154,8 +169,9 @@ public abstract class ArticleObject {
         SubCmtBUS subBUS = new SubCmtBUS(username, password);
 
         // update art to database 
-        if(!artBUS.update(art))
+        if (!artBUS.update(art)) {
             return;
+        }
         temptPar = parCmt.getContentParentComment(art, parentIDHasSub);
         // nếu temptPar != null => insert vào database. Có parentcmt thì mới có subcmt
         if (temptPar != null) {

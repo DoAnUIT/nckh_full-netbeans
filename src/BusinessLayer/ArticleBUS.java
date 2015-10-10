@@ -80,6 +80,10 @@ public class ArticleBUS {
                 return false;
             }
         }
+        else {
+            System.out.println("article da ton tai");
+            return false;
+        }
         return true;
     }
 

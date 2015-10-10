@@ -177,6 +177,26 @@ public class ArticleDAO extends DataSource {
             call.executeQuery();
         } catch (Exception e) {
         }
+        finally
+        {
+            try {
+                if (connection != null) {
+                    connection.close();
+                }
+            } catch (SQLException e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            }
+
+            try {
+                if (call != null) {
+                    call.close();
+                }
+            } catch (SQLException e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            }
+        }
     }
 
     public ArticleDTO GetArticle(String _userName, String _password, int _id)
@@ -211,6 +231,26 @@ public class ArticleDAO extends DataSource {
             return result;
         } catch (Exception e) {
             
+        }
+        finally
+        {
+            try {
+                if (connection != null) {
+                    connection.close();
+                }
+            } catch (SQLException e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            }
+
+            try {
+                if (call != null) {
+                    call.close();
+                }
+            } catch (SQLException e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            }
         }
         return null;
     }
@@ -250,6 +290,26 @@ public class ArticleDAO extends DataSource {
             }
         }
         catch (Exception e) {
+        }
+        finally
+        {
+            try {
+                if (connection != null) {
+                    connection.close();
+                }
+            } catch (SQLException e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            }
+
+            try {
+                if (call != null) {
+                    call.close();
+                }
+            } catch (SQLException e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            }
         }
         
         return result;
