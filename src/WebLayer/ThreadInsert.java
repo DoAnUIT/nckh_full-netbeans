@@ -2,8 +2,6 @@ package WebLayer;
 import java.sql.SQLException;
 import java.sql.Timestamp;
 
-//day la thread insert tat ca cac bai bao trong cac tap chi
-//y tuong ve insert: lay tat ca cac tap chi va truyen vao ham insert
 public class ThreadInsert {
     public Thread ThreadInsertByTypeNews;
     String UserName;
