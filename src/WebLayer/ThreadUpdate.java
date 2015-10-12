@@ -78,16 +78,13 @@ public class ThreadUpdate {
             break;
         }
         
-        int artLike = 0;
         FacebookDTO fbData = null;
         try {
-            fbData = _art.getContentOfFacebook(result.getUrl());
+            fbData = _art.getContentOfFacebook(_artUp.getUrl());
         } catch (IOException ex) {
             System.out.println("Can not get fb");
         }
-;
-        artLike = _art.getArticleLike(result.getObjectID());
-        result.setArticleLike(artLike);
+        result.setArticleLike(_art.getArticleLike(_artUp.getObjectID()));
         result.facebook = fbData;
 
         try {

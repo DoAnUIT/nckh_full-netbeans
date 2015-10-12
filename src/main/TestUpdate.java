@@ -60,20 +60,21 @@ public class TestUpdate {
         
         
         //insert news
-//        List<ThreadInsert> listInsertMagazine = new ArrayList<ThreadInsert>();
-//        int i = 0;
-//        for (String url : lurl) {
-//            System.out.println("\nBắt đầu insert : " + url + "\n");
-//            ThreadInsert x = new ThreadInsert(username, password, url, lasttime, newtime);
-//            //x.ThreadInsertByTypeNews.setPriority(i);
-//            listInsertMagazine.add(x);
-//            i++;
-//        }
-        //end insert news 
-
-        for (int i = 1; i <= 1; i++) {
-            ThreadUpdate a = new ThreadUpdate(i, username, password);
+        List<ThreadInsert> listInsertMagazine = new ArrayList<ThreadInsert>();
+        int i = 0;
+        for (String url : lurl) {
+            System.out.println("\nBắt đầu insert : " + url + "\n");
+            ThreadInsert x = new ThreadInsert(username, password, url, lasttime, newtime);
+            //x.ThreadInsertByTypeNews.setPriority(i);
+            listInsertMagazine.add(x);
+            i++;
         }
+        //end insert news 
+        //ThreadUpdate a = new ThreadUpdate(1, username, password);
+        
+//        for (int i = 1; i <= 1; i++) {
+//            ThreadUpdate a = new ThreadUpdate(i, username, password);
+//        }
         System.out.println("Finished");
 
     }

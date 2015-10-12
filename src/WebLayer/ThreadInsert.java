@@ -25,7 +25,7 @@ public class ThreadInsert {
         ThreadInsertByTypeNews.start();
     }
     
-    public synchronized void InsertNewsByURL()
+    public void InsertNewsByURL()
     {
         try {
             System.out.println("Start insert news in " + URLMagazine);
