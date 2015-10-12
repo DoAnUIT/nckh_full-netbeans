@@ -12,7 +12,7 @@ import org.jsoup.select.Elements;
 import DTO.ArticleDTO;
 import DTO.ParentCmtDTO;
 
-public class ParentCmtThanhNien implements IParentCmt {
+public class ParentCmtThanhNien extends ConnectUrl implements IParentCmt {
 
     private String source_url = "http://www.thanhnien.com.vn/ajax/comment.aspx?&order=like&cid=";
 
@@ -24,15 +24,9 @@ public class ParentCmtThanhNien implements IParentCmt {
         ParentCmtDTO parent = null;
         Document doc = null;
 
-        try {
-            doc = Jsoup.connect(article.getUrl()).timeout(5000).followRedirects(true)
-                    .userAgent(
-                            "Mozilla/5.0 (Windows NT 6.3; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/43.0.2357.134 Safari/537.36")
-                    .get();
-        } catch (IOException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        }
+        doc = jsoupConnect(article.getUrl());
+        if(doc == null)
+            return null;
 
         Element meta = doc.select("#posturl").first();
         String tempt = meta.attr("value");
@@ -42,15 +36,7 @@ public class ParentCmtThanhNien implements IParentCmt {
         Elements elements = null;
         while (doc.text().length() > 1) {
             // url += count;
-            try {
-                doc = Jsoup.connect(String.format(url + "%d", count)).timeout(5000).followRedirects(true)
-                        .userAgent(
-                                "Mozilla/5.0 (Windows NT 6.3; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/43.0.2357.134 Safari/537.36")
-                        .get();
-            } catch (IOException e) {
-                // TODO Auto-generated catch block
-                e.printStackTrace();
-            }
+            doc = jsoupConnect(String.format(url + "%d", count));
             elements = doc.select(".Comments-item-parent");
 
             for (int i = 0; i < elements.size(); i++) {

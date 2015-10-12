@@ -51,7 +51,9 @@ public class ArticleVnexpress extends ArticleObject {
         String url = null;
 
         String tempt = null;
-        Document doc = JsoupConnect(source_url);
+        Document doc = jsoupConnect(source_url);
+        if(doc == null)
+            doc = jsoupConnect(source_url);
         if (doc == null) {
             return null;
         }
@@ -194,7 +196,7 @@ public class ArticleVnexpress extends ArticleObject {
 
     // Get menu Web
     public List<String> getMenuWeb(String source_url) {
-        Document doc = JsoupConnect(source_url);
+        Document doc = jsoupConnect(source_url);
         List<String> arrayMenu = new ArrayList<String>();
 
         // get all category
@@ -242,14 +244,14 @@ public class ArticleVnexpress extends ArticleObject {
         List<String> arrayMenu = getMenuWeb(source_url);
 
         // get article each menu
-        int pageCount = 0;
+        int pageCount = 1;
         for (int i = 0; i < arrayMenu.size(); i++) {
             // get page of each menu
             menuUrl = arrayMenu.get(i) + "/page/";
             pageCount = 1;
             outLoop:
             while (true) {
-                doc = JsoupConnect(String.format(menuUrl + "%d.html", pageCount));
+                doc = jsoupConnect(String.format(menuUrl + "%d.html", pageCount));
                 if (doc == null) {
                     continue;
                 }

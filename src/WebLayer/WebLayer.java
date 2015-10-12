@@ -98,7 +98,7 @@ public class WebLayer {
         if(lOldArt == null)
             return;
         for (int i = 0; i < lOldArt.size(); i++) {
-           
+            System.out.println(lOldArt.get(i).getUrl());
             fb = artObject.getContentOfFacebook(lOldArt.get(i).getUrl());
             articleLike = artObject.getArticleLike(lOldArt.get(i).getObjectID());
            

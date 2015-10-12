@@ -19,7 +19,7 @@ import org.jsoup.select.Elements;
  *
  * @author Minh Nhat
  */
-public class ParentCmtTuoiTre implements IParentCmt {
+public class ParentCmtTuoiTre extends ConnectUrl implements IParentCmt {
 
     String source_url = "http://cm.tuoitre.vn/comment/createiframe?app_id=6&offset=0&layout=tto&object_id=";
 
@@ -29,17 +29,9 @@ public class ParentCmtTuoiTre implements IParentCmt {
         Document doc = null;
 
         String url = source_url + article.getObjectID();
-        //<editor-fold defaultstate="collapsed" desc="jsoup connect">
-        try {
-            doc = Jsoup.connect(url).timeout(5000).followRedirects(true)
-                    .userAgent(
-                            "Mozilla/5.0 (Windows NT 6.3; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/43.0.2357.134 Safari/537.36")
-                    .get();
-        } catch (IOException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        }
-        //</editor-fold>
+        doc = jsoupConnect(url);
+        if(doc == null)
+            return null;
 
         Elements datas = doc.select(".lst-comment > ul > li"); // contain parent and sub
         Element data = null;
@@ -48,8 +40,8 @@ public class ParentCmtTuoiTre implements IParentCmt {
             data = datas.get(i).select("> dl > dd").first();
             ParentCmtDTO temptParentCmt = new ParentCmtDTO();
             temptParentCmt.setIDTableArticle(article.getIDTableArticle());
-            temptParentCmt.setCmtLike(Integer.parseInt(data.select("span.like_number").text()));
-            temptParentCmt.setParentID(Integer.parseInt(data.select(".like_comment_div > a.like_btn").attr("id").replaceAll("[^0-9]", "").trim()));
+            temptParentCmt.setCmtLike(Integer.parseInt(data.select("span.like_number").text()));//.like_comment_div > a
+            temptParentCmt.setParentID(Integer.parseInt(data.select(".like_btn").attr("id").replaceAll("[^0-9]", "").trim()));
             temptParentCmt.setContent(data.select("p.cm-content").text());
             // If parent comment has child comment => add parentID to List
             // parentIDHasSub

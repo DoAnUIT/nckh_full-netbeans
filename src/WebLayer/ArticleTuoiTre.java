@@ -49,7 +49,9 @@ public class ArticleTuoiTre extends ArticleObject {
         String tempt = null;
         String url = null;
 
-        Document doc = JsoupConnect(source_url);
+        Document doc = jsoupConnect(source_url);
+        if(doc == null)
+            doc = jsoupConnect(source_url);
         if (doc == null) {
             return null;
         }
@@ -165,7 +167,7 @@ public class ArticleTuoiTre extends ArticleObject {
     public List<String> getMenuWeb(String source_url) {
         Document doc = null;
         List<String> arrayMenu = new ArrayList<String>();
-        doc = JsoupConnect(source_url);
+        doc = jsoupConnect(source_url);
         // get all category
         Elements categories = doc.select(".clearfix > a");
         // categories = categories.select("li.top-level");
@@ -214,7 +216,7 @@ public class ArticleTuoiTre extends ArticleObject {
         for (int i = 0; i < arrayMenu.size(); i++) {
 
             //<editor-fold defaultstate="collapsed" desc="get class="block-feature" and class="list-news">
-            doc = JsoupConnect(arrayMenu.get(i));
+            doc = jsoupConnect(arrayMenu.get(i));
 
             // block-feature
             temptElement = doc.select(".block-feature > a").first();
@@ -258,19 +260,8 @@ public class ArticleTuoiTre extends ArticleObject {
             outLoop:
             while (true) {
 
-                //<editor-fold defaultstate="collapsed" desc="jsoup connect">
-                try {
-                    // connect source
-                    doc = Jsoup.connect(menuUrl)
-                            .data("page_number", String.valueOf(pageCount))
-                            .timeout(5000)
-                            .userAgent(
-                                    "Mozilla/5.0 (Windows NT 6.3; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/43.0.2357.134 Safari/537.36")
-                            .post();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-//</editor-fold>
+                doc = jsoupConnectTuoiTrePost(menuUrl, pageCount);
+                
                 if (doc == null) {
                     continue;
                 }
@@ -312,10 +303,13 @@ public class ArticleTuoiTre extends ArticleObject {
     @Override
     public int getArticleLike(int objectId) {
         String url = apiTuoiTreArticleLike + objectId;
-        Document doc = JsoupConnect(url);
+        Document doc = jsoupConnect(url);
 
         Element ele = doc.select("span.sl").first();
-        return Integer.parseInt(ele.text().trim());
+        if (ele.text().trim().length() > 0) {
+            return Integer.parseInt(ele.text().trim());
+        }
+        else return 0;
     }
 
 }

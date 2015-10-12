@@ -14,8 +14,9 @@ import com.google.gson.JsonParser;
 
 import DTO.ArticleDTO;
 import DTO.SubCmtDTO;
+import org.jsoup.Jsoup;
 
-public class SubCmtVnexpress implements ISubCmt {
+public class SubCmtVnexpress extends ConnectUrl implements ISubCmt {
 
     // url get subcomment of vnexpress
     private String source_url = "http://usi.saas.vnexpress.net/index/getreplay?&limit=0&offset=0";
@@ -39,13 +40,10 @@ public class SubCmtVnexpress implements ISubCmt {
         String url = source_url+  "&id=";
         for (int i = 0; i < parentcomment.size(); i++) {
 
-            String json = null;
-            try {
-                json = IOUtils.toString(new URL(String.format(url + "%d", parentcomment.get(i))).openStream(), "UTF-8");
-            } catch (IOException e) {
-                // TODO Auto-generated catch block
-                e.printStackTrace();
-            }
+            String json = jsoupConnectJson(String.format(url + "%d", parentcomment.get(i)));
+            if(json == null)
+                return null;
+            
 
             // parse json
             JsonParser parser = new JsonParser();

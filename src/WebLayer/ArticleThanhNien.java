@@ -88,7 +88,9 @@ public class ArticleThanhNien extends ArticleObject {
         }
         art.setIDTableCategory(cate.getValue());
 //</editor-fold>
-        Document doc = JsoupConnect(source_url);
+        Document doc = jsoupConnect(source_url);
+        if(doc == null)
+            doc = jsoupConnect(source_url);
         if (doc == null) {
             return null;
         }
@@ -159,7 +161,7 @@ public class ArticleThanhNien extends ArticleObject {
     public List<String> getMenuWeb(String source_url) {
 
         List<String> arrayMenu = new ArrayList<String>();
-        Document doc = JsoupConnect(source_url);
+        Document doc = jsoupConnect(source_url);
 
         // get all category
         Elements categories = doc.select("#mainMenu .top-level > a");
@@ -211,7 +213,7 @@ public class ArticleThanhNien extends ArticleObject {
             pageCount = 0;
             outLoop:
             while (true) {
-                doc = JsoupConnect(String.format(menuUrl + "%d.html", pageCount));
+                doc = jsoupConnect(String.format(menuUrl + "%d.html", pageCount));
                 if (doc == null) {
                     continue;
                 }

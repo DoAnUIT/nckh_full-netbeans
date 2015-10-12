@@ -5,15 +5,15 @@
         <group>
             <file>file:/D:/Official/nckh/src/DataAccessLayer/DataSource.java</file>
             <file>file:/D:/Official/nckh/src/DataAccessLayer/SubCmtDAO.java</file>
-            <file>file:/D:/Official/nckh/src/WebLayer/WebLayer.java</file>
-            <file>file:/D:/Official/nckh/src/WebLayer/ParentCmtTuoiTre.java</file>
+            <file>file:/D:/Official/nckh/src/WebLayer/ParentCmtVnexpress.java</file>
             <file>file:/D:/Official/nckh/src/WebLayer/SubCmtVnexpress.java</file>
+            <file>file:/D:/Official/nckh/src/WebLayer/ConnectUrl.java</file>
             <file>file:/D:/Official/nckh/src/DataAccessLayer/ArticleDAO.java</file>
             <file>file:/D:/Official/nckh/src/main/test2.java</file>
             <file>file:/D:/Official/nckh/src/WebLayer/ArticleTuoiTre.java</file>
             <file>file:/D:/Official/nckh/src/BusinessLayer/ArticleBUS.java</file>
             <file>file:/D:/Official/nckh/src/main/TestUpdate.java</file>
-            <file>file:/D:/Official/nckh/src/BusinessLayer/ParentCmtBUS.java</file>
+            <file>file:/D:/Official/nckh/src/DTO/CategoryCommon.java</file>
             <file>file:/D:/Official/nckh/src/WebLayer/ArticleThanhNien.java</file>
             <file>file:/D:/Official/nckh/src/DataAccessLayer/ParentCmtDAO.java</file>
             <file>file:/D:/Official/nckh/src/WebLayer/ArticleVnexpress.java</file>

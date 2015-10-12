@@ -12,7 +12,7 @@ import org.jsoup.select.Elements;
 import DTO.ArticleDTO;
 import DTO.SubCmtDTO;
 
-public class SubCmtThanhNien implements ISubCmt {
+public class SubCmtThanhNien extends ConnectUrl implements ISubCmt {
 
     private String source_url = "http://www.thanhnien.com.vn/ajax/comment.aspx?&order=like&cid=";
 
@@ -22,16 +22,10 @@ public class SubCmtThanhNien implements ISubCmt {
         List<SubCmtDTO> arraySub = new ArrayList<SubCmtDTO>();
         SubCmtDTO temptSubComment = null;
 
-        Document doc = null;
-        try {
-            doc = Jsoup.connect(article.getUrl()).timeout(5000).followRedirects(true)
-                    .userAgent(
-                            "Mozilla/5.0 (Windows NT 6.3; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/43.0.2357.134 Safari/537.36")
-                    .get();
-        } catch (IOException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        }
+        Document doc = jsoupConnect(article.getUrl());
+        if(doc == null)
+            return null;
+        
         Element meta = doc.select("#posturl").first();
         String tempt = meta.attr("value");
         String url = source_url;
@@ -40,15 +34,7 @@ public class SubCmtThanhNien implements ISubCmt {
         int parentid = 0;
         while (doc.text().length() > 1) {
             // url += count;
-            try {
-                doc = Jsoup.connect(String.format(url + "%d", count)).timeout(5000).followRedirects(true)
-                        .userAgent(
-                                "Mozilla/5.0 (Windows NT 6.3; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/43.0.2357.134 Safari/537.36")
-                        .get();
-            } catch (IOException e) {
-                // TODO Auto-generated catch block
-                e.printStackTrace();
-            }
+            doc = jsoupConnect(String.format(url + "%d", count));
 
             // select comment item parent
             Elements elements = doc.select(".Comments-item-parent");

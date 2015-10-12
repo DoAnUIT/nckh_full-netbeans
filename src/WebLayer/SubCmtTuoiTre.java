@@ -19,7 +19,7 @@ import org.jsoup.select.Elements;
  *
  * @author Minh Nhat
  */
-public class SubCmtTuoiTre implements ISubCmt {
+public class SubCmtTuoiTre extends ConnectUrl implements ISubCmt {
 
     String source_url = "http://cm.tuoitre.vn/comment/createiframe?app_id=6&offset=0&layout=tto&object_id=";
 
@@ -29,18 +29,9 @@ public class SubCmtTuoiTre implements ISubCmt {
         List<SubCmtDTO> lSub = new ArrayList<SubCmtDTO>();
 
         String url = source_url + article.getObjectID();
-        Document doc = null;
-        //<editor-fold defaultstate="collapsed" desc="jsoup connect">
-        try {
-            doc = Jsoup.connect(url).timeout(5000).followRedirects(true)
-                    .userAgent(
-                            "Mozilla/5.0 (Windows NT 6.3; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/43.0.2357.134 Safari/537.36")
-                    .get();
-        } catch (IOException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        }
-//</editor-fold>
+        Document doc = jsoupConnect(url);
+        if(doc == null)
+            return null;        
 
         // select comment item parent
         Elements datas = doc.select(".lst-comment > ul > li"); // contain parent and sub
@@ -65,14 +56,14 @@ public class SubCmtTuoiTre implements ISubCmt {
                 continue;
             }
             // get content of child comment
-            datasubs = datas.get(i).select("ul > li");//
+            datasubs = datas.get(i).select("> ul > li");//
             for (int j = 0; j < datasubs.size(); j++) {
                 data = datasubs.get(j).select("> dl > dd").first();
                 SubCmtDTO temptSubComment = new SubCmtDTO();
                 temptSubComment.setIDTableArticle(article.getIDTableArticle());
                 temptSubComment.setParentID(parentid);
                 temptSubComment.setCmtLike(Integer.parseInt(data.select("span.like_number").text()));
-                temptSubComment.setChildID(Integer.parseInt(data.select(".like_comment_div > a.like_btn").attr("id").replaceAll("[^0-9]", "").trim()));
+                temptSubComment.setChildID(Integer.parseInt(data.select(" .like_btn").attr("id").replaceAll("[^0-9]", "").trim()));
                 temptSubComment.setContent(data.select("p.cm-content").text());
             // If parent comment has child comment => add parentID to List
                 // parentIDHasSub

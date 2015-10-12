@@ -24,10 +24,11 @@ import java.util.Calendar;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.apache.commons.io.IOUtils;
+import org.jsoup.Connection.Response;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 
-public abstract class ArticleObject {
+public abstract class ArticleObject extends ConnectUrl {
 
     private String apiFBStart = "https://graph.facebook.com/fql?q=SELECT%20share_count,%20like_count,%20comment_count%20FROM%20link_stat%20where%20url=%27";
     private String apiFBEnd = "%27";
@@ -38,8 +39,6 @@ public abstract class ArticleObject {
     protected String password = null;
     protected IParentCmt parCmt = null;
     protected ISubCmt subCmt = null;
-    private int count = 0;
-    private boolean flag = true;
 
     // Lấy thông tin của từng bài báo
     public abstract ArticleDTO getArticleInformation(String source_url);
@@ -58,7 +57,9 @@ public abstract class ArticleObject {
         String url = apiFBStart + source_url + apiFBEnd;
 
         FacebookDTO fb = new FacebookDTO();
-        String json = IOUtils.toString(new URL(url).openStream(), "UTF-8");
+        String json = jsoupConnectJson(url);
+        if(json == null)
+            return null;
         JsonParser parser = new JsonParser();
 
         JsonElement element = parser.parse(json);
@@ -96,38 +97,6 @@ public abstract class ArticleObject {
         return false;
     }
 
-    // connect jsou
-    protected Document JsoupConnect(String source_url) {
-        // flag flase and count > 500 => default proxy
-//        if (count > 500 && flag == false) {
-//            //System.setProperty("java.net.useSystemProxies", "true");
-//            System.getProperties().remove("http.proxyHost");
-//            System.getProperties().remove("http.proxyPort");
-//            count = 0;
-//            flag = true;
-//        }
-//        
-//        ////////////// co gang dua proxy vao file xml
-//        if (count > 500 && flag == true) {
-//            System.setProperty("http.proxyHost", "125.212.219.221");
-//            System.setProperty("http.proxyPort", "3128");
-//            count = 0;
-//            flag = false;
-//        }
-//        count++;
-        Document doc = null;
-        try {
-            doc = Jsoup.connect(source_url).timeout(10000).followRedirects(true)
-                    .userAgent(
-                            "Mozilla/5.0 (Windows NT 6.3; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/43.0.2357.134 Safari/537.36")
-                    .get();
-        } catch (IOException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        }
-
-        return doc;
-    }
 
     protected void insertDatabase(ArticleDTO art) throws SQLException {
         ArticleBUS artBUS = new ArticleBUS(username, password);

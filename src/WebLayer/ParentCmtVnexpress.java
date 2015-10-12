@@ -14,7 +14,7 @@ import com.google.gson.JsonParser;
 import DTO.ArticleDTO;
 import DTO.ParentCmtDTO;
 
-public class ParentCmtVnexpress implements IParentCmt {
+public class ParentCmtVnexpress extends ConnectUrl implements IParentCmt {
 
     // limit = 0 => get all comments
     private String source_url = "http://usi.saas.vnexpress.net/index/get?&offset=0&limit=0";
@@ -32,13 +32,9 @@ public class ParentCmtVnexpress implements IParentCmt {
         String url = source_url + "&objectid=" + article.getObjectID() + "&objecttype=" + objecttype + "&siteid=1" + "&categoryid="
                 + article.getIDTableCategory();
 
-        try {
-            json = IOUtils.toString(new URL(url).openStream(), "UTF-8");
-        } catch (IOException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        }
-        
+        json = jsoupConnectJson(url);
+        if(json == null)
+            return null;
        
         // parse json
         JsonParser parser = new JsonParser();
