@@ -313,6 +313,44 @@ public class ArticleDAO extends DataSource {
         }
         
         return result;
+    }           
+
+    public List<ArticleDTO> getArticleDTOByUpdateType(int _idType)
+    {
+        List<ArticleDTO> result = new ArrayList<ArticleDTO>();
+        try {
+            connection = DataSource.getInstance().getConnection();
+            while (connection == null) {                
+                connection = DataSource.getInstance().getConnection();
+            }
+            call = connection.prepareCall("select * from article where article.Idtableupdatetime = " + _idType);
+            ResultSet rs = call.executeQuery();
+            while (rs.next()) {                
+                ArticleDTO art = new ArticleDTO();
+                FacebookDTO rsFB = new FacebookDTO();
+                art.setIDTableArticle(rs.getInt("IDTableArticle"));
+                art.setIDTableUpdateTime(rs.getInt("IDTableUpdateTime"));
+                art.setIDTableMagazine(rs.getInt("IDTableMagazine"));
+                art.setIDTableCategory(rs.getInt("IDTableCategory"));
+                art.setCountOfUpdate(rs.getInt("CountOfUpdate"));
+                art.setArticleDate(rs.getTimestamp("ArticleDate"));
+                art.setTitle(rs.getNString("Title"));
+                art.setUrlPicture(rs.getString("UrlPicture"));
+                art.setUrl(rs.getString("Url"));
+                art.setObjectID(rs.getInt("ObjectID"));
+                art.setDescription(rs.getNString("Description"));
+                art.setArticleLike(rs.getInt("ArticleLike"));
+                rsFB.setFBCmt(rs.getInt("FBCmt"));
+                rsFB.setFBLike(rs.getInt("FBLike"));
+                rsFB.setFBShare(rs.getInt("FBShare"));
+                art.facebook = rsFB;
+                result.add(art);
+            }
+            return result;
+        } catch (Exception e) {
+            System.out.println("Can not get list article by id table update time");
+        }
+        return null;
     }
     
     public List<ArticleDTO> getArticleToUpdate( int IDTableUpdateTime , int IDTableMagazine){

@@ -9,9 +9,7 @@ package main;
  *
  * @author Minh Nhat
  */
-import BusinessLayer.ArticleBUS;
-import BusinessLayer.ParentCmtBUS;
-import BusinessLayer.SubCmtBUS;
+import BusinessLayer.*;
 import DTO.ArticleDTO;
 import DTO.ParentCmtDTO;
 import DTO.SubCmtDTO;
@@ -34,8 +32,8 @@ public class TestUpdate {
 
     public static void main(String[] args) throws SQLException, IOException {
 
-        String username = "nhat";
-        String password = "mysql!@3";
+        String username = "root";
+        String password = "";
 
         Calendar calendar = new GregorianCalendar();
         calendar.set(Calendar.MINUTE, 0);
@@ -60,15 +58,26 @@ public class TestUpdate {
         //String url = "http://www.thanhnien.com.vn";
         // String url = "http://tuoitre.vn";
         //wl.update(url, 1);
+        
+        //insert
+//        List<ThreadInsert> listIns = new ArrayList<ThreadInsert>();
 //        for (String url : lurl) {
 //            System.out.println("\nBắt đầu insert : " + url + "\n");
-//            wl.insert(url, newtime, lasttime);
+//            listIns.add(new ThreadInsert(username, password, url, newtime, newtime));
 //        }
-
-        for (String url : lurl) {
-            System.out.println("\nBắt đầu update : " + url +"\n");
-            wl.update(url, 1);
+        
+        
+        List<ThreadUpdate> listThreadUpdate = new ArrayList<ThreadUpdate>();
+        UpdateTimeBUS upBUS = new UpdateTimeBUS(username, password);
+        List<Integer> listUpdateType = upBUS.GetListTypeUpdate();
+        for (int i = 0; i < listUpdateType.size(); i++) {
+            System.out.println(i);
         }
+        ThreadUpdate x = new ThreadUpdate(username, password, 1);
+//        for (int idUpdate : listUpdateType) {
+//             listThreadUpdate.add(new ThreadUpdate(username, password, idUpdate));
+//             System.out.println("update " + idUpdate);
+//        }
         System.out.println("Finished");
 
     }
