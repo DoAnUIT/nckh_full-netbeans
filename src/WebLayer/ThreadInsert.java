@@ -30,7 +30,7 @@ public class ThreadInsert {
         try {
             System.out.println("Start insert news in " + URLMagazine);
             WebLayer wl = new WebLayer(UserName, Password);
-            wl.insert(URLMagazine, StartTimestamp, EndTimestamp);
+            wl.insert(URLMagazine, EndTimestamp, StartTimestamp);
         } catch (Exception e) {
             System.out.println("Can not insert news in " + URLMagazine);
         }

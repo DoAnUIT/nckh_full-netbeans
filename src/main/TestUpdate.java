@@ -45,18 +45,18 @@ public class TestUpdate {
         calendar.set(Calendar.MINUTE, 0);
         calendar.set(Calendar.SECOND, 0);
 
-        calendar.set(Calendar.DAY_OF_MONTH, 6);
+        //calendar.set(Calendar.DAY_OF_MONTH, 6);
         calendar.set(Calendar.HOUR_OF_DAY, 6);
-        calendar.set(Calendar.DAY_OF_MONTH, 7);
+        calendar.set(Calendar.DAY_OF_MONTH, 9);
         calendar.set(Calendar.MONTH, 10-1);
         Timestamp lasttime = new Timestamp(calendar.getTimeInMillis());
-
-        calendar.set(Calendar.DAY_OF_MONTH, 7);
+        // lasstime = startime
+        calendar.set(Calendar.DAY_OF_MONTH, 11);
         calendar.set(Calendar.MONTH, 10-1);
         calendar.set(Calendar.HOUR_OF_DAY, 9);
         Timestamp newtime = new Timestamp(calendar.getTimeInMillis());
-
-        String lurl[] = {"http://tuoitre.vn","http://vnexpress.net", "http://www.thanhnien.com.vn"};
+        // newtime = endtime
+        String lurl[] = {"http://tuoitre.vn"};//"http://vnexpress.net", "http://www.thanhnien.com.vn"*/};
         
         
         //insert news
@@ -64,18 +64,13 @@ public class TestUpdate {
 //        int i = 0;
 //        for (String url : lurl) {
 //            System.out.println("\nBắt đầu insert : " + url + "\n");
-//            ThreadInsert x = new ThreadInsert(username, password, url, newtime, newtime);
+//            ThreadInsert x = new ThreadInsert(username, password, url, lasttime, newtime);
 //            //x.ThreadInsertByTypeNews.setPriority(i);
 //            listInsertMagazine.add(x);
 //            i++;
 //        }
         //end insert news 
-        
-        //update
-//        for (String url : lurl) {
-//            System.out.println("\nBắt đầu update : " + url +"\n");
-//            wl.update(url, 1);
-//        }
+
         for (int i = 1; i <= 1; i++) {
             ThreadUpdate a = new ThreadUpdate(i, username, password);
         }

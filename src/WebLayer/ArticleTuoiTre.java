@@ -219,7 +219,7 @@ public class ArticleTuoiTre extends ArticleObject {
             temptElement = doc.select(".block-feature > a").first();
             url = temptElement.attr("href");
             art = getArticleInformation(url);
-            if (art != null && isTheDayOfMonthValid(art, lasttime) != false) {
+            //if (art != null && isTheDayOfMonthValid(art, lasttime) != false) {
                 //if (isTimeValid(art, newtime, lasttime)) {
                     System.out.println(url);
 
@@ -229,7 +229,7 @@ public class ArticleTuoiTre extends ArticleObject {
                         Logger.getLogger(ArticleTuoiTre.class.getName()).log(Level.SEVERE, null, ex);
                     }
                 //}
-            }
+            //}
 
             // block list-news
             temptElements = doc.select(".list-news > li > a");
