@@ -98,7 +98,7 @@ public abstract class ArticleObject extends ConnectUrl {
     }
 
 
-    protected void insertDatabase(ArticleDTO art) throws SQLException {
+    protected synchronized void insertDatabase(ArticleDTO art) throws SQLException {
         ArticleBUS artBUS = new ArticleBUS(username, password);
         ParentCmtBUS parBUS = new ParentCmtBUS(username, password);
         SubCmtBUS subBUS = new SubCmtBUS(username, password);

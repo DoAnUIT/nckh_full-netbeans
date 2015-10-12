@@ -60,20 +60,20 @@ public class TestUpdate {
         //wl.update(url, 1);
         
         //insert
-//        List<ThreadInsert> listIns = new ArrayList<ThreadInsert>();
-//        for (String url : lurl) {
-//            System.out.println("\nBắt đầu insert : " + url + "\n");
-//            listIns.add(new ThreadInsert(username, password, url, newtime, newtime));
-//        }
-        
-        
-        List<ThreadUpdate> listThreadUpdate = new ArrayList<ThreadUpdate>();
-        UpdateTimeBUS upBUS = new UpdateTimeBUS(username, password);
-        List<Integer> listUpdateType = upBUS.GetListTypeUpdate();
-        for (int i = 0; i < listUpdateType.size(); i++) {
-            System.out.println(i);
+        List<ThreadInsert> listIns = new ArrayList<ThreadInsert>();
+        for (String url : lurl) {
+            System.out.println("\nBắt đầu insert : " + url + "\n");
+            listIns.add(new ThreadInsert(username, password, url, newtime, newtime));
         }
-        ThreadUpdate x = new ThreadUpdate(username, password, 1);
+        
+        
+//        List<ThreadUpdate> listThreadUpdate = new ArrayList<ThreadUpdate>();
+//        UpdateTimeBUS upBUS = new UpdateTimeBUS(username, password);
+//        List<Integer> listUpdateType = upBUS.GetListTypeUpdate();
+//        for (int i = 0; i < listUpdateType.size(); i++) {
+//            System.out.println(i);
+//        }
+//        ThreadUpdate x = new ThreadUpdate(username, password, 1);
 //        for (int idUpdate : listUpdateType) {
 //             listThreadUpdate.add(new ThreadUpdate(username, password, idUpdate));
 //             System.out.println("update " + idUpdate);
