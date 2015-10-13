@@ -100,6 +100,7 @@ public class ThreadUpdate {
         try {
             _art.updateDatabase(result);
         } catch (SQLException ex) {
+            System.out.println(ex.toString());
             System.out.println("can not update article");
         }
         return result;

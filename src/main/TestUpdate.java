@@ -42,12 +42,12 @@ public class TestUpdate {
         calendar.set(Calendar.HOUR_OF_DAY, 0);
 //        calendar.set(Calendar.DAY_OF_MONTH, 10);
 //        calendar.set(Calendar.MONTH, 7 - 1);
-        calendar.set(Calendar.DAY_OF_MONTH, 11);
-        calendar.set(Calendar.MONTH, 10 - 1);
+        calendar.set(Calendar.DAY_OF_MONTH, 1);
+        calendar.set(Calendar.MONTH, 8 - 1);
         Timestamp lasttime = new Timestamp(calendar.getTimeInMillis());
 
-        calendar.set(Calendar.HOUR_OF_DAY, 15);
-        calendar.set(Calendar.DAY_OF_MONTH, 12);
+        calendar.set(Calendar.HOUR_OF_DAY, 9);
+        calendar.set(Calendar.DAY_OF_MONTH, 13);
         calendar.set(Calendar.MONTH, 10 - 1);
         Timestamp newtime = new Timestamp(calendar.getTimeInMillis());
 
@@ -60,24 +60,24 @@ public class TestUpdate {
         //wl.update(url, 1);
         
         //insert
-        List<ThreadInsert> listIns = new ArrayList<ThreadInsert>();
-        for (String url : lurl) {
-            System.out.println("\nBắt đầu insert : " + url + "\n");
-            listIns.add(new ThreadInsert(username, password, url, newtime, newtime));
+//        List<ThreadInsert> listIns = new ArrayList<ThreadInsert>();
+//        for (String url : lurl) {
+//            System.out.println("\nBắt đầu insert : " + url + "\n");
+//            listIns.add(new ThreadInsert(username, password, url, lasttime, newtime));
+//        }
+        
+        
+        List<ThreadUpdate> listThreadUpdate = new ArrayList<ThreadUpdate>();
+        UpdateTimeBUS upBUS = new UpdateTimeBUS(username, password);
+        List<Integer> listUpdateType = upBUS.GetListTypeUpdate();
+        for (int i = 0; i < listUpdateType.size(); i++) {
+            System.out.println(i);
         }
-        
-        
-//        List<ThreadUpdate> listThreadUpdate = new ArrayList<ThreadUpdate>();
-//        UpdateTimeBUS upBUS = new UpdateTimeBUS(username, password);
-//        List<Integer> listUpdateType = upBUS.GetListTypeUpdate();
-//        for (int i = 0; i < listUpdateType.size(); i++) {
-//            System.out.println(i);
-//        }
-//        ThreadUpdate x = new ThreadUpdate(username, password, 1);
-//        for (int idUpdate : listUpdateType) {
-//             listThreadUpdate.add(new ThreadUpdate(username, password, idUpdate));
-//             System.out.println("update " + idUpdate);
-//        }
+      
+        for (int idUpdate : listUpdateType) {
+             listThreadUpdate.add(new ThreadUpdate(username, password, idUpdate));
+             System.out.println("update " + idUpdate);
+        }
         System.out.println("Finished");
 
     }

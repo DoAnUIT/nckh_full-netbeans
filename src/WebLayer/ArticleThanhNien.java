@@ -195,6 +195,7 @@ public class ArticleThanhNien extends ArticleObject {
 
     // Get news of each menu depend on time
     @Override
+    @SuppressWarnings("empty-statement")
     public void setNewsOfEachMenuDependOnTime(String source_url, Timestamp newtime, Timestamp lasttime) {
         Document doc = null;
         ArticleDTO art = new ArticleDTO();

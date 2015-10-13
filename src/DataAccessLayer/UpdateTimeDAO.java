@@ -30,6 +30,7 @@ public class UpdateTimeDAO extends DataSource{
             return result;
         } catch (Exception e) {
             System.out.println("Can not get all type update time");
+            System.out.println(e.toString());
         }
         return result;
     }
@@ -48,6 +49,7 @@ public class UpdateTimeDAO extends DataSource{
             }
         } catch (Exception e) {
             System.out.println("Can not get max id update time");
+            System.out.println(e.toString());
         }
         return 0;
     }
@@ -73,7 +75,7 @@ public class UpdateTimeDAO extends DataSource{
             utdto.setQuantumTime(rs.getTimestamp("QuantumTime"));
             return utdto;
         } catch (Exception e) {
-            System.out.println(e);
+            System.out.println(e.toString());
         }
         return null;
     }

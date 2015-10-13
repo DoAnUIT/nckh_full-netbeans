@@ -69,7 +69,7 @@ public abstract class ArticleObject extends ConnectUrl {
 
         Gson gson = new Gson();
         fb = gson.fromJson(data, FacebookDTO.class);
-
+        System.out.println("Parse fb successful");
         return fb;
         // khong quan trong
     }
@@ -98,13 +98,22 @@ public abstract class ArticleObject extends ConnectUrl {
     }
 
 
-    protected synchronized void insertDatabase(ArticleDTO art) throws SQLException {
+    protected void insertDatabase(ArticleDTO art) throws SQLException {
         ArticleBUS artBUS = new ArticleBUS(username, password);
         ParentCmtBUS parBUS = new ParentCmtBUS(username, password);
         SubCmtBUS subBUS = new SubCmtBUS(username, password);
 
         // insert art to database => art have idtablearticle
         // nếu đã tồn tại thì return
+//        if (!artBUS.insertArticle(art)) {
+//            while (!artBUS.insertArticle(art)) {                    
+//                artBUS.insertArticle(art);
+//                System.out.println("synchronized dc xu ly.");
+//            }
+//        }
+//        if (artBUS.isArticleExistsForInsert(art) != 0) {
+//            return;
+//        }
         if (!artBUS.insert(art)) {
             return;
         }

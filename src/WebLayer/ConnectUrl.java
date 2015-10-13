@@ -147,7 +147,7 @@ public class ConnectUrl {
             // connect source
             doc = Jsoup.connect(url)
                     .data("page_number", String.valueOf(pageCount))
-                    .timeout(5000)
+                    .timeout(0)
                     .userAgent(
                             "Mozilla/5.0 (Windows NT 6.3; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/43.0.2357.134 Safari/537.36")
                     .post();

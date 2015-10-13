@@ -30,7 +30,7 @@ public class ArticleDAO extends DataSource {
             this.password = password;
     }
 
-    public boolean insertArticle(ArticleDTO art) {
+    public synchronized boolean insertArticle(ArticleDTO art) {
         try {
             connection = DataSource.getInstance().getConnection();
             while(connection == null)
@@ -167,7 +167,7 @@ public class ArticleDAO extends DataSource {
         return -1;
     }
 
-    public void deleteArticle(String _user, String _pass, int _id)
+    public void deleteArticle(int _id)
     {
         try {
             connection = DataSource.getInstance().getConnection();
@@ -199,7 +199,7 @@ public class ArticleDAO extends DataSource {
         }
     }
 
-    public ArticleDTO GetArticle(String _userName, String _password, int _id)
+    public ArticleDTO GetArticle(int _id)
     {
         ArticleDTO result = new ArticleDTO();
         FacebookDTO rsFB = new FacebookDTO();
@@ -255,66 +255,6 @@ public class ArticleDAO extends DataSource {
         return null;
     }
 
-    public List<ArticleDTO> getAllArticleByIndex(String _user, String _pass)
-    {
-        List<ArticleDTO> result = new ArrayList<ArticleDTO>();
-//        for (int i = 0; i < getMaxIDTableArticle(_user, _pass) + 2; i++) {
-//            result.add(GetArticle(_user, _pass, i));
-//        }
-        FacebookDTO rsFB = new FacebookDTO();
-        try {
-            connection = DataSource.getInstance().getConnection();
-            while(connection == null)
-                connection = DataSource.getInstance().getConnection();
-            call = connection.prepareCall("Select * from Article");
-            ResultSet rs = call.executeQuery();
-            while (rs.next()) {
-                ArticleDTO temp = new ArticleDTO();
-                temp.setIDTableArticle(rs.getInt("IDTableArticle"));
-                temp.setIDTableUpdateTime(rs.getInt("IDTableUpdateTime"));
-                temp.setIDTableMagazine(rs.getInt("IDTableMagazine"));
-                temp.setIDTableCategory(rs.getInt("IDTableCategory"));
-                temp.setCountOfUpdate(rs.getInt("CountOfUpdate"));
-                temp.setArticleDate(rs.getTimestamp("ArticleDate"));
-                temp.setTitle(rs.getNString("Title"));
-                temp.setUrlPicture(rs.getString("UrlPicture"));
-                temp.setUrl(rs.getString("Url"));
-                temp.setObjectID(rs.getInt("ObjectID"));
-                temp.setDescription(rs.getNString("Description"));
-                temp.setArticleLike(rs.getInt("ArticleLike"));
-                rsFB.setFBCmt(rs.getInt("FBCmt"));
-                rsFB.setFBLike(rs.getInt("FBLike"));
-                rsFB.setFBShare(rs.getInt("FBShare"));
-                temp.facebook = rsFB;
-                result.add(temp);
-            }
-        }
-        catch (Exception e) {
-        }
-        finally
-        {
-            try {
-                if (connection != null) {
-                    connection.close();
-                }
-            } catch (SQLException e) {
-                // TODO Auto-generated catch block
-                e.printStackTrace();
-            }
-
-            try {
-                if (call != null) {
-                    call.close();
-                }
-            } catch (SQLException e) {
-                // TODO Auto-generated catch block
-                e.printStackTrace();
-            }
-        }
-        
-        return result;
-    }           
-
     public List<ArticleDTO> getArticleDTOByUpdateType(int _idType)
     {
         List<ArticleDTO> result = new ArrayList<ArticleDTO>();
@@ -349,6 +289,7 @@ public class ArticleDAO extends DataSource {
             return result;
         } catch (Exception e) {
             System.out.println("Can not get list article by id table update time");
+            System.out.println(e.toString());
         }
         return null;
     }
