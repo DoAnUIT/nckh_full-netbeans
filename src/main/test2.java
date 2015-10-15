@@ -13,11 +13,14 @@ import DTO.ParentCmtDTO;
 import DTO.SubCmtDTO;
 import WebLayer.ArticleTuoiTre;
 import WebLayer.ArticleObject;
+import WebLayer.ArticleThanhNien;
 import WebLayer.ArticleVnexpress;
 import WebLayer.IParentCmt;
 import WebLayer.ISubCmt;
+import WebLayer.ParentCmtThanhNien;
 import WebLayer.ParentCmtTuoiTre;
 import WebLayer.ParentCmtVnexpress;
+import WebLayer.SubCmtThanhNien;
 import WebLayer.SubCmtTuoiTre;
 import WebLayer.SubCmtVnexpress;
 import java.sql.Timestamp;
@@ -33,19 +36,21 @@ import java.util.List;
 public class test2 {
         public static void main(String[] args)  {
              // TODO Auto-generated method stub
-        String username = "nhat";
-        String password = "mysql!@3";
-        ArticleObject ar = new ArticleVnexpress(username,password);
-        IParentCmt parComment = new ParentCmtVnexpress();
-        ISubCmt subComment = new SubCmtVnexpress();
-
+        String username = "testNhon";
+        String password = "nhonmysql!@3";
+//        ArticleObject ar = new ArticleVnexpress(username,password);
+//        IParentCmt parComment = new ParentCmtVnexpress();
+//        ISubCmt subComment = new SubCmtVnexpress();
+//
 //        ArticleObject ar = new ArticleTuoiTre(username,password);
 //        IParentCmt parComment = new ParentCmtTuoiTre();
 //        ISubCmt subComment = new SubCmtTuoiTre();
 
-//        IArticle ar = new ArticleThanhNien();
-//        IParentComment parComment = new ParentCmtThanhNien();
-//        ISubComment subComment = new SubCmtThanhNien();
+       ArticleObject ar = new ArticleThanhNien(username, password);
+       IParentCmt parComment = new ParentCmtThanhNien();
+       ISubCmt subComment = new SubCmtThanhNien();
+               
+              
         
 
         List<Integer> parentIDHasSub = new ArrayList<Integer>();
@@ -71,8 +76,11 @@ public class test2 {
 //                   "\nTitle : " + larticle.get(i).getTitle() + "\nURL : " + larticle.get(i).getUrl() + "\nCategory : "
 //                    + larticle.get(i).getIDTableCategory() + "\nFb like : " + larticle.get(i).facebook.getFBLike());
 //        }
-        String a = "http://vnexpress.net/tin-tuc/thoi-su/hang-tram-cong-nhan-bi-bat-tim-vien-kim-cuong-2-trieu-dong-3263583.html";
+        //String a = "http://vnexpress.net/tin-tuc/thoi-su/hang-tram-cong-nhan-bi-bat-tim-vien-kim-cuong-2-trieu-dong-3263583.html";
+        //String a = "http://tuoitre.vn/tin/chinh-tri-xa-hoi/20151009/nhieu-vu-bao-chi-noi-am-am-nhung-dai-bieu-im-thin-thit/982477.html";
+        String a = "http://www.thanhnien.com.vn/chinh-tri-xa-hoi/clip-bi-don-vi-cai-csgt-toi-bi-danh-mieng-sung-vu-mau-chay-nhieu-605535.html";
         ArticleDTO article = ar.getArticleInformation(a);
+        
         if (article != null) {
             System.out.println("Time : " + article.getArticleDate() + "\nObjectId : " + article.getObjectID() + "\nTitile :"
                     + article.getTitle() + "\nURL : " + article.getUrl() + "\nFacebook Like : "

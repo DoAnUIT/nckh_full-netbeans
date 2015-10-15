@@ -110,7 +110,5 @@ public class WebLayer {
             artObject.updateDatabase(lOldArt.get(i));
 
         }
-        
     }
-
 }

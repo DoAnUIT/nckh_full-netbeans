@@ -39,6 +39,7 @@ public abstract class ArticleObject extends ConnectUrl {
     protected String password = null;
     protected IParentCmt parCmt = null;
     protected ISubCmt subCmt = null;
+    private int count = 0;
 
     // Lấy thông tin của từng bài báo
     public abstract ArticleDTO getArticleInformation(String source_url);
@@ -105,6 +106,32 @@ public abstract class ArticleObject extends ConnectUrl {
 
         // insert art to database => art have idtablearticle
         // nếu đã tồn tại thì return
+          count++;
+        if(count % 250 == 0)
+        {
+            //count = 0;
+            if(count % 1000 == 0)
+            {
+                //<editor-fold defaultstate="collapsed" desc="ngu 15 phut">
+                System.out.println("Thread insert ngu 15 minutes");
+                try {
+                    Thread.sleep(900000);
+                } catch (InterruptedException ex) {
+                    Logger.getLogger(ArticleObject.class.getName()).log(Level.SEVERE, null, ex);
+                }
+//</editor-fold>
+            }
+            else{
+                //<editor-fold defaultstate="collapsed" desc="ngu 5 phut">
+                System.out.println("Thread insert ngu 5 minutes");
+                try {
+                    Thread.sleep(300000);
+                } catch (InterruptedException ex) {
+                    Logger.getLogger(ConnectUrl.class.getName()).log(Level.SEVERE, null, ex);
+                }
+//</editor-fold>
+            }
+        }
         if (!artBUS.insert(art)) {
             return;
         }

@@ -72,7 +72,7 @@ public class ArticleThanhNien extends ArticleObject {
             case "the-thao":
                 cate = CategoryCommon.THE_THAO;
                 break;
-            case "van-hoa-giai-tri":
+            case "van-hoa-nghe-thuat":
                 cate = CategoryCommon.GIAI_TRI;
                 break;
             case "cong-nghe-thong-tin":
@@ -109,7 +109,7 @@ public class ArticleThanhNien extends ArticleObject {
         tempt = tempt.substring(0, tempt.lastIndexOf('T'));
         tempt = tempt.replace('T', ' ');
         // tempt = tempt + ".000";
-        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         try {
             d = dateFormat.parse(tempt);
             time = new Timestamp(d.getTime());
@@ -210,6 +210,7 @@ public class ArticleThanhNien extends ArticleObject {
         for (int i = 0; i < arrayMenu.size(); i++) {
             // get page of each menu
             menuUrl = arrayMenu.get(i) + "/trang-";
+            
             pageCount = 0;
             outLoop:
             while (true) {
