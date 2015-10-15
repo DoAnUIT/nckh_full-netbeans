@@ -59,8 +59,9 @@ public class ArticleDAO extends DataSource {
 
         } catch (Exception e) {
             // TODO: handle exception
-            
-            System.out.println(e.getMessage());
+            art.setIDTableArticle(art.getIDTableArticle() + 1);
+            insertArticle(art);
+            //System.out.println(e.getMessage());
         } finally {
             try {
                 if (connection != null) {
@@ -101,6 +102,7 @@ public class ArticleDAO extends DataSource {
             call.setInt("ArticleLike", art.getArticleLike());
 
             call.execute();
+            
             return true;
 
         } catch (Exception e) {
@@ -290,6 +292,25 @@ public class ArticleDAO extends DataSource {
         } catch (Exception e) {
             System.out.println("Can not get list article by id table update time");
             System.out.println(e.toString());
+        }
+        finally {
+            try {
+                if (connection != null) {
+                    connection.close();
+                }
+            } catch (SQLException e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            }
+
+            try {
+                if (call != null) {
+                    call.close();
+                }
+            } catch (SQLException e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            }
         }
         return null;
     }

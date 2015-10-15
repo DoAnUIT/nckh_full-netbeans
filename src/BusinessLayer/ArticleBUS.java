@@ -36,11 +36,12 @@ public class ArticleBUS {
     }
 
     // ok
-    public boolean insertArticle(ArticleDTO art) {
+    public synchronized boolean insertArticle(ArticleDTO art) {
         int maxIDTableArticle = getMaxIDTableArticle();
         art.setIDTableArticle(maxIDTableArticle + 1);
         art.setIDTableUpdateTime(1);
         art.setCountOfUpdate(0);
+        System.out.println(art.getIDTableArticle());
         return artDAO.insertArticle(art);
     }
 
@@ -55,7 +56,7 @@ public class ArticleBUS {
         return artDAO.updateArticle(art);
     }
 
-    public int getMaxIDTableArticle() {
+    public synchronized int getMaxIDTableArticle() {
         return artDAO.getMaxIDTableArticle();
     }
 

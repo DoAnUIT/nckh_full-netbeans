@@ -69,7 +69,7 @@ public abstract class ArticleObject extends ConnectUrl {
 
         Gson gson = new Gson();
         fb = gson.fromJson(data, FacebookDTO.class);
-        System.out.println("Parse fb successful");
+        //System.out.println("Parse fb successful");
         return fb;
         // khong quan trong
     }

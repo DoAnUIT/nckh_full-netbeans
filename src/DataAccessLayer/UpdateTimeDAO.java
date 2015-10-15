@@ -32,6 +32,25 @@ public class UpdateTimeDAO extends DataSource{
             System.out.println("Can not get all type update time");
             System.out.println(e.toString());
         }
+        finally {
+            try {
+                if (connection != null) {
+                    connection.close();
+                }
+            } catch (SQLException e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            }
+
+            try {
+                if (Call != null) {
+                    Call.close();
+                }
+            } catch (SQLException e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            }
+        }
         return result;
     }
     
@@ -51,6 +70,25 @@ public class UpdateTimeDAO extends DataSource{
             System.out.println("Can not get max id update time");
             System.out.println(e.toString());
         }
+        finally {
+            try {
+                if (connection != null) {
+                    connection.close();
+                }
+            } catch (SQLException e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            }
+
+            try {
+                if (Call != null) {
+                    Call.close();
+                }
+            } catch (SQLException e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            }
+        }
         return 0;
     }
     
@@ -62,7 +100,7 @@ public class UpdateTimeDAO extends DataSource{
             while (connection == null) {                
                 connection = DataSource.getInstance().getConnection();
             }
-            Call = connection.prepareCall("{call GetTableUpdateTime(?)}");
+            Call = connection.prepareCall("{Call GetTableUpdateTime(?)}");
             Call.setInt("_IDTableUpdateTime", _idType);
             ResultSet rs = Call.executeQuery();
             if (rs == null) {
@@ -76,6 +114,25 @@ public class UpdateTimeDAO extends DataSource{
             return utdto;
         } catch (Exception e) {
             System.out.println(e.toString());
+        }
+        finally {
+            try {
+                if (connection != null) {
+                    connection.close();
+                }
+            } catch (SQLException e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            }
+
+            try {
+                if (Call != null) {
+                    Call.close();
+                }
+            } catch (SQLException e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            }
         }
         return null;
     }

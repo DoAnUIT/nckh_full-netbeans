@@ -22,7 +22,7 @@ public class SubCmtBUS {
         scmtDAO = new SubCmtDAO(username, password);
     }
 
-    public boolean insertSubCmt(SubCmtDTO child) {
+    public synchronized boolean insertSubCmt(SubCmtDTO child) {
         int maxIDTableSubCmt = getMaxIDTableSubCmt();
         child.setIDTableSubCmt(maxIDTableSubCmt + 1);
 
@@ -35,7 +35,7 @@ public class SubCmtBUS {
         return scmtDAO.updateSubCmt(child);
     }
 
-    public int getMaxIDTableSubCmt() {
+    public synchronized int getMaxIDTableSubCmt() {
         return scmtDAO.getMaxIDTableSubCmt();
     }
 

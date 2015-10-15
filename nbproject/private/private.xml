@@ -3,18 +3,26 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
+            <file>file:/E:/NCKH_Project/nckh_full-netbeans/src/BusinessLayer/SubCmtBUS.java</file>
+            <file>file:/E:/NCKH_Project/nckh_full-netbeans/src/DTO/SubCmtDTO.java</file>
+            <file>file:/E:/NCKH_Project/nckh_full-netbeans/src/BusinessLayer/ArticleBUS.java</file>
+            <file>file:/E:/NCKH_Project/nckh_full-netbeans/src/WebLayer/WebLayer.java</file>
+            <file>file:/E:/NCKH_Project/nckh_full-netbeans/src/DTO/ArticleDTO.java</file>
+            <file>file:/E:/NCKH_Project/nckh_full-netbeans/src/DataAccessLayer/ArticleDAO.java</file>
+            <file>file:/E:/NCKH_Project/nckh_full-netbeans/src/BusinessLayer/UpdateTimeBUS.java</file>
+            <file>file:/E:/NCKH_Project/nckh_full-netbeans/src/WebLayer/ArticleObject.java</file>
+            <file>file:/E:/NCKH_Project/nckh_full-netbeans/src/BusinessLayer/ParentCmtBUS.java</file>
+            <file>file:/E:/NCKH_Project/nckh_full-netbeans/src/DTO/ParentCmtDTO.java</file>
             <file>file:/E:/NCKH_Project/nckh_full-netbeans/src/WebLayer/ThreadInsert.java</file>
             <file>file:/E:/NCKH_Project/nckh_full-netbeans/src/DataAccessLayer/UpdateTimeDAO.java</file>
-            <file>file:/E:/NCKH_Project/nckh_full-netbeans/src/DTO/FacebookDTO.java</file>
             <file>file:/E:/NCKH_Project/nckh_full-netbeans/src/main/TestUpdate.java</file>
-            <file>file:/E:/NCKH_Project/nckh_full-netbeans/src/DTO/UpdateTimeDTO.java</file>
-            <file>file:/E:/NCKH_Project/nckh_full-netbeans/src/BusinessLayer/ArticleBUS.java</file>
+            <file>file:/E:/NCKH_Project/nckh_full-netbeans/src/DataAccessLayer/ParentCmtDAO.java</file>
+            <file>file:/E:/NCKH_Project/nckh_full-netbeans/src/WebLayer/IParentCmt.java</file>
+            <file>file:/E:/NCKH_Project/nckh_full-netbeans/src/WebLayer/ArticleTuoiTre.java</file>
+            <file>file:/E:/NCKH_Project/nckh_full-netbeans/src/DataAccessLayer/SubCmtDAO.java</file>
             <file>file:/E:/NCKH_Project/nckh_full-netbeans/src/WebLayer/ThreadUpdate.java</file>
-            <file>file:/E:/NCKH_Project/nckh_full-netbeans/src/WebLayer/WebLayer.java</file>
             <file>file:/E:/NCKH_Project/nckh_full-netbeans/src/WebLayer/ArticleThanhNien.java</file>
-            <file>file:/E:/NCKH_Project/nckh_full-netbeans/src/BusinessLayer/UpdateTimeBUS.java</file>
-            <file>file:/E:/NCKH_Project/nckh_full-netbeans/src/DataAccessLayer/ArticleDAO.java</file>
-            <file>file:/E:/NCKH_Project/nckh_full-netbeans/src/WebLayer/ArticleObject.java</file>
+            <file>file:/E:/NCKH_Project/nckh_full-netbeans/src/DataAccessLayer/DataSource.java</file>
         </group>
     </open-files>
 </project-private>

@@ -16,7 +16,7 @@ public class SubCmtDTO {
         return this.IDTableSubCmt;
     }
 
-    public void setIDTableSubCmt(int a) {
+    public synchronized void setIDTableSubCmt(int a) {
         this.IDTableSubCmt = a;
     }
 
