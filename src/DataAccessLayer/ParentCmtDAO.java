@@ -19,7 +19,7 @@ public class ParentCmtDAO extends DataSource {
         this.password = password;
     }
 
-    public boolean insertParentCmt(ParentCmtDTO par) {
+    public synchronized boolean insertParentCmt(ParentCmtDTO par) {
         try {
             connection = DataSource.getInstance().getConnection();
             while (connection == null) {
@@ -39,7 +39,9 @@ public class ParentCmtDAO extends DataSource {
 
         } catch (Exception e) {
             // TODO: handle exception
-            System.out.println(e.getMessage());
+            par.setIDTableParentCmt(par.getIDTableParentCmt() + 1);
+            insertParentCmt(par);
+            //System.out.println(e.getMessage());
         } finally {
             try {
                 if (connection != null) {

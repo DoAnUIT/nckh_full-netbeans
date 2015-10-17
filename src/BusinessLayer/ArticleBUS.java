@@ -22,7 +22,8 @@ public class ArticleBUS {
     private String username = null;
     private String password = null;
     private ArticleDAO artDAO = null;
-    List<Integer> updateList = new ArrayList(Arrays.asList(144, 48, 120, 28, 28, -1));
+    // List<Integer> updateList = new ArrayList(Arrays.asList(144, 48, 120, 28, 28, -1));
+    private UpdateTimeBUS udBUS = null;
 
     public ArticleBUS() {
     }
@@ -32,21 +33,35 @@ public class ArticleBUS {
         this.username = username;
         this.password = password;
         artDAO = new ArticleDAO(username, password);
+        udBUS = new UpdateTimeBUS(username, password);
 
     }
 
     // ok
-    public boolean insertArticle(ArticleDTO art) {
+    public synchronized boolean insertArticle(ArticleDTO art) {
         int maxIDTableArticle = getMaxIDTableArticle();
         art.setIDTableArticle(maxIDTableArticle + 1);
         art.setIDTableUpdateTime(1);
         art.setCountOfUpdate(0);
+        // System.out.println(art.getIDTableArticle());
         return artDAO.insertArticle(art);
     }
 
     public boolean updateArticle(ArticleDTO art) {
-        int maxCount = updateList.get(art.getIDTableUpdateTime() - 1);
-        if (art.getCountOfUpdate() < maxCount - 1) {
+//        art.setCountOfUpdate(art.getCountOfUpdate() + 1);
+//        if (art.getCountOfUpdate() > udBUS.GetTimeUpdateByID(art.getIDTableUpdateTime()).getMaxRepeat() - 1) {
+//            art.setCountOfUpdate(0);
+//            int maxID = udBUS.GetMaxIdTableUpdateTime();
+//            if (maxID <= 0) {
+//                System.out.println("can not update number for " + art.getTitle());
+//                continue;
+//            }
+//            if (art.getIDTableUpdateTime() + 1 < maxID) {
+//                art.setIDTableUpdateTime(art.getIDTableUpdateTime() + 1);
+//            }
+//        }
+
+           if (art.getCountOfUpdate() < udBUS.GetTimeUpdateByID(art.getIDTableUpdateTime()).getMaxRepeat() - 1) {
             art.setCountOfUpdate(art.getCountOfUpdate() + 1);
         } else {
             art.setCountOfUpdate(0);
@@ -55,7 +70,7 @@ public class ArticleBUS {
         return artDAO.updateArticle(art);
     }
 
-    public int getMaxIDTableArticle() {
+    public synchronized int getMaxIDTableArticle() {
         return artDAO.getMaxIDTableArticle();
     }
 
@@ -74,13 +89,11 @@ public class ArticleBUS {
     // working with list
     public boolean insert(ArticleDTO art) {
         if (isArticleExistsForInsert(art) == 0) {
-            if(!insertArticle(art))
-            {
+            if (!insertArticle(art)) {
                 System.out.println("insert article vao database that bai");
                 return false;
             }
-        }
-        else {
+        } else {
             System.out.println("article da ton tai");
             return false;
         }
@@ -93,16 +106,17 @@ public class ArticleBUS {
             if (updateArticle(art) == false) {
                 System.out.println("Cap nhat article vao database that bai");
                 return false;
+            } else {
+                return true;
             }
-            else return true;
 
         } else {
             if (!insertArticle(art)) {
                 System.out.println("Cap nhat article vao database that bai");
                 return false;
-            }
-            else
+            } else {
                 return true;
+            }
         }
     }
 

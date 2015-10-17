@@ -9,9 +9,7 @@ package main;
  *
  * @author Minh Nhat
  */
-import BusinessLayer.ArticleBUS;
-import BusinessLayer.ParentCmtBUS;
-import BusinessLayer.SubCmtBUS;
+import BusinessLayer.*;
 import DTO.ArticleDTO;
 import DTO.ParentCmtDTO;
 import DTO.SubCmtDTO;
@@ -44,8 +42,7 @@ public class TestUpdate {
         calendar.set(Calendar.HOUR_OF_DAY, 0);
         calendar.set(Calendar.DAY_OF_MONTH, 15);
         calendar.set(Calendar.MONTH, 10 - 1);
-//        calendar.set(Calendar.DAY_OF_MONTH, 11);
-//        calendar.set(Calendar.MONTH, 10 - 1);
+
         Timestamp lasttime = new Timestamp(calendar.getTimeInMillis());
 
         calendar.set(Calendar.HOUR_OF_DAY, 8);
@@ -54,21 +51,46 @@ public class TestUpdate {
         Timestamp newtime = new Timestamp(calendar.getTimeInMillis());
 
         // 0h ngay 10.7 den 15h ngay 9.10
-        WebLayer wl = new WebLayer(username, password);
-        String lurl[] = {"http://www.thanhnien.com.vn" };
+        String lurl[] = {"http://www.thanhnien.com.vn","http://vnexpress.net","http://tuoitre.vn"};
         //String url = "http://vnexpress.net";
         //String url = "http://www.thanhnien.com.vn";
         // String url = "http://tuoitre.vn";
-        //wl.update(url, 1);
-        for (String url : lurl) {
-            System.out.println("\nBắt đầu insert : " + url + "\n");
-            wl.insert(url, newtime, lasttime);
-        }
 
+//<editor-fold defaultstate="collapsed" desc="comment">
+//        WebLayer wl = new WebLayer(username, password);
+        
+//        for (String url : lurl) {
+//            System.out.println("\nBắt đầu insert : " + url + "\n");
+//            wl.insert(url, newtime, lasttime);
+//        }
 //        for (String url : lurl) {
 //            System.out.println("\nBắt đầu update : " + url +"\n");
 //            wl.update(url, 1);
+//</editor-fold>
+        
+        //insert
+//        List<ThreadInsert> listIns = new ArrayList<ThreadInsert>();
+//        for (String url : lurl) {
+//            System.out.println("\nBắt đầu insert : " + url + "\n");
+//            listIns.add(new ThreadInsert(username, password, url, lasttime, newtime));
 //        }
+
+        List<ThreadUpdate> listThreadUpdate = new ArrayList<ThreadUpdate>();
+        ArticleObject artTuoiTre = new ArticleTuoiTre(username, password);
+        ArticleObject artThanhNien = new ArticleThanhNien(username, password);
+        ArticleObject artVnExpress = new ArticleVnexpress(username, password);
+        
+        UpdateTimeBUS upBUS = new UpdateTimeBUS(username, password);
+        List<Integer> listUpdateType = upBUS.GetListTypeUpdate();
+//        for (int i = 0; i < listUpdateType.size(); i++) {
+//            System.out.println(i);
+//        }
+      
+        for (int i = 0; i< listUpdateType.size() - 1; i++) {
+             listThreadUpdate.add(new ThreadUpdate(username, password, listUpdateType.get(i),
+                     artThanhNien,artVnExpress,artTuoiTre));
+             System.out.println("update " + listUpdateType.get(i));
+        }
         System.out.println("Finished");
 
     }

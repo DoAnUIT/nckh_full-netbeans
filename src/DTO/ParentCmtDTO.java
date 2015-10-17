@@ -17,7 +17,7 @@ public class ParentCmtDTO {
         return this.IDTableParentCmt;
     }
     
-    public void setIDTableParentCmt(int a){
+    public synchronized void setIDTableParentCmt(int a){
         this.IDTableParentCmt = a;
     }
     

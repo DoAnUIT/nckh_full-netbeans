@@ -27,7 +27,7 @@ public class ArticleDTO {
         return this.IDTableArticle;
     }
 
-    public void setIDTableArticle(int a) {
+    public synchronized void setIDTableArticle(int a) {
         this.IDTableArticle = a;
     }
 

@@ -17,7 +17,7 @@ public class SubCmtDAO extends DataSource {
         this.password= password;
     }
 
-    public boolean insertSubCmt(SubCmtDTO sub) {
+    public synchronized boolean insertSubCmt(SubCmtDTO sub) {
         try {
             connection = DataSource.getInstance().getConnection();
             while(connection == null)
@@ -36,7 +36,9 @@ public class SubCmtDAO extends DataSource {
 
         } catch (Exception e) {
             // TODO: handle exception
-            System.out.println(e.getMessage());
+            sub.setIDTableSubCmt(sub.getIDTableSubCmt() + 1);
+            insertSubCmt(sub);
+            //System.out.println(e.getMessage());
         } finally {
             try {
                 if (connection != null) {

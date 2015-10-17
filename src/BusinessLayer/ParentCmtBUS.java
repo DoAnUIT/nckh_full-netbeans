@@ -26,7 +26,7 @@ public class ParentCmtBUS {
         pcmtDAO = new ParentCmtDAO(username, password);
     }
 
-    public boolean insertParentCmt(ParentCmtDTO par) {
+    public synchronized boolean insertParentCmt(ParentCmtDTO par) {
         // generated idtable parent cmt
         int maxid = getMaxIDTableParentCmt();
         par.setIDTableParentCmt(maxid + 1);
@@ -37,7 +37,7 @@ public class ParentCmtBUS {
         return pcmtDAO.updateParentCmt(par);
     }
 
-    public int getMaxIDTableParentCmt() {
+    public synchronized int getMaxIDTableParentCmt() {
         return pcmtDAO.getMaxIDTableParentCmt();
     }
 

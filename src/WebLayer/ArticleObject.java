@@ -41,6 +41,14 @@ public abstract class ArticleObject extends ConnectUrl {
     protected ISubCmt subCmt = null;
     private int count = 0;
 
+    // count
+    public void setCount(int a){
+        this.count = a;
+    }
+    
+    public int getCount (){
+        return this.count;
+    }
     // Lấy thông tin của từng bài báo
     public abstract ArticleDTO getArticleInformation(String source_url);
 
@@ -59,8 +67,9 @@ public abstract class ArticleObject extends ConnectUrl {
 
         FacebookDTO fb = new FacebookDTO();
         String json = jsoupConnectJson(url);
-        if(json == null)
+        if (json == null) {
             return null;
+        }
         JsonParser parser = new JsonParser();
 
         JsonElement element = parser.parse(json);
@@ -70,7 +79,7 @@ public abstract class ArticleObject extends ConnectUrl {
 
         Gson gson = new Gson();
         fb = gson.fromJson(data, FacebookDTO.class);
-
+        //System.out.println("Parse fb successful");
         return fb;
         // khong quan trong
     }
@@ -98,7 +107,6 @@ public abstract class ArticleObject extends ConnectUrl {
         return false;
     }
 
-
     protected void insertDatabase(ArticleDTO art) throws SQLException {
         ArticleBUS artBUS = new ArticleBUS(username, password);
         ParentCmtBUS parBUS = new ParentCmtBUS(username, password);
@@ -106,32 +114,17 @@ public abstract class ArticleObject extends ConnectUrl {
 
         // insert art to database => art have idtablearticle
         // nếu đã tồn tại thì return
-          count++;
-        if(count % 250 == 0)
-        {
-            //count = 0;
-            if(count % 1000 == 0)
-            {
-                //<editor-fold defaultstate="collapsed" desc="ngu 15 phut">
-                System.out.println("Thread insert ngu 15 minutes");
-                try {
-                    Thread.sleep(900000);
-                } catch (InterruptedException ex) {
-                    Logger.getLogger(ArticleObject.class.getName()).log(Level.SEVERE, null, ex);
-                }
-//</editor-fold>
-            }
-            else{
-                //<editor-fold defaultstate="collapsed" desc="ngu 5 phut">
-                System.out.println("Thread insert ngu 5 minutes");
-                try {
-                    Thread.sleep(300000);
-                } catch (InterruptedException ex) {
-                    Logger.getLogger(ConnectUrl.class.getName()).log(Level.SEVERE, null, ex);
-                }
-//</editor-fold>
-            }
-        }
+        count++;
+        checkAmountArticleToSleep(count);
+//        if (!artBUS.insertArticle(art)) {
+//            while (!artBUS.insertArticle(art)) {                    
+//                artBUS.insertArticle(art);
+//                System.out.println("synchronized dc xu ly.");
+//            }
+//        }
+//        if (artBUS.isArticleExistsForInsert(art) != 0) {
+//            return;
+//        }
         if (!artBUS.insert(art)) {
             return;
         }
@@ -164,6 +157,10 @@ public abstract class ArticleObject extends ConnectUrl {
         ParentCmtBUS parBUS = new ParentCmtBUS(username, password);
         SubCmtBUS subBUS = new SubCmtBUS(username, password);
 
+        synchronized(this){
+        count++;
+        }
+        checkAmountArticleToSleep(count);
         // update art to database 
         if (!artBUS.update(art)) {
             return;
@@ -185,6 +182,32 @@ public abstract class ArticleObject extends ConnectUrl {
         temptSub = null;
         parentIDHasSub.clear();
 
+    }
+
+    private void checkAmountArticleToSleep(int count) {
+        if (count % 250 == 0) {
+            //count = 0;
+            if (count % 1000 == 0) {
+                count = 0;
+                //<editor-fold defaultstate="collapsed" desc="ngu 15 phut">
+                System.out.println("Lay du 1000 bai, Thread ngu 15 minutes");
+                try {
+                    Thread.sleep(900000);
+                } catch (InterruptedException ex) {
+                    Logger.getLogger(ArticleObject.class.getName()).log(Level.SEVERE, null, ex);
+                }
+//</editor-fold>
+            } else {
+                //<editor-fold defaultstate="collapsed" desc="ngu 5 phut">
+                System.out.println("Lay du 250 bai, Thread insert ngu 5 minutes");
+                try {
+                    Thread.sleep(300000);
+                } catch (InterruptedException ex) {
+                    Logger.getLogger(ConnectUrl.class.getName()).log(Level.SEVERE, null, ex);
+                }
+//</editor-fold>
+            }
+        }
     }
 
 }
