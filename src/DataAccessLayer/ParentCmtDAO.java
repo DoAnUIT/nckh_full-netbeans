@@ -13,10 +13,14 @@ import java.util.logging.Logger;
 public class ParentCmtDAO extends DataSource {
 
     CallableStatement call = null;
+    int numberInsert = 0;
+    int numberUpdate = 0;
 
     public ParentCmtDAO(String username, String password) {
         this.username = username;
         this.password = password;
+        numberInsert = 0;
+        numberUpdate = 0;
     }
 
     public synchronized boolean insertParentCmt(ParentCmtDTO par) {
@@ -35,10 +39,17 @@ public class ParentCmtDAO extends DataSource {
             call.setString(5, par.getContent());
             //`   
             call.execute();
+            System.out.println("Insert Parent cmt thanh cong");
             return true;
 
         } catch (Exception e) {
             // TODO: handle exception
+            if (numberInsert >= 5) {
+                numberInsert = 0;
+                System.out.println(e.getMessage());
+                return false;
+            }
+            numberInsert++;
             par.setIDTableParentCmt(par.getIDTableParentCmt() + 1);
             insertParentCmt(par);
             //System.out.println(e.getMessage());
@@ -83,7 +94,14 @@ public class ParentCmtDAO extends DataSource {
 
         } catch (Exception e) {
             // TODO: handle exception
-            System.out.println(e.getMessage());
+            if (numberUpdate >= 5) {
+                numberUpdate = 0;
+                System.out.println(e.getMessage());
+                return false;
+            }
+            numberUpdate++;
+            updateParentCmt(par);
+            //System.out.println(e.getMessage());
         } finally {
             try {
                 if (connection != null) {

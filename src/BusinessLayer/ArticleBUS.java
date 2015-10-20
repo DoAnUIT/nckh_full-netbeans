@@ -24,6 +24,7 @@ public class ArticleBUS {
     private ArticleDAO artDAO = null;
     // List<Integer> updateList = new ArrayList(Arrays.asList(144, 48, 120, 28, 28, -1));
     private UpdateTimeBUS udBUS = null;
+    
 
     public ArticleBUS() {
     }
@@ -48,24 +49,12 @@ public class ArticleBUS {
     }
 
     public boolean updateArticle(ArticleDTO art) {
-//        art.setCountOfUpdate(art.getCountOfUpdate() + 1);
-//        if (art.getCountOfUpdate() > udBUS.GetTimeUpdateByID(art.getIDTableUpdateTime()).getMaxRepeat() - 1) {
-//            art.setCountOfUpdate(0);
-//            int maxID = udBUS.GetMaxIdTableUpdateTime();
-//            if (maxID <= 0) {
-//                System.out.println("can not update number for " + art.getTitle());
-//                continue;
-//            }
-//            if (art.getIDTableUpdateTime() + 1 < maxID) {
-//                art.setIDTableUpdateTime(art.getIDTableUpdateTime() + 1);
-//            }
-//        }
-
            if (art.getCountOfUpdate() < udBUS.GetTimeUpdateByID(art.getIDTableUpdateTime()).getMaxRepeat() - 1) {
             art.setCountOfUpdate(art.getCountOfUpdate() + 1);
         } else {
             art.setCountOfUpdate(0);
             art.setIDTableUpdateTime(art.getIDTableUpdateTime() + 1);
+
         }
         return artDAO.updateArticle(art);
     }
