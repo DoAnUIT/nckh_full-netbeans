@@ -47,7 +47,7 @@ public class TestUpdate {
         Timestamp lasttime = new Timestamp(calendar.getTimeInMillis());
 
         calendar.set(Calendar.HOUR_OF_DAY, 8);
-        calendar.set(Calendar.DAY_OF_MONTH, 15);
+        calendar.set(Calendar.DAY_OF_MONTH, 20);
         calendar.set(Calendar.MONTH, 10 - 1);
         Timestamp newtime = new Timestamp(calendar.getTimeInMillis());
 
@@ -60,24 +60,24 @@ public class TestUpdate {
         //wl.update(url, 1);
         
         //insert
-        List<ThreadInsert> listIns = new ArrayList<ThreadInsert>();
-        for (String url : lurl) {
-            System.out.println("\nBắt đầu insert : " + url + "\n");
-            listIns.add(new ThreadInsert(username, password, url, lasttime, newtime));
-        }
+//        List<ThreadInsert> listIns = new ArrayList<ThreadInsert>();
+//        for (String url : lurl) {
+//            System.out.println("\nBắt đầu insert : " + url + "\n");
+//            listIns.add(new ThreadInsert(username, password, url, lasttime, newtime));
+//        }
         
         
-//        List<ThreadUpdate> listThreadUpdate = new ArrayList<ThreadUpdate>();
-//        UpdateTimeBUS upBUS = new UpdateTimeBUS(username, password);
-//        List<Integer> listUpdateType = upBUS.GetListTypeUpdate();
+        List<ThreadUpdate> listThreadUpdate = new ArrayList<ThreadUpdate>();
+        UpdateTimeBUS upBUS = new UpdateTimeBUS(username, password);
+        List<Integer> listUpdateType = upBUS.GetListTypeUpdate();
 //        for (int i = 0; i < listUpdateType.size(); i++) {
 //            System.out.println(i);
 //        }
-//      
-//        for (int idUpdate : listUpdateType) {
-//             listThreadUpdate.add(new ThreadUpdate(username, password, idUpdate));
-//             System.out.println("update " + idUpdate);
-//        }
+      
+        for (int i = 0 ; i < listUpdateType.size() - 1; i++) {
+             listThreadUpdate.add(new ThreadUpdate(username, password, listUpdateType.get(i)));
+             System.out.println("update " + listUpdateType.get(i));
+        }
         System.out.println("Finished");
 
     }

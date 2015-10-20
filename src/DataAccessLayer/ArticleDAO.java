@@ -24,10 +24,17 @@ import java.util.logging.Logger;
 public class ArticleDAO extends DataSource {
 
     CallableStatement call = null;
+    int numberInsert = 0;
+    int numberUpdate = 0;
+
+    public ArticleDAO() {
+    }
 
     public ArticleDAO(String username, String password){
             this.username = username;
             this.password = password;
+            numberInsert = 0;
+            numberUpdate = 0;
     }
 
     public synchronized boolean insertArticle(ArticleDTO art) {
@@ -35,6 +42,7 @@ public class ArticleDAO extends DataSource {
             connection = DataSource.getInstance().getConnection();
             while(connection == null)
                 connection = DataSource.getInstance().getConnection();
+            
             call = connection.prepareCall("{call insertArticle(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)}");
 
             call.setInt("IDTableArticle", art.getIDTableArticle());
@@ -55,13 +63,20 @@ public class ArticleDAO extends DataSource {
             call.setInt("ArticleLike", art.getArticleLike());
 
             call.execute();
+            System.out.println("Insert article thanh cong");
             return true;
 
         } catch (Exception e) {
             // TODO: handle exception
+            if (numberInsert >= 5) {
+                numberInsert = 0;
+                System.out.println(e.getMessage());
+                return false;
+            }
+            numberInsert++;
             art.setIDTableArticle(art.getIDTableArticle() + 1);
             insertArticle(art);
-            //System.out.println(e.getMessage());
+            System.out.println(e.getMessage());
         } finally {
             try {
                 if (connection != null) {
@@ -107,6 +122,13 @@ public class ArticleDAO extends DataSource {
 
         } catch (Exception e) {
             // TODO: handle exception
+            if (numberUpdate >= 5) {
+                numberUpdate = 0;
+                System.out.println(e.getMessage());
+                return false;
+            }
+            numberUpdate++;
+            updateArticle(art);
             System.out.println(e.getMessage());
         } finally {
             try {

@@ -96,7 +96,7 @@ public class ThreadUpdate {
         }
         result.setArticleLike(_art.getArticleLike(_artUp.getObjectID()));
         result.facebook = fbData;
-
+        _artUp = result;
         try {
             _art.updateDatabase(result);
         } catch (SQLException ex) {

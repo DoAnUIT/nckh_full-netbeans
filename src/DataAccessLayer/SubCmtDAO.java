@@ -11,10 +11,17 @@ import java.util.logging.Logger;
 public class SubCmtDAO extends DataSource {
 
     CallableStatement call = null;
+    int numberInsert = 0;
+    int numberUpdate = 0;
+
+    public SubCmtDAO() {
+    }
     
     public SubCmtDAO(String username, String password) {
         this.username= username;
         this.password= password;
+        numberInsert = 0;
+        numberUpdate = 0;
     }
 
     public synchronized boolean insertSubCmt(SubCmtDTO sub) {
@@ -32,10 +39,17 @@ public class SubCmtDAO extends DataSource {
             call.setString(5, sub.getContent());
 
             call.execute();
+            System.out.println("Insert Subcmt thanh cong");
             return true;
 
         } catch (Exception e) {
             // TODO: handle exception
+            if (numberInsert >= 5) {
+                numberInsert = 0;
+                System.out.println(e.getMessage());
+                return false;
+            }
+            numberInsert++;
             sub.setIDTableSubCmt(sub.getIDTableSubCmt() + 1);
             insertSubCmt(sub);
             //System.out.println(e.getMessage());
@@ -79,7 +93,14 @@ public class SubCmtDAO extends DataSource {
 
         } catch (Exception e) {
             // TODO: handle exception
-            System.out.println(e.getMessage());
+            if (numberUpdate >= 5) {
+                numberUpdate = 0;
+                System.out.println(e.getMessage());
+                return false;
+            }
+            numberUpdate++;
+            updateSubCmt(sub);
+            //System.out.println(e.getMessage());
         } finally {
             try {
                 if (connection != null) {
