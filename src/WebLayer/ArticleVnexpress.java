@@ -52,11 +52,7 @@ public class ArticleVnexpress extends ArticleObject {
 
         String tempt = null;
         Document doc = jsoupConnect(source_url);
-        if(doc == null)
-            doc = jsoupConnect(source_url);
-        if (doc == null) {
-            return null;
-        }
+        
 
 //</editor-fold>
         // Category ID
@@ -252,9 +248,7 @@ public class ArticleVnexpress extends ArticleObject {
             outLoop:
             while (true) {
                 doc = jsoupConnect(String.format(menuUrl + "%d.html", pageCount));
-                if (doc == null) {
-                    continue;
-                }
+                
                 Elements temptElements = null;
                 Element temptElement = null;
                 if (pageCount == 1) {

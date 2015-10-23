@@ -28,7 +28,7 @@ public class ThreadInsert {
     public void InsertNewsByURL()
     {
         try {
-            System.out.println("Start insert news in " + URLMagazine);
+            //System.out.println("Start insert news in " + URLMagazine);
             WebLayer wl = new WebLayer(UserName, Password);
             wl.insert(URLMagazine, EndTimestamp, StartTimestamp);
         } catch (Exception e) {

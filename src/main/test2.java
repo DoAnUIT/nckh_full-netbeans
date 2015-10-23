@@ -38,17 +38,17 @@ public class test2 {
              // TODO Auto-generated method stub
         String username = "testNhon";
         String password = "nhonmysql!@3";
-//        ArticleObject ar = new ArticleVnexpress(username,password);
-//        IParentCmt parComment = new ParentCmtVnexpress();
-//        ISubCmt subComment = new SubCmtVnexpress();
+        ArticleObject ar = new ArticleVnexpress(username,password);
+        IParentCmt parComment = new ParentCmtVnexpress();
+        ISubCmt subComment = new SubCmtVnexpress();
 //
 //        ArticleObject ar = new ArticleTuoiTre(username,password);
 //        IParentCmt parComment = new ParentCmtTuoiTre();
 //        ISubCmt subComment = new SubCmtTuoiTre();
 
-       ArticleObject ar = new ArticleThanhNien(username, password);
-       IParentCmt parComment = new ParentCmtThanhNien();
-       ISubCmt subComment = new SubCmtThanhNien();
+//       ArticleObject ar = new ArticleThanhNien(username, password);
+//       IParentCmt parComment = new ParentCmtThanhNien();
+//       ISubCmt subComment = new SubCmtThanhNien();
                
               
         
@@ -76,16 +76,16 @@ public class test2 {
 //                   "\nTitle : " + larticle.get(i).getTitle() + "\nURL : " + larticle.get(i).getUrl() + "\nCategory : "
 //                    + larticle.get(i).getIDTableCategory() + "\nFb like : " + larticle.get(i).facebook.getFBLike());
 //        }
-        //String a = "http://vnexpress.net/tin-tuc/thoi-su/hang-tram-cong-nhan-bi-bat-tim-vien-kim-cuong-2-trieu-dong-3263583.html";
+        String a = "http://vnexpress.net/tin-tuc/khoa-hoc/hoi-dap/mat-nguoi-nhin-duoc-bao-nhieu-khung-hinh-giay-3292760.html";
         //String a = "http://tuoitre.vn/tin/chinh-tri-xa-hoi/20151009/nhieu-vu-bao-chi-noi-am-am-nhung-dai-bieu-im-thin-thit/982477.html";
-        String a = "http://www.thanhnien.com.vn/chinh-tri-xa-hoi/clip-bi-don-vi-cai-csgt-toi-bi-danh-mieng-sung-vu-mau-chay-nhieu-605535.html";
+        //String a = "http://www.thanhnien.com.vn/chinh-tri-xa-hoi/clip-bi-don-vi-cai-csgt-toi-bi-danh-mieng-sung-vu-mau-chay-nhieu-605535.html";
         ArticleDTO article = ar.getArticleInformation(a);
         
         if (article != null) {
             System.out.println("Time : " + article.getArticleDate() + "\nObjectId : " + article.getObjectID() + "\nTitile :"
                     + article.getTitle() + "\nURL : " + article.getUrl() + "\nFacebook Like : "
                     + article.facebook.getFBLike() + "\nFacebook Comment : " + article.facebook.getFBCmt()
-                    + "\nCategory : " + article.getIDTableCategory());
+                    + "\nCategory : " + article.getIDTableCategory() +"\nArticleDate : " + article.getArticleDate());
             System.out.println();
 
         }

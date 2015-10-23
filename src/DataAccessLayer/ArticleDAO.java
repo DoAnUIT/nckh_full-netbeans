@@ -37,7 +37,7 @@ public class ArticleDAO extends DataSource {
             numberUpdate = 0;
     }
 
-    public synchronized boolean insertArticle(ArticleDTO art) {
+    public boolean insertArticle(ArticleDTO art) {
         try {
             connection = DataSource.getInstance().getConnection();
             while(connection == null)
@@ -63,20 +63,20 @@ public class ArticleDAO extends DataSource {
             call.setInt("ArticleLike", art.getArticleLike());
 
             call.execute();
-            System.out.println("Insert article thanh cong");
+            //System.out.println("Insert article thanh cong");
             return true;
 
         } catch (Exception e) {
             // TODO: handle exception
 
-            if (numberInsert >= 5) {
-                numberInsert = 0;
-                System.out.println(e.getMessage());
-                return false;
-            }
-            numberInsert++;
-            art.setIDTableArticle(art.getIDTableArticle() + 1);
-            insertArticle(art);
+//            if (numberInsert >= 5) {
+//                numberInsert = 0;
+//                System.out.println(e.getMessage());
+//                return false;
+//            }
+//            numberInsert++;
+//            art.setIDTableArticle(art.getIDTableArticle() + 1);
+//            insertArticle(art);
             System.out.println(e.getMessage());
         } finally {
             try {
@@ -123,13 +123,13 @@ public class ArticleDAO extends DataSource {
 
         } catch (Exception e) {
             // TODO: handle exception
-            if (numberUpdate >= 5) {
-                numberUpdate = 0;
-                System.out.println(e.getMessage());
-                return false;
-            }
-            numberUpdate++;
-            updateArticle(art);
+//            if (numberUpdate >= 5) {
+//                numberUpdate = 0;
+//                System.out.println(e.getMessage());
+//                return false;
+//            }
+//            numberUpdate++;
+//            updateArticle(art);
             System.out.println(e.getMessage());
         } finally {
             try {
@@ -313,7 +313,7 @@ public class ArticleDAO extends DataSource {
             }
             return result;
         } catch (Exception e) {
-            System.out.println("Can not get list article by id table update time");
+            //System.out.println("Can not get list article by id table update time");
             System.out.println(e.toString());
         }
         finally {

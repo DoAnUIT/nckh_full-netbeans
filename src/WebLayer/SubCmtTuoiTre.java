@@ -30,8 +30,7 @@ public class SubCmtTuoiTre extends ConnectUrl implements ISubCmt {
 
         String url = source_url + article.getObjectID();
         Document doc = jsoupConnect(url);
-        if(doc == null)
-            return null;        
+              
 
         // select comment item parent
         Elements datas = doc.select(".lst-comment > ul > li"); // contain parent and sub

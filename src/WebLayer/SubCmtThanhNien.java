@@ -23,8 +23,6 @@ public class SubCmtThanhNien extends ConnectUrl implements ISubCmt {
         SubCmtDTO temptSubComment = null;
 
         Document doc = jsoupConnect(article.getUrl());
-        if(doc == null)
-            return null;
         
         Element meta = doc.select("#posturl").first();
         String tempt = meta.attr("value");

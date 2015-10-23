@@ -20,19 +20,24 @@ import org.jsoup.nodes.Document;
 public class ConnectUrl {
 
     // connect jsou
-
     private String userAgent = "Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/39.0.2171.71 Safari/537.36";
+    private String cookiename = "a";
+    private String cookievalue = "1";
+    private boolean change = true;
+    private Document doc = null;
 
-    protected Document jsoupConnect(String source_url) {
+    private Document jsoupConnect1(String source_url) {
         Document doc = null;
         Response response = null;
+        changeCookie(change);
         try {
             response = Jsoup.connect(source_url).timeout(0).followRedirects(true)
-                    .userAgent(userAgent)
+                    .userAgent(userAgent).cookie(cookiename, cookievalue)
                     .execute();
         } catch (IOException e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
+            return null;
         }
 
         try {
@@ -44,38 +49,94 @@ public class ConnectUrl {
         return doc;
     }
 
-    protected String jsoupConnectJson(String source_url) {
+    protected Document jsoupConnect(String source_url) {
+        doc = jsoupConnect1(source_url);
+        while (doc == null) {
+            try {
+                Thread.sleep(60000);
+            } catch (InterruptedException ex) {
+                Logger.getLogger(ConnectUrl.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            doc = jsoupConnect1(source_url);
+        }
+        return doc;
+
+    }
+
+    private String jsoupConnectJson1(String source_url) {
         Response response = null;
+        changeCookie(change);
 
         try {
             //json = IOUtils.toString(new URL(String.format(url + "%d", parentcomment.get(i))).openStream(), "UTF-8");
             response = Jsoup.connect(source_url).timeout(0)
-                    .userAgent(userAgent)
+                    .userAgent(userAgent).cookie(cookiename, cookievalue)
                     .ignoreContentType(true)
                     .execute();
             //return rp.body();
         } catch (IOException e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
+            return null;
         }
 
         return response.body();
     }
+    
+    protected String jsoupConnectJson(String source_url){
+        String json = jsoupConnectJson1(source_url);
+        while (json == null) {
+            try {
+                Thread.sleep(120000);
+            } catch (InterruptedException ex) {
+                Logger.getLogger(ConnectUrl.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            json = jsoupConnectJson1(source_url);
+        }
+        return json;
+    }
 
-    protected Document jsoupConnectTuoiTrePost(String url, int pageCount) {
+    private Document jsoupConnectTuoiTrePost1(String url, int pageCount) {
         Document doc = null;
+        changeCookie(change);
         try {
             // connect source
             doc = Jsoup.connect(url)
                     .data("page_number", String.valueOf(pageCount))
-                    .timeout(0)
+                    .timeout(0).cookie(cookiename, cookievalue)
                     .userAgent(
                             "Mozilla/5.0 (Windows NT 6.3; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/43.0.2357.134 Safari/537.36")
                     .post();
         } catch (IOException e) {
             e.printStackTrace();
+            return null;
         }
-        
+
         return doc;
+    }
+    
+    protected Document jsoupConnectTuoiTrePost(String url, int pageCount){
+        doc = jsoupConnectTuoiTrePost1(url, pageCount);
+        while(doc == null){
+            try {
+                Thread.sleep(60000);
+            } catch (InterruptedException ex) {
+                Logger.getLogger(ConnectUrl.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            doc = jsoupConnectTuoiTrePost1(url, pageCount);
+        }
+        return doc;
+    }
+
+    private void changeCookie(boolean change) {
+        if (change == true) {
+            change = false;
+            cookiename = "a";
+            cookievalue = "1";
+        } else {
+            change = true;
+            cookiename = "b";
+            cookievalue = "2";
+        }
     }
 }

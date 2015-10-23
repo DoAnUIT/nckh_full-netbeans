@@ -25,8 +25,6 @@ public class ParentCmtThanhNien extends ConnectUrl implements IParentCmt {
         Document doc = null;
 
         doc = jsoupConnect(article.getUrl());
-        if(doc == null)
-            return null;
 
         Element meta = doc.select("#posturl").first();
         String tempt = meta.attr("value");

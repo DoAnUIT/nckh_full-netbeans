@@ -28,113 +28,136 @@ import WebLayer.ArticleTuoiTre;
 import WebLayer.ParentCmtTuoiTre;
 import WebLayer.SubCmtTuoiTre;
 import java.util.LinkedList;
+import WebLayer.ThreadInsert;
+import WebLayer.ThreadUpdate;
+
+class Insert extends Thread {
+//<editor-fold defaultstate="collapsed" desc="code inside">
+
+    String lurl[] = {"http://www.thanhnien.com.vn", "http://vnexpress.net", "http://tuoitre.vn"};
+
+    Calendar calendar = new GregorianCalendar();
+    Timestamp lasttime = null;
+    Timestamp newtime = null;
+
+    String threadName = null;
+    String username = null;
+    String password = null;
+
+    List<ThreadInsert> listIns = new ArrayList<ThreadInsert>();
+
+    Thread t = null;
+
+    Insert(String threadName, String username, String password) {
+        this.threadName = threadName;
+        this.username = username;
+        this.password = password;
+        this.setName("Thread " + threadName );
+        System.out.println("Creating " + threadName);
+
+    }
+
+    @Override
+    public void run() {
+
+        System.out.println("Running " + threadName);
+
+        calendar.set(Calendar.MINUTE, 0);
+        calendar.set(Calendar.SECOND, 0);
+        calendar.set(Calendar.HOUR_OF_DAY, 0);
+
+        calendar.set(Calendar.DAY_OF_MONTH, 1);
+        calendar.set(Calendar.MONTH, 10 - 1);
+
+        lasttime = new Timestamp(calendar.getTimeInMillis());
+
+        calendar.set(Calendar.DAY_OF_MONTH, 23);
+        calendar.set(Calendar.MONTH, 10 - 1);
+
+        newtime = new Timestamp(calendar.getTimeInMillis());
+         // 0h ngay 10.7 den 15h ngay 9.10
+
+        //insert
+        for (String url : lurl) {
+            System.out.println("Bắt đầu insert : " + url + "\n");
+            listIns.add(new ThreadInsert(username, password, url, lasttime, newtime));
+        }
+    }
+
+    @Override
+    public void start() {
+        System.out.println("Starting " + threadName);
+        if (t == null) {
+            t = new Thread(this, threadName);
+            t.start();
+        }
+    }
+//</editor-fold>
+}
+
+class Update extends Thread {
+
+//<editor-fold defaultstate="collapsed" desc="code inside">
+    private Thread t = null;
+    private String threadName = null;
+    private String username = null;
+    private String password = null;
+
+    List<ThreadUpdate> listThreadUpdate = new ArrayList<ThreadUpdate>();
+    ArticleObject artTN = null;
+    ArticleObject artTT = null;
+    ArticleObject artVNE = null;
+
+    UpdateTimeBUS upBUS = null;
+    List<Integer> listUpdateType = null;
+
+    Update(String threadName, String username, String password) {
+        this.threadName = threadName;
+        this.username = username;
+        this.password = password;
+        artTN = new ArticleThanhNien(username, password);
+        artTT = new ArticleTuoiTre(username, password);
+        artVNE = new ArticleVnexpress(username, password);
+        upBUS = new UpdateTimeBUS(username, password);
+        listUpdateType = upBUS.GetListTypeUpdate();
+        this.setName("Thread " + threadName);
+        System.out.println("Creating " + threadName);
+
+    }
+
+    public void run() {
+
+        System.out.println("Running " + threadName);
+
+        for (int i = 0; i < listUpdateType.size() - 1; i++) {
+            listThreadUpdate.add(new ThreadUpdate(username, password, listUpdateType.get(i), artTN, artTT, artVNE));
+
+            System.out.println("update " + listUpdateType.get(i));
+        }
+    }
+
+    public void start() {
+        System.out.println("Starting " + threadName);
+        if (t == null) {
+            t = new Thread(this, threadName);
+            t.start();
+        }
+    }
+//</editor-fold>
+}
 
 public class main {
 
     public static void main(String[] args) throws IOException, NamingException, SQLException {
         // TODO Auto-generated method stub
-//        String username = "nhat";
-//        String password = "mysql!@3";
-////        IArticle ar = new ArticleVnexpress();
-////        IParentComment parComment = new ParentCmtVnexpress();
-////        ISubComment subComment = new SubCmtVnexpress();
-//
-////        IArticle ar = new ArticleTuoiTre();
-////        IParentComment parComment = new ParentCmtTuoiTre();
-////        ISubComment subComment = new SubCmtTuoiTre();
-//
-//        ArticleObject ar = new ArticleThanhNien();
-//        IParentComment parComment = new ParentCmtThanhNien();
-//        ISubComment subComment = new SubCmtThanhNien();
-//        List<ParentCmtDTO> arrayParentCmt = null;
-//        List<SubCmtDTO> arraySubcmt = null;
-//
-//        List<Integer> parentIDHasSub = new ArrayList<Integer>();
-//        //String url = "http://vnexpress.net";
-//        String url = "http://www.thanhnien.com.vn";
-//        //String url = "http://tuoitre.vn/";
-//
-//        Calendar calendar = new GregorianCalendar();
-//        calendar.set(Calendar.MINUTE, 0);
-//        calendar.set(Calendar.SECOND, 0);
-//        calendar.set(Calendar.HOUR_OF_DAY, 11);
-//        calendar.set(Calendar.DAY_OF_MONTH, calendar.get(Calendar.DAY_OF_MONTH));
-//        Timestamp newtime = new Timestamp(calendar.getTimeInMillis());
-//
-//        //calendar.set(Calendar.DAY_OF_MONTH, calendar.get(Calendar.DAY_OF_MONTH));
-//        calendar.set(Calendar.HOUR_OF_DAY, 1);
-//        Timestamp lasttime = new Timestamp(calendar.getTimeInMillis());
-//        List<ArticleDTO> larticle = ar.getNewsOfEachMenuDependOnTime(url, newtime, lasttime);
-//
-////        for (int i = 0; i < larticle.size(); i++) {
-////            System.out.println(
-////                    "ObjectID : " + larticle.get(i).getObjectID() +
-////                   "\nTitle : " + larticle.get(i).getTitle() + "\nURL : " + larticle.get(i).getUrl() + "\nCategory : "
-////                    + larticle.get(i).getIDTableCategory() + "\nFb like : " + larticle.get(i).facebook.getFBLike());
-////        }
-//        //String a = "http://vnexpress.net/photo/thoi-su/dan-dai-bac-truoc-gio-khai-hoa-mung-quoc-khanh-3272468.html";
-//        //String a = "http://vnexpress.net/tin-tuc/thoi-su/chanh-long-vi-biet-danh-xa-an-may-3274793.html";
-//        //String a = "http://tuoitre.vn/tin/phap-luat/20150510/vu-kien-neo-xe-ca-tiep-tuc-bi-toa-neo-ho-so/745056.html";
-////        String a = "http://www.thanhnien.com.vn/giao-duc/con-bi-duoi-hoc-vi-me-len-facebook-che-dong-phuc-cua-truong-605950.html";
-////        ArticleDTO article = ar.getArticleInformation(a);
-////        if (article != null) {
-////            System.out.println("Time : " + article.getArticleDate() + "\nObjectId : " + article.getObjectID() + "\nTitile :"
-////                    + article.getTitle() + "\nURL : " + article.getUrl() + "\nFacebook Like : "
-////                    + article.facebook.getFBLike() + "\nFacebook Comment : " + article.facebook.getFBCmt()
-////                    + "\nCategory : " + article.getIDTableCategory());
-////            System.out.println();
-////
-////        }
-//        ArticleBUS artBUS = new ArticleBUS(username, password);
-//        artBUS.insert(larticle);
-//
-//        System.out.println("Parent Comment : \n");
-//
-//        List<ParentCmtDTO> temptPar = null;
-//        List<SubCmtDTO> temptSub = null;
-//        
-//
-//        for (ArticleDTO article : larticle) {
-//            temptPar = parComment.getContentParentComment(article, parentIDHasSub);
-//            if (temptPar != null) {
-//                if (arrayParentCmt != null) {
-//                    arrayParentCmt.addAll(temptPar);
-//                } else {
-//                    arrayParentCmt = temptPar;
-//                }
-//
-//                temptSub = subComment.getContentSubComment(article, parentIDHasSub);
-//                if (temptSub != null) {
-//                    if (arraySubcmt != null) {
-//                        arraySubcmt.addAll(temptSub);
-//                    } else {
-//                        arraySubcmt = temptSub;
-//                    }
-//                }
-//                parentIDHasSub.clear();
-//            }
-//        }
-////        arrayParentCmt = parComment.getContentParentComment(article, parentIDHasSub);
-////        for (int i = 0; i < arrayParentCmt.size(); i++) {
-////            System.out.println("IDTableArticle : " + arrayParentCmt.get(i).getIDTableArticle() + "\nParentID : "
-////                    + arrayParentCmt.get(i).getParentID() + "\nLike : " + arrayParentCmt.get(i).getCmtLike() + "\nContent : "
-////                    + arrayParentCmt.get(i).getContent());
-////            System.out.println();
-////        }
-//        ParentCmtBUS parBUS = new ParentCmtBUS(username, password);
-//        parBUS.insert(arrayParentCmt);
-//        System.out.println("\nSub Comment :\n");
-//
-////        arraySubcmt = subComment.getContentSubComment(article, parentIDHasSub);
-////        for (int i = 0; i < arraySubcmt.size(); i++) {
-////            System.out.println("ID : " + arraySubcmt.get(i).getChildID() + "\nParentID : " + arraySubcmt.get(i).getParentID()
-////                    + "\nLike : " + " " + arraySubcmt.get(i).getCmtLike() + "\nContent : " + arraySubcmt.get(i).getContent());
-////            System.out.println();
-////        }
-//        SubCmtBUS subBus = new SubCmtBUS(username, password);
-//        subBus.insert(arraySubcmt);
-        
-        System.out.println("Finished");
+        String username = "nhat";
+        String password = "mysql!@3";
+
+        Insert insert = new Insert("Insert", username, password);
+        insert.start();
+
+        Update update = new Update("Update", username, password);
+        update.start();
     }
 
 }

@@ -25,21 +25,29 @@ public class ArticleBUS {
     // List<Integer> updateList = new ArrayList(Arrays.asList(144, 48, 120, 28, 28, -1));
     private UpdateTimeBUS udBUS = null;
     
+    
 
+     private static ArticleBUS artBUS = null;
     public ArticleBUS() {
     }
 
     // ok
-    public ArticleBUS(String username, String password) throws SQLException {
+    private ArticleBUS(String username, String password) throws SQLException {
         this.username = username;
         this.password = password;
         artDAO = new ArticleDAO(username, password);
         udBUS = new UpdateTimeBUS(username, password);
 
     }
+    
+    public static ArticleBUS getInstance(String username, String password) throws SQLException{
+        if(artBUS == null)
+            artBUS = new ArticleBUS(username, password);
+        return artBUS;
+    }
 
-    // ok
-    public synchronized boolean insertArticle(ArticleDTO art) {
+        // ok
+    public  boolean insertArticle(ArticleDTO art) {
         int maxIDTableArticle = getMaxIDTableArticle();
         art.setIDTableArticle(maxIDTableArticle + 1);
         art.setIDTableUpdateTime(1);
@@ -59,7 +67,7 @@ public class ArticleBUS {
         return artDAO.updateArticle(art);
     }
 
-    public synchronized int getMaxIDTableArticle() {
+    public int getMaxIDTableArticle() {
         return artDAO.getMaxIDTableArticle();
     }
 
@@ -76,7 +84,7 @@ public class ArticleBUS {
     }
 
     // working with list
-    public boolean insert(ArticleDTO art) {
+    public synchronized boolean insert(ArticleDTO art) {
         if (isArticleExistsForInsert(art) == 0) {
             if (!insertArticle(art)) {
                 System.out.println("insert article vao database that bai");
@@ -91,22 +99,13 @@ public class ArticleBUS {
 
     public boolean update(ArticleDTO art) {
 
-        if (isArticleExistsForUpdate(art) == 1) {
+       // if (isArticleExistsForUpdate(art) == 1) {
             if (updateArticle(art) == false) {
                 System.out.println("Cap nhat article vao database that bai");
                 return false;
             } else {
                 return true;
             }
-
-        } else {
-            if (!insertArticle(art)) {
-                System.out.println("Cap nhat article vao database that bai");
-                return false;
-            } else {
-                return true;
-            }
-        }
     }
 
 }

@@ -20,7 +20,7 @@ declare a int;
 select max(IDTableArticle) into a from ARTICLE;
 set maxIDTableArticle :=a ;
 end//
-
+ drop procedure updatearticle;
 delimiter //
 create procedure updateArticle(IDTableArticle int, IDTableUpdateTime int, CountOfUpdate int, FbLike int, FbCmt int,
 	FbShare int, ArticleLike int)
@@ -32,6 +32,7 @@ set a.IDTableUpdateTime = if(a.IDTableUpdateTime <> IDTableUpdateTime,IDTableUpd
 	a.FbCmt = if(a.FbCmt <> FbCmt, FbCmt,a.FbCmt), 
     a.FbShare = if(a.FbShare <> FbShare,FbShare,a.FbShare),
     a.ArticleLike = if(a.ArticleLike <> ArticleLike,ArticleLike,a.ArticleLike)
+    
 where a.IDTableArticle = IDTableArticle;
 end//
 
@@ -151,6 +152,12 @@ declare a int;
 select max(IDTableSubCmt) into a from SUBCMT;
 set maxid := a; 
 end//
-
+ -- -------------------- Nhon -------------------------
+ delimiter //
+create procedure GetTableUpdateTime ( IN idTable int)
+begin
+SELECT * FROM updatetime
+WHERE updatetime.IDTableUpdateTime = idTable;
+end//
 
 delimiter ;

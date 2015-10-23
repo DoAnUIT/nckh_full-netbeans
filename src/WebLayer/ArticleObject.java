@@ -40,6 +40,7 @@ public abstract class ArticleObject extends ConnectUrl {
     protected IParentCmt parCmt = null;
     protected ISubCmt subCmt = null;
     private int count = 0;
+    
 
     // count
     public void setCount(int a){
@@ -67,9 +68,7 @@ public abstract class ArticleObject extends ConnectUrl {
 
         FacebookDTO fb = new FacebookDTO();
         String json = jsoupConnectJson(url);
-        if (json == null) {
-            return null;
-        }
+        
         JsonParser parser = new JsonParser();
 
         JsonElement element = parser.parse(json);
@@ -108,23 +107,14 @@ public abstract class ArticleObject extends ConnectUrl {
     }
 
     protected void insertDatabase(ArticleDTO art) throws SQLException {
-        ArticleBUS artBUS = new ArticleBUS(username, password);
-        ParentCmtBUS parBUS = new ParentCmtBUS(username, password);
-        SubCmtBUS subBUS = new SubCmtBUS(username, password);
+        ArticleBUS artBUS =  ArticleBUS.getInstance(username, password);
+        ParentCmtBUS parBUS =  ParentCmtBUS.getInstance(username, password);
+        SubCmtBUS subBUS =  SubCmtBUS.getInstance(username, password);
 
         // insert art to database => art have idtablearticle
         // nếu đã tồn tại thì return
         count++;
         checkAmountArticleToSleep(count);
-//        if (!artBUS.insertArticle(art)) {
-//            while (!artBUS.insertArticle(art)) {                    
-//                artBUS.insertArticle(art);
-//                System.out.println("synchronized dc xu ly.");
-//            }
-//        }
-//        if (artBUS.isArticleExistsForInsert(art) != 0) {
-//            return;
-//        }
         if (!artBUS.insert(art)) {
             return;
         }
@@ -149,17 +139,20 @@ public abstract class ArticleObject extends ConnectUrl {
         temptPar = null;
         temptSub = null;
         parentIDHasSub.clear();
+//          try {
+//            Thread.sleep(3000);
+//        } catch (InterruptedException ex) {
+//            Logger.getLogger(ConnectUrl.class.getName()).log(Level.SEVERE, null, ex);
+//        }
 
     }
 
     protected void updateDatabase(ArticleDTO art) throws SQLException {
-        ArticleBUS artBUS = new ArticleBUS(username, password);
-        ParentCmtBUS parBUS = new ParentCmtBUS(username, password);
-        SubCmtBUS subBUS = new SubCmtBUS(username, password);
+        ArticleBUS artBUS =  ArticleBUS.getInstance(username, password);
+        ParentCmtBUS parBUS =  ParentCmtBUS.getInstance(username, password);
+        SubCmtBUS subBUS =  SubCmtBUS.getInstance(username, password);
 
-        synchronized(this){
         count++;
-        }
         checkAmountArticleToSleep(count);
         // update art to database 
         if (!artBUS.update(art)) {
@@ -181,11 +174,16 @@ public abstract class ArticleObject extends ConnectUrl {
         temptPar = null;
         temptSub = null;
         parentIDHasSub.clear();
+//          try {
+//            Thread.sleep(3000);
+//        } catch (InterruptedException ex) {
+//            Logger.getLogger(ConnectUrl.class.getName()).log(Level.SEVERE, null, ex);
+//        }
 
     }
 
     private void checkAmountArticleToSleep(int count) {
-        if (count % 250 == 0) {
+        if (count % 200 == 0) {
             //count = 0;
             if (count % 1000 == 0) {
                 count = 0;
@@ -199,7 +197,7 @@ public abstract class ArticleObject extends ConnectUrl {
 //</editor-fold>
             } else {
                 //<editor-fold defaultstate="collapsed" desc="ngu 5 phut">
-                System.out.println("Lay du 250 bai, Thread insert ngu 5 minutes");
+                System.out.println("Lay du 200 bai, Thread insert ngu 5 minutes");
                 try {
                     Thread.sleep(300000);
                 } catch (InterruptedException ex) {

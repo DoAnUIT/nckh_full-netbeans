@@ -39,20 +39,20 @@ public class ParentCmtDAO extends DataSource {
             call.setString(5, par.getContent());
             //`   
             call.execute();
-            System.out.println("Insert Parent cmt thanh cong");
+           // System.out.println("Insert Parent cmt thanh cong");
             return true;
 
         } catch (Exception e) {
             // TODO: handle exception
-            if (numberInsert >= 5) {
-                numberInsert = 0;
-                System.out.println(e.getMessage());
-                return false;
-            }
-            numberInsert++;
-            par.setIDTableParentCmt(par.getIDTableParentCmt() + 1);
-            insertParentCmt(par);
-            //System.out.println(e.getMessage());
+//            if (numberInsert >= 5) {
+//                numberInsert = 0;
+//                System.out.println(e.getMessage());
+//                return false;
+//            }
+//            numberInsert++;
+//            par.setIDTableParentCmt(par.getIDTableParentCmt() + 1);
+//            insertParentCmt(par);
+            System.out.println(e.getMessage());
         } finally {
             try {
                 if (connection != null) {
@@ -94,14 +94,14 @@ public class ParentCmtDAO extends DataSource {
 
         } catch (Exception e) {
             // TODO: handle exception
-            if (numberUpdate >= 5) {
-                numberUpdate = 0;
-                System.out.println(e.getMessage());
-                return false;
-            }
-            numberUpdate++;
-            updateParentCmt(par);
-            //System.out.println(e.getMessage());
+//            if (numberUpdate >= 5) {
+//                numberUpdate = 0;
+//                System.out.println(e.getMessage());
+//                return false;
+//            }
+//            numberUpdate++;
+//            updateParentCmt(par);
+            System.out.println(e.getMessage());
         } finally {
             try {
                 if (connection != null) {

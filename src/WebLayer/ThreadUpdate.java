@@ -22,17 +22,22 @@ public class ThreadUpdate {
     ArticleObject artThanhNien = null;
     ArticleObject artTuoiTre = null;
 
-    public ThreadUpdate(String _user, String _pass, int _idType, ArticleObject artThanhNien
-                      , ArticleObject artVnExpress ,ArticleObject artTuoiTre) {
+    public ThreadUpdate(String _user, String _pass, int _idType, ArticleObject artThanhNien, ArticleObject artTuoiTre,
+            ArticleObject artVnexpress) {
         ArticleDAO tempArt = new ArticleDAO(_user, _pass);
         listArtToUpdate = new ArrayList<ArticleDTO>();
         UpdateTimeBUS udBUS = new UpdateTimeBUS(_user, _pass);
 
+//        this.artTuoiTre = new ArticleTuoiTre(_user, _pass);
+//        this.artThanhNien = new ArticleThanhNien(_user, _pass);
+//        this.artVnExpress = new ArticleVnexpress(_user, _pass);
         this.artTuoiTre = artTuoiTre;
         this.artThanhNien = artThanhNien;
-        this.artVnExpress = artVnExpress;
+        this.artVnExpress = artVnexpress;
+        
 
         updateNewsThread = new Thread(new Runnable() {
+            
             public void run() {
                 while (true) {
                     listArtToUpdate = tempArt.getArticleDTOByUpdateType(_idType);
@@ -47,7 +52,7 @@ public class ThreadUpdate {
                     // khi da lay xong tung loai, set bien dem so bai lay duoc count ve lai 0
                     System.out.println("Thread " + _idType + " TN :" + artThanhNien.getCount() + " VNE : "+artVnExpress.getCount() +
                             "  TT : " + artTuoiTre.getCount());
-                    
+                    _art = null;
                     Timestamp ttTimestamp = udBUS.GetTimeUpdateByID(_idType).getQuantumTime();
                     long timeSleep = (ttTimestamp.getHours() * 60 * 60 + ttTimestamp.getMinutes() * 60 + ttTimestamp.getSeconds()) * 1000;
                     try {
@@ -63,10 +68,12 @@ public class ThreadUpdate {
         });
 
         updateNewsThread.start();
+        updateNewsThread.setName("Update loai " + _idType);
     }
 
+    
     public void updateArticle(ArticleDTO _artUp) {
-        // ArticleDTO result = new ArticleDTO();
+         //ArticleDTO result = new ArticleDTO();
         int _idMaga = _artUp.getIDTableMagazine();
 
         //<editor-fold defaultstate="collapsed" desc="switch de chon _art phu hop">
@@ -77,7 +84,7 @@ public class ThreadUpdate {
             }
             break;
             case 2: {
-                //_art = new ArticleVnexpress(_user, _pass);
+               // _art = new ArticleVnexpress(_user, _pass);
                 _art = artVnExpress;
             }
             break;
@@ -89,6 +96,7 @@ public class ThreadUpdate {
         }
 //</editor-fold>
 
+        synchronized(_art){
         FacebookDTO fbData = null;
         try {
             fbData = _art.getContentOfFacebook(_artUp.getUrl());
@@ -103,6 +111,7 @@ public class ThreadUpdate {
         } catch (SQLException ex) {
             System.out.println(ex.toString());
             System.out.println("can not update article");
+        }
         }
 
     }

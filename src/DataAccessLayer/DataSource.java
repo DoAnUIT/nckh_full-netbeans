@@ -9,6 +9,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import com.mchange.v2.c3p0.*;
 import java.beans.PropertyVetoException;
+import java.sql.Statement;
 
 import javax.xml.ws.BindingProvider;
 
@@ -20,6 +21,8 @@ public class DataSource {
     private ComboPooledDataSource cpds = null;
     protected static String username = null;
     protected static String password = null;
+    
+    private Statement st = null;
 
     public DataSource() {
     }
@@ -31,15 +34,15 @@ public class DataSource {
 
             cpds = new ComboPooledDataSource();
             cpds.setDriverClass("com.mysql.jdbc.Driver");
-            //cpds.setJdbcUrl("jdbc:mysql://localhost:3306/nckh?useUnicode=true");
-            cpds.setJdbcUrl("jdbc:mysql://localhost:3306/nckh?characterEncoding=UTF-8");
+            //cpds.setJdbcUrl("jdbc:mysql://localhost:3306/nckh?useUnicode=true");&characterEncoding=UTF-8
+            cpds.setJdbcUrl("jdbc:mysql://localhost:3306/nckh_test_2?useUnicode=true");
             cpds.setUser(username);
             cpds.setPassword(password);
 
             // the settings below are optional -- c3p0 can work with defaults
             
             cpds.setAcquireIncrement(5);
-            cpds.setMaxPoolSize(20);
+            cpds.setMaxPoolSize(50);
             cpds.setMaxStatements(180);
             
         } catch (PropertyVetoException ex) {
@@ -57,6 +60,9 @@ public class DataSource {
         Connection a = null;
         try {
             a= this.cpds.getConnection();
+            st = a.createStatement();
+            st.execute("SET NAMES utf8mb4 COLLATE utf8mb4_unicode_ci");
+            
         } catch (SQLException ex) {
             Logger.getLogger(DataSource.class.getName()).log(Level.SEVERE, null, ex);
         }

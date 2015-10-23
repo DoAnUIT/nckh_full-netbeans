@@ -1,25 +1,25 @@
-﻿-- drop database nckh;
-create database nckh;
+
+create database nckh default character set utf8mb4;
 use nckh;
 
 create table MAGAZINE(
 	IDTableMagazine int,
     Magazine varchar(40),
     primary key (IDTableMagazine)
-);
+)character set utf8mb4;
 
 create table UPDATETIME(
 	IDTableUpdateTime int not null,
 	QuantumTime time,
     MaxRepeated int,
 	primary key (IDTableUpdateTime)
-);
+)character set utf8mb4;
 
 create table CATEGORY(
 	IDTableCategory int,
     Category varchar(30),
     primary key (IDTableCategory)
-);
+)character set utf8mb4;
 
 create table ARTICLE(
 	IDTableArticle int not null,
@@ -27,7 +27,7 @@ create table ARTICLE(
     IDTableMagazine int,
     IDTableCategory int,
     CountOfUpdate int,
-	ArticleDate TIMESTAMP,
+	ArticleDate TIMESTAMP null default null,
 	Title nvarchar(300) ,
 	UrlPicture varchar(300),
 	Url varchar(300),
@@ -41,7 +41,7 @@ create table ARTICLE(
     constraint foreign key FK_Article_UpdateTime(IDTableUpdateTime) references UPDATETIME(IDTableUpdateTime),
 				foreign key FK_Article_Magazine (IDTableMagazine) references MAGAZINE(IDTableMagazine),
                 foreign key FK_Article_Category (IDTableCategory) references CATEGORY(IDTableCategory)
-)character set utf8;
+)character set utf8mb4;
 
 create table PARENTCMT(
 	IDTableParentCmt int not null,  
@@ -51,7 +51,7 @@ create table PARENTCMT(
 	Content text,
 	primary key (IDTableParentCmt),
 	constraint foreign key FK_parentCmt_Article (IDTableArticle) references ARTICLE(IDTableArticle)
-);
+)character set utf8mb4;
 
 create table SUBCMT(
 	IDTableSubCmt int,
@@ -61,7 +61,7 @@ create table SUBCMT(
 	Content text,
 	primary key (IDTableSubCmt),
 	constraint foreign key FK_subcomment_parentcmt(IDTableParentCmt) references PARENTCMT(IDTableParentCmt)
-);
+)character set utf8mb4;
 
 
 -- Insert value of these table : category, magazine, updatetime
@@ -75,6 +75,8 @@ insert into updatetime values (2, "0:30:0", 48);
 insert into updatetime values (3, "1:0:0", 120);
 insert into updatetime values (4, "6:0:0", 28);
 insert into updatetime values (5, "12:0:0", 28);
+insert into updatetime values (6, "0:0:0", 0);
+
 
 insert into category values (1, "Thời sự");
 insert into category values (2, "Thế giới");

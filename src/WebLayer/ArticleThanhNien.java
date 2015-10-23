@@ -89,11 +89,7 @@ public class ArticleThanhNien extends ArticleObject {
         art.setIDTableCategory(cate.getValue());
 //</editor-fold>
         Document doc = jsoupConnect(source_url);
-        if(doc == null)
-            doc = jsoupConnect(source_url);
-        if (doc == null) {
-            return null;
-        }
+        
 
         // set article url
         art.setUrl(source_url);
@@ -213,13 +209,11 @@ public class ArticleThanhNien extends ArticleObject {
             menuUrl = arrayMenu.get(i) + "/trang-";
             
             pageCount = 0;
-            pageCount = 183;
+            pageCount = 190;
             outLoop:
             while (true) {
                 doc = jsoupConnect(String.format(menuUrl + "%d.html", pageCount));
-                if (doc == null) {
-                    continue;
-                }
+                
                 Elements temptElements = null;
                 Element temptElement = null;
 

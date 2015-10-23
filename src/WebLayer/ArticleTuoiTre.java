@@ -50,11 +50,7 @@ public class ArticleTuoiTre extends ArticleObject {
         String url = null;
 
         Document doc = jsoupConnect(source_url);
-        if(doc == null)
-            doc = jsoupConnect(source_url);
-        if (doc == null) {
-            return null;
-        }
+        
 
         // get category id. and convert it to number
         //<editor-fold defaultstate="collapsed" desc="category id">
@@ -262,10 +258,6 @@ public class ArticleTuoiTre extends ArticleObject {
 
                 doc = jsoupConnectTuoiTrePost(menuUrl, pageCount);
                 
-                if (doc == null) {
-                    continue;
-                }
-
                 //<editor-fold defaultstate="collapsed" desc="class highligh">
                 //temptElement = doc.select("#newhot_most_content").first();
                 temptElements = doc.select(".block-left");

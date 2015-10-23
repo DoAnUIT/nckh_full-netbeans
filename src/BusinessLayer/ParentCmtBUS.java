@@ -19,14 +19,21 @@ public class ParentCmtBUS {
     ParentCmtDAO pcmtDAO;
     private String username;
     private String password;
+    private static ParentCmtBUS parentBUS = null;
 
-    public ParentCmtBUS(String username, String password) throws SQLException {
+    private ParentCmtBUS(String username, String password) throws SQLException {
         this.username = username;
         this.password = password;
         pcmtDAO = new ParentCmtDAO(username, password);
     }
+    
+    public static ParentCmtBUS getInstance(String username, String password) throws SQLException{
+        if(parentBUS == null)
+            parentBUS = new ParentCmtBUS(username, password);
+        return parentBUS;
+    }
 
-    public synchronized boolean insertParentCmt(ParentCmtDTO par) {
+    public  boolean insertParentCmt(ParentCmtDTO par) {
         // generated idtable parent cmt
         int maxid = getMaxIDTableParentCmt();
         par.setIDTableParentCmt(maxid + 1);
@@ -37,7 +44,7 @@ public class ParentCmtBUS {
         return pcmtDAO.updateParentCmt(par);
     }
 
-    public synchronized int getMaxIDTableParentCmt() {
+    public int getMaxIDTableParentCmt() {
         return pcmtDAO.getMaxIDTableParentCmt();
     }
 
@@ -47,7 +54,7 @@ public class ParentCmtBUS {
 
     // working with list
     // kiem tra co ton tai hay khong roi moi them vao co so du lieu
-    public boolean insert(List<ParentCmtDTO> lpar) {
+    public synchronized boolean insert(List<ParentCmtDTO> lpar) {
         for (ParentCmtDTO par : lpar) {
             if (isParentCmtExists(par) == 0) {
                 if (insertParentCmt(par) == false) {
@@ -59,7 +66,7 @@ public class ParentCmtBUS {
         return true;
     }
 
-    public boolean update(List<ParentCmtDTO> lpar) {
+    public synchronized boolean update(List<ParentCmtDTO> lpar) {
         for (ParentCmtDTO par : lpar) {
             if (isParentCmtExists(par) == 1) {
                 if (updateParentCmt(par) == false) {

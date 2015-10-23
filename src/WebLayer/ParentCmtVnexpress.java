@@ -33,8 +33,7 @@ public class ParentCmtVnexpress extends ConnectUrl implements IParentCmt {
                 + article.getIDTableCategory();
 
         json = jsoupConnectJson(url);
-        if(json == null)
-            return null;
+        
        
         // parse json
         JsonParser parser = new JsonParser();

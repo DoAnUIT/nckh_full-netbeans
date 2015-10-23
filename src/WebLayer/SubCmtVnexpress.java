@@ -41,10 +41,7 @@ public class SubCmtVnexpress extends ConnectUrl implements ISubCmt {
         for (int i = 0; i < parentcomment.size(); i++) {
 
             String json = jsoupConnectJson(String.format(url + "%d", parentcomment.get(i)));
-            if(json == null)
-                return null;
-            
-
+                      
             // parse json
             JsonParser parser = new JsonParser();
             JsonElement element = parser.parse(json);

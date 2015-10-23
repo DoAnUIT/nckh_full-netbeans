@@ -30,8 +30,6 @@ public class ParentCmtTuoiTre extends ConnectUrl implements IParentCmt {
 
         String url = source_url + article.getObjectID();
         doc = jsoupConnect(url);
-        if(doc == null)
-            return null;
 
         Elements datas = doc.select(".lst-comment > ul > li"); // contain parent and sub
         Element data = null;

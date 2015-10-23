@@ -67,7 +67,7 @@ public class WebLayer {
     public void update(String magazineUrl, int IDTableUpdate) throws SQLException, IOException {
         List<ArticleDTO> lOldArt = new ArrayList<ArticleDTO>();
         ArticleObject artObject = null;
-        ArticleBUS artBUS = new ArticleBUS(username, password);
+        ArticleBUS artBUS =  ArticleBUS.getInstance(username, password);
 
         // thanh nien :1, vnexpress : 2, tuoitre : 3
         //<editor-fold defaultstate="collapsed" desc="chon lấy những bài báo cần update đưa vào lOldArt">
