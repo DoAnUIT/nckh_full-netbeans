@@ -63,7 +63,7 @@ public abstract class ArticleObject extends ConnectUrl {
     public abstract int getArticleLike(int objectID);
 
     // facebook
-    protected FacebookDTO getContentOfFacebook(String source_url) throws MalformedURLException, IOException {
+    public FacebookDTO getContentOfFacebook(String source_url) throws MalformedURLException, IOException {
         String url = apiFBStart + source_url + apiFBEnd;
 
         FacebookDTO fb = new FacebookDTO();
@@ -78,6 +78,11 @@ public abstract class ArticleObject extends ConnectUrl {
 
         Gson gson = new Gson();
         fb = gson.fromJson(data, FacebookDTO.class);
+        try {
+            Thread.sleep(4000);
+        } catch (InterruptedException ex) {
+            Logger.getLogger(ArticleObject.class.getName()).log(Level.SEVERE, null, ex);
+        }
         //System.out.println("Parse fb successful");
         return fb;
         // khong quan trong

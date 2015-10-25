@@ -12,6 +12,7 @@ package BusinessLayer;
 import DTO.*;
 import DataAccessLayer.*;
 import java.sql.SQLException;
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Arrays;
@@ -81,6 +82,10 @@ public class ArticleBUS {
 
     public int isArticleExistsForUpdate(ArticleDTO art) {
         return artDAO.isArticleExistsForUpdate(art);
+    }
+    
+    public Timestamp getMaxArticleTime(){
+        return artDAO.getMaxArticleTime();
     }
 
     // working with list

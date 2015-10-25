@@ -165,16 +165,16 @@ public class ArticleVnexpress extends ArticleObject {
 
         int count = 0;
         String tempt = "";
-        String data = null;
-        try {
-            data = IOUtils.toString(new URL(url).openStream(), "UTF-8");
-        } catch (MalformedURLException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        } catch (IOException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        }
+        String data = jsoupConnectJson(url);
+//        try {
+//            data = IOUtils.toString(new URL(url).openStream(), "UTF-8");
+//        } catch (MalformedURLException e) {
+//            // TODO Auto-generated catch block
+//            e.printStackTrace();
+//        } catch (IOException e) {
+//            // TODO Auto-generated catch block
+//            e.printStackTrace();
+//        }
         int index = data.indexOf(";;");
         for (int i = index; i > 0; i--) {
             if (data.charAt(i) == ' ') {
@@ -191,6 +191,7 @@ public class ArticleVnexpress extends ArticleObject {
     }
 
     // Get menu Web
+    @Override
     public List<String> getMenuWeb(String source_url) {
         Document doc = jsoupConnect(source_url);
         List<String> arrayMenu = new ArrayList<String>();

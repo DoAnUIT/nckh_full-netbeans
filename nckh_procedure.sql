@@ -20,7 +20,16 @@ declare a int;
 select max(IDTableArticle) into a from ARTICLE;
 set maxIDTableArticle :=a ;
 end//
- drop procedure updatearticle;
+ 
+ delimiter //
+ create procedure getMaxArticleDate(out maxArticleDate TIMESTAMP)
+ begin
+ declare a timestamp;
+ select max(articledate) into a from article;
+ set maxArticleDate := a;
+ end//
+ 
+
 delimiter //
 create procedure updateArticle(IDTableArticle int, IDTableUpdateTime int, CountOfUpdate int, FbLike int, FbCmt int,
 	FbShare int, ArticleLike int)

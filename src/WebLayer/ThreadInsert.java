@@ -7,16 +7,16 @@ public class ThreadInsert {
     String UserName;
     String Password;
     String URLMagazine;
-    Timestamp StartTimestamp;
-    Timestamp EndTimestamp;
+    Timestamp newtime;
+    Timestamp lasttime;
     
-    public ThreadInsert(String _userString, String _passString, String _url, Timestamp _start, Timestamp _end)
+    public ThreadInsert(String _userString, String _passString, String _url, Timestamp newtime, Timestamp lasttime)
     {
-        URLMagazine = _url;
-        UserName = _userString;
-        Password = _passString;
-        StartTimestamp = _start;
-        EndTimestamp = _end;
+        this.URLMagazine = _url;
+        this.UserName = _userString;
+        this.Password = _passString;
+        this.newtime = newtime;
+        this.lasttime = lasttime;
         ThreadInsertByTypeNews = new Thread(new Runnable() {
             public void run() {
                 InsertNewsByURL();
@@ -27,10 +27,10 @@ public class ThreadInsert {
     
     public void InsertNewsByURL()
     {
-        try {
+        try {//em set cái request o file nao
             //System.out.println("Start insert news in " + URLMagazine);
             WebLayer wl = new WebLayer(UserName, Password);
-            wl.insert(URLMagazine, EndTimestamp, StartTimestamp);
+            wl.insert(URLMagazine, newtime ,lasttime);
         } catch (Exception e) {
             System.out.println("Can not insert news in " + URLMagazine);
         }

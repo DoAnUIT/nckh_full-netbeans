@@ -39,39 +39,42 @@ public class TestUpdate {
         calendar.set(Calendar.MINUTE, 0);
         calendar.set(Calendar.SECOND, 0);
 
-        calendar.set(Calendar.HOUR_OF_DAY, 0);
-        calendar.set(Calendar.DAY_OF_MONTH, 10);
-        calendar.set(Calendar.MONTH, 7 - 1);
+        calendar.set(Calendar.HOUR_OF_DAY, 21);
+        calendar.set(Calendar.DAY_OF_MONTH, 31);
+        calendar.set(Calendar.MONTH, 10 - 1);
 
         Timestamp lasttime = new Timestamp(calendar.getTimeInMillis());
 
-        calendar.set(Calendar.HOUR_OF_DAY, 15);
-        calendar.set(Calendar.DAY_OF_MONTH, 23);
-        calendar.set(Calendar.MONTH, 10 - 1);
+        //calendar.set(Calendar.HOUR_OF_DAY, 15);
+        //calendar.set(Calendar.DAY_OF_MONTH, calendar.get(Calendar.DAY_OF_MONTH) + 1);
+        //calendar.set(Calendar.MONTH, 10 - 1);
+        calendar.set(Calendar.HOUR_OF_DAY, calendar.get(Calendar.HOUR_OF_DAY) + 8);
+
         Timestamp newtime = new Timestamp(calendar.getTimeInMillis());
 
+        System.out.println(lasttime);
+        System.out.println(newtime);
+
         // 0h ngay 10.7 den 15h ngay 9.10
-        String lurl[] = {"http://www.thanhnien.com.vn","http://vnexpress.net","http://tuoitre.vn"};
+        String lurl[] = {"http://www.thanhnien.com.vn", "http://vnexpress.net", "http://tuoitre.vn"};
         //String url = "http://vnexpress.net";
         //String url = "http://www.thanhnien.com.vn";
         // String url = "http://tuoitre.vn";
 
 //<editor-fold defaultstate="collapsed" desc="comment">
-       WebLayer wl = new WebLayer(username, password);
+        WebLayer wl = new WebLayer(username, password);
 
 //        for (String url : lurl) {
 //            System.out.println("\nBắt đầu update : " + url +"\n");
 //            wl.update(url, 1);
 //        }
 //</editor-fold>
-        
         //insert
-        List<ThreadInsert> listIns = new ArrayList<ThreadInsert>();
-        for (String url : lurl) {
-            System.out.println("\nBắt đầu insert : " + url + "\n");
-            listIns.add(new ThreadInsert(username, password, url, lasttime, newtime));
-        }
-
+//        List<ThreadInsert> listIns = new ArrayList<ThreadInsert>();
+//        for (String url : lurl) {
+//            System.out.println("\nBắt đầu insert : " + url + "\n");
+//            listIns.add(new ThreadInsert(username, password, url, lasttime, newtime));
+//        }
 //        UpdateTimeBUS upBUS = new UpdateTimeBUS(username, password);
 //        List<Integer> listUpdateType = upBUS.GetListTypeUpdate();
 ////        for (int i = 0; i < listUpdateType.size(); i++) {
@@ -102,7 +105,6 @@ public class TestUpdate {
 //             
 //             System.out.println("update " + listUpdateType.get(i));
 //        }
-        
         System.out.println("Finished");
 
     }

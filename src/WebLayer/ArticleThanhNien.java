@@ -209,7 +209,7 @@ public class ArticleThanhNien extends ArticleObject {
             menuUrl = arrayMenu.get(i) + "/trang-";
             
             pageCount = 0;
-            pageCount = 190;
+            
             outLoop:
             while (true) {
                 doc = jsoupConnect(String.format(menuUrl + "%d.html", pageCount));

@@ -56,7 +56,7 @@ create table PARENTCMT(
 create table SUBCMT(
 	IDTableSubCmt int,
 	IDTableParentCmt int not null, 
-	ChildID int not null unique, 
+	ChildID int not null , 
 	CmtLike int ,
 	Content text,
 	primary key (IDTableSubCmt),

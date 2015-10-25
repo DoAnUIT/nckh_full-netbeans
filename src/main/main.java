@@ -30,13 +30,15 @@ import WebLayer.SubCmtTuoiTre;
 import java.util.LinkedList;
 import WebLayer.ThreadInsert;
 import WebLayer.ThreadUpdate;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 class Insert extends Thread {
 //<editor-fold defaultstate="collapsed" desc="code inside">
 
     String lurl[] = {"http://www.thanhnien.com.vn", "http://vnexpress.net", "http://tuoitre.vn"};
 
-    Calendar calendar = new GregorianCalendar();
+    Calendar calendar = null;
     Timestamp lasttime = null;
     Timestamp newtime = null;
 
@@ -44,15 +46,19 @@ class Insert extends Thread {
     String username = null;
     String password = null;
 
+    ArticleBUS artBUS = null;
+
     List<ThreadInsert> listIns = new ArrayList<ThreadInsert>();
 
     Thread t = null;
 
-    Insert(String threadName, String username, String password) {
+    Insert(String threadName, String username, String password) throws SQLException {
         this.threadName = threadName;
         this.username = username;
         this.password = password;
-        this.setName("Thread " + threadName );
+        artBUS = ArticleBUS.getInstance(username, password);
+
+        this.setName("Thread " + threadName);
         System.out.println("Creating " + threadName);
 
     }
@@ -61,26 +67,45 @@ class Insert extends Thread {
     public void run() {
 
         System.out.println("Running " + threadName);
+        calendar = new GregorianCalendar();
 
-        calendar.set(Calendar.MINUTE, 0);
-        calendar.set(Calendar.SECOND, 0);
-        calendar.set(Calendar.HOUR_OF_DAY, 0);
+        while (true) {
+            //calendar = new GregorianCalendar();
+//            calendar.set(Calendar.MINUTE, 0);
+//            calendar.set(Calendar.SECOND, 0);
+//            calendar.set(Calendar.HOUR_OF_DAY, 0);
 
-        calendar.set(Calendar.DAY_OF_MONTH, 1);
-        calendar.set(Calendar.MONTH, 10 - 1);
+            // calendar.set(Calendar.DAY_OF_MONTH, 23);
+            // calendar.set(Calendar.MONTH, 10 - 1);
+            lasttime = artBUS.getMaxArticleTime();
+            if (lasttime == null) {
+                calendar.set(Calendar.MINUTE, 0);
+                calendar.set(Calendar.SECOND, 0);
+                calendar.set(Calendar.HOUR_OF_DAY, 0);
+                calendar.set(Calendar.DAY_OF_YEAR, calendar.get(Calendar.DAY_OF_YEAR) - 90);
+                lasttime = new Timestamp(calendar.getTimeInMillis());
+                calendar = new GregorianCalendar();
+            }
 
-        lasttime = new Timestamp(calendar.getTimeInMillis());
-
-        calendar.set(Calendar.DAY_OF_MONTH, 23);
-        calendar.set(Calendar.MONTH, 10 - 1);
-
-        newtime = new Timestamp(calendar.getTimeInMillis());
+            // calendar.set(Calendar.DAY_OF_MONTH, calendar.get(Calendar.DAY_OF_MONTH) + 1);
+            //  calendar.set(Calendar.MONTH, 10 - 1);
+            newtime = new Timestamp(calendar.getTimeInMillis());
          // 0h ngay 10.7 den 15h ngay 9.10
 
-        //insert
-        for (String url : lurl) {
-            System.out.println("Bắt đầu insert : " + url + "\n");
-            listIns.add(new ThreadInsert(username, password, url, lasttime, newtime));
+            //insert
+            for (String url : lurl) {
+                System.out.println("Bắt đầu insert : " + url + "\n");
+                listIns.add(new ThreadInsert(username, password, url, newtime,lasttime));
+            }
+
+            try {
+                lasttime = newtime;
+                calendar.set(Calendar.HOUR_OF_DAY, calendar.get(Calendar.HOUR_OF_DAY) + 8);
+                newtime = new Timestamp(calendar.getTimeInMillis());
+                Thread.sleep(8 * 3600000);
+            } catch (InterruptedException ex) {
+                Logger.getLogger(Insert.class.getName()).log(Level.SEVERE, null, ex);
+            }
         }
     }
 
@@ -157,7 +182,7 @@ public class main {
         insert.start();
 
         Update update = new Update("Update", username, password);
-        update.start();
+        //update.start();
     }
 
 }

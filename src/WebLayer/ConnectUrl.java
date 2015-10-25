@@ -6,11 +6,14 @@
 package WebLayer;
 
 import java.io.IOException;
+import java.net.URL;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import org.apache.commons.io.IOUtils;
 import org.jsoup.Connection;
 import org.jsoup.Connection.Response;
 import org.jsoup.Jsoup;
+import org.jsoup.helper.HttpConnection;
 import org.jsoup.nodes.Document;
 
 /**
@@ -20,7 +23,8 @@ import org.jsoup.nodes.Document;
 public class ConnectUrl {
 
     // connect jsou
-    private String userAgent = "Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/39.0.2171.71 Safari/537.36";
+    //private String userAgent = "Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/39.0.2171.71 Safari/537.36";
+    private String userAgent = "Mozilla/5.0 (Windows NT 6.3; WOW64; rv:39.0) Gecko/20100101 Firefox/39.0";
     private String cookiename = "a";
     private String cookievalue = "1";
     private boolean change = true;
@@ -53,7 +57,7 @@ public class ConnectUrl {
         doc = jsoupConnect1(source_url);
         while (doc == null) {
             try {
-                Thread.sleep(60000);
+                Thread.sleep(120000);
             } catch (InterruptedException ex) {
                 Logger.getLogger(ConnectUrl.class.getName()).log(Level.SEVERE, null, ex);
             }
@@ -68,26 +72,26 @@ public class ConnectUrl {
         changeCookie(change);
 
         try {
-            //json = IOUtils.toString(new URL(String.format(url + "%d", parentcomment.get(i))).openStream(), "UTF-8");
             response = Jsoup.connect(source_url).timeout(0)
-                    .userAgent(userAgent).cookie(cookiename, cookievalue)
+                    .userAgent(userAgent).validateTLSCertificates(true)//.cookie(cookiename, cookievalue)
                     .ignoreContentType(true)
                     .execute();
-            //return rp.body();
+             
         } catch (IOException e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
             return null;
         }
-
         return response.body();
+       
     }
     
     protected String jsoupConnectJson(String source_url){
         String json = jsoupConnectJson1(source_url);
         while (json == null) {
+            System.out.println("\n" + source_url + " error");
             try {
-                Thread.sleep(120000);
+                Thread.sleep(900000);
             } catch (InterruptedException ex) {
                 Logger.getLogger(ConnectUrl.class.getName()).log(Level.SEVERE, null, ex);
             }
@@ -119,7 +123,7 @@ public class ConnectUrl {
         doc = jsoupConnectTuoiTrePost1(url, pageCount);
         while(doc == null){
             try {
-                Thread.sleep(60000);
+                Thread.sleep(120000);
             } catch (InterruptedException ex) {
                 Logger.getLogger(ConnectUrl.class.getName()).log(Level.SEVERE, null, ex);
             }

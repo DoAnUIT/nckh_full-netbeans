@@ -30,19 +30,20 @@ public class ArticleDAO extends DataSource {
     public ArticleDAO() {
     }
 
-    public ArticleDAO(String username, String password){
-            this.username = username;
-            this.password = password;
-            numberInsert = 0;
-            numberUpdate = 0;
+    public ArticleDAO(String username, String password) {
+        this.username = username;
+        this.password = password;
+        numberInsert = 0;
+        numberUpdate = 0;
     }
 
     public boolean insertArticle(ArticleDTO art) {
         try {
             connection = DataSource.getInstance().getConnection();
-            while(connection == null)
+            while (connection == null) {
                 connection = DataSource.getInstance().getConnection();
-            
+            }
+
             call = connection.prepareCall("{call insertArticle(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)}");
 
             call.setInt("IDTableArticle", art.getIDTableArticle());
@@ -51,7 +52,7 @@ public class ArticleDAO extends DataSource {
             call.setInt("IDTableMagazine", art.getIDTableMagazine());
             call.setInt("IDTableCategory", art.getIDTableCategory());
             call.setInt("CountOfUpdate", art.getCountOfUpdate());
-            call.setTimestamp("ArticleDate",art.getArticleDate());
+            call.setTimestamp("ArticleDate", art.getArticleDate());
             call.setString("Title", art.getTitle());
             call.setString("UrlPicture", art.geturlPicture());
             call.setString("Url", art.getUrl());
@@ -103,12 +104,13 @@ public class ArticleDAO extends DataSource {
     public boolean updateArticle(ArticleDTO art) {
         try {
             connection = DataSource.getInstance().getConnection();
-            while(connection == null)
+            while (connection == null) {
                 connection = DataSource.getInstance().getConnection();
+            }
             call = connection.prepareCall("{call updateArticle(?,?,?,?,?,?,?)}");
 
             // (IDTableArticle int, IDTableUpdateTime int, CountOfUpdate int, FbLike int, FbCmt int,
-	//FbShare int, ArticleLikeupdateArticle int
+            //FbShare int, ArticleLikeupdateArticle int
             call.setInt("IDTableArticle", art.getIDTableArticle());
             call.setInt("IDTableUpdateTime", art.getIDTableUpdateTime());
             call.setInt("CountOfUpdate", art.getCountOfUpdate());
@@ -118,7 +120,7 @@ public class ArticleDAO extends DataSource {
             call.setInt("ArticleLike", art.getArticleLike());
 
             call.execute();
-            
+
             return true;
 
         } catch (Exception e) {
@@ -152,25 +154,24 @@ public class ArticleDAO extends DataSource {
         }
         return false;
     }
-    
-    public int getMaxIDTableArticle ()    {
+
+    public int getMaxIDTableArticle() {
         try {
             connection = DataSource.getInstance().getConnection();
-            while(connection == null)
+            while (connection == null) {
                 connection = DataSource.getInstance().getConnection();
-            
+            }
+
             call = connection.prepareCall("{call getMaxIDTableArticle(?)}");
-            
-            call.registerOutParameter(1,Types.INTEGER );
-            
+
+            call.registerOutParameter(1, Types.INTEGER);
+
             call.execute();
-            
+
             return call.getInt(1);
         } catch (SQLException ex) {
             Logger.getLogger(ArticleDAO.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        finally
-        {
+        } finally {
             try {
                 if (connection != null) {
                     connection.close();
@@ -192,18 +193,16 @@ public class ArticleDAO extends DataSource {
         return -1;
     }
 
-    public void deleteArticle(int _id)
-    {
+    public void deleteArticle(int _id) {
         try {
             connection = DataSource.getInstance().getConnection();
-            while(connection == null)
+            while (connection == null) {
                 connection = DataSource.getInstance().getConnection();
+            }
             call = connection.prepareCall("delete * from article where article.IDTableArticle = _id");
             call.executeQuery();
         } catch (Exception e) {
-        }
-        finally
-        {
+        } finally {
             try {
                 if (connection != null) {
                     connection.close();
@@ -224,18 +223,18 @@ public class ArticleDAO extends DataSource {
         }
     }
 
-    public ArticleDTO GetArticle(int _id)
-    {
+    public ArticleDTO GetArticle(int _id) {
         ArticleDTO result = new ArticleDTO();
         FacebookDTO rsFB = new FacebookDTO();
         try {
             connection = DataSource.getInstance().getConnection();
-            while(connection == null)
+            while (connection == null) {
                 connection = DataSource.getInstance().getConnection();
-            
+            }
+
             call = connection.prepareCall("Select * from article where article.IDTableArticle = " + _id);
             ResultSet rs = call.executeQuery();
-            while (rs.next()) {                
+            while (rs.next()) {
                 result.setIDTableArticle(rs.getInt("IDTableArticle"));
                 result.setIDTableUpdateTime(rs.getInt("IDTableUpdateTime"));
                 result.setIDTableMagazine(rs.getInt("IDTableMagazine"));
@@ -255,10 +254,9 @@ public class ArticleDAO extends DataSource {
             }
             return result;
         } catch (Exception e) {
-            
-        }
-        finally
-        {
+            e.printStackTrace();
+
+        } finally {
             try {
                 if (connection != null) {
                     connection.close();
@@ -280,17 +278,16 @@ public class ArticleDAO extends DataSource {
         return null;
     }
 
-    public List<ArticleDTO> getArticleDTOByUpdateType(int _idType)
-    {
+    public List<ArticleDTO> getArticleDTOByUpdateType(int _idType) {
         List<ArticleDTO> result = new ArrayList<ArticleDTO>();
         try {
             connection = DataSource.getInstance().getConnection();
-            while (connection == null) {                
+            while (connection == null) {
                 connection = DataSource.getInstance().getConnection();
             }
             call = connection.prepareCall("select * from article where article.Idtableupdatetime = " + _idType);
             ResultSet rs = call.executeQuery();
-            while (rs.next()) {                
+            while (rs.next()) {
                 ArticleDTO art = new ArticleDTO();
                 FacebookDTO rsFB = new FacebookDTO();
                 art.setIDTableArticle(rs.getInt("IDTableArticle"));
@@ -315,8 +312,7 @@ public class ArticleDAO extends DataSource {
         } catch (Exception e) {
             //System.out.println("Can not get list article by id table update time");
             System.out.println(e.toString());
-        }
-        finally {
+        } finally {
             try {
                 if (connection != null) {
                     connection.close();
@@ -337,25 +333,25 @@ public class ArticleDAO extends DataSource {
         }
         return null;
     }
-    
-    public List<ArticleDTO> getArticleToUpdate( int IDTableUpdateTime , int IDTableMagazine){
+
+    public List<ArticleDTO> getArticleToUpdate(int IDTableUpdateTime, int IDTableMagazine) {
         List<ArticleDTO> lart = new ArrayList<ArticleDTO>();
         ArticleDTO art = null;
         FacebookDTO fb = null;
         try {
             connection = DataSource.getInstance().getConnection();
-            while(connection == null)
+            while (connection == null) {
                 connection = DataSource.getInstance().getConnection();
+            }
             // getArticleToUpdate(IDTableUpdateTime int, IDTableMagazine int)
             call = connection.prepareCall("{call getArticleToUpdate(?,?)}");
-            
+
             call.setInt(1, IDTableUpdateTime);
             call.setInt(2, IDTableMagazine);
             //select IDTableArticle, CountOfUpdate, Url, ArticleLike, FbLike,FbCmt,FbShare, objectID
 
             ResultSet rart = call.executeQuery();
-            while(rart.next())
-            {
+            while (rart.next()) {
                 art = new ArticleDTO();
                 fb = new FacebookDTO();
                 art.setIDTableArticle(rart.getInt(1));
@@ -366,18 +362,16 @@ public class ArticleDAO extends DataSource {
                 fb.setFBCmt(rart.getInt(6));
                 fb.setFBShare(rart.getInt(7));
                 art.setObjectID(rart.getInt(8));
-                
+
                 art.facebook = fb;
-                
+
                 lart.add(art);
             }
-            
+
             return lart;
         } catch (SQLException ex) {
             Logger.getLogger(ArticleDAO.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        finally
-        {
+        } finally {
             try {
                 if (connection != null) {
                     connection.close();
@@ -398,28 +392,27 @@ public class ArticleDAO extends DataSource {
         }
         return null;
     }
-    
+
     // isArticleExistsForUpdate
-      public int isArticleExistsForUpdate (ArticleDTO art)    {
+    public int isArticleExistsForUpdate(ArticleDTO art) {
         try {
             connection = DataSource.getInstance().getConnection();
-            while(connection == null)
+            while (connection == null) {
                 connection = DataSource.getInstance().getConnection();
+            }
             // getArticleToUpdate(IDTableUpdateTime int, IDTableMagazine int)
 
             call = connection.prepareCall("{call isArticleExistsForUpdate(?,?)}");
-            
+
             call.setInt(1, art.getIDTableArticle());
-            call.registerOutParameter(2,Types.INTEGER );
-            
+            call.registerOutParameter(2, Types.INTEGER);
+
             call.execute();
-            
+
             return call.getInt(2);
         } catch (SQLException ex) {
             Logger.getLogger(ArticleDAO.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        finally
-        {
+        } finally {
             try {
                 if (connection != null) {
                     connection.close();
@@ -440,29 +433,28 @@ public class ArticleDAO extends DataSource {
         }
         return -1;
     }
-      
-      // isArticleExistsForInsert
-       public int isArticleExistsForInsert (ArticleDTO art)    {
+
+    // isArticleExistsForInsert
+    public int isArticleExistsForInsert(ArticleDTO art) {
         try {
             connection = DataSource.getInstance().getConnection();
-            while(connection == null)
+            while (connection == null) {
                 connection = DataSource.getInstance().getConnection();
+            }
             // isArticleExistsForInsert(magazine int, objectid int, out Result int)
 
             call = connection.prepareCall("{call isArticleExistsForInsert(?,?,?)}");
-            
+
             call.setInt(1, art.getIDTableMagazine());
             call.setInt(2, art.getObjectID());
-            call.registerOutParameter(3,Types.INTEGER );
-            
+            call.registerOutParameter(3, Types.INTEGER);
+
             call.execute();
-            
+
             return call.getInt(3);
         } catch (SQLException ex) {
             Logger.getLogger(ArticleDAO.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        finally
-        {
+        } finally {
             try {
                 if (connection != null) {
                     connection.close();
@@ -482,5 +474,44 @@ public class ArticleDAO extends DataSource {
             }
         }
         return -1;
+    }
+
+    public Timestamp getMaxArticleTime(){
+        try {
+            connection = DataSource.getInstance().getConnection();
+            while (connection == null) {
+                connection = DataSource.getInstance().getConnection();
+            }
+            // isArticleExistsForInsert(magazine int, objectid int, out Result int)
+
+            call = connection.prepareCall("{call getMaxArticleDate(?)}");
+
+            call.registerOutParameter(1, Types.TIMESTAMP);
+
+            call.execute();
+
+            return call.getTimestamp(1);
+        } catch (SQLException ex) {
+            Logger.getLogger(ArticleDAO.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            try {
+                if (connection != null) {
+                    connection.close();
+                }
+            } catch (SQLException e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            }
+
+            try {
+                if (call != null) {
+                    call.close();
+                }
+            } catch (SQLException e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            }
+        }
+        return null;
     }
 }
