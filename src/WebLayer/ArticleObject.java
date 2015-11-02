@@ -78,11 +78,11 @@ public abstract class ArticleObject extends ConnectUrl {
 
         Gson gson = new Gson();
         fb = gson.fromJson(data, FacebookDTO.class);
-        try {
-            Thread.sleep(4000);
-        } catch (InterruptedException ex) {
-            Logger.getLogger(ArticleObject.class.getName()).log(Level.SEVERE, null, ex);
-        }
+//        try {
+//            Thread.sleep(7000);
+//        } catch (InterruptedException ex) {
+//            Logger.getLogger(ArticleObject.class.getName()).log(Level.SEVERE, null, ex);
+//        }
         //System.out.println("Parse fb successful");
         return fb;
         // khong quan trong
@@ -144,11 +144,11 @@ public abstract class ArticleObject extends ConnectUrl {
         temptPar = null;
         temptSub = null;
         parentIDHasSub.clear();
-//          try {
-//            Thread.sleep(3000);
-//        } catch (InterruptedException ex) {
-//            Logger.getLogger(ConnectUrl.class.getName()).log(Level.SEVERE, null, ex);
-//        }
+          try {
+            Thread.sleep(10000);
+        } catch (InterruptedException ex) {
+            Logger.getLogger(ConnectUrl.class.getName()).log(Level.SEVERE, null, ex);
+        }
 
     }
 
@@ -179,11 +179,11 @@ public abstract class ArticleObject extends ConnectUrl {
         temptPar = null;
         temptSub = null;
         parentIDHasSub.clear();
-//          try {
-//            Thread.sleep(3000);
-//        } catch (InterruptedException ex) {
-//            Logger.getLogger(ConnectUrl.class.getName()).log(Level.SEVERE, null, ex);
-//        }
+          try {
+            Thread.sleep(10000);
+        } catch (InterruptedException ex) {
+            Logger.getLogger(ConnectUrl.class.getName()).log(Level.SEVERE, null, ex);
+        }
 
     }
 
@@ -192,19 +192,19 @@ public abstract class ArticleObject extends ConnectUrl {
             //count = 0;
             if (count % 1000 == 0) {
                 count = 0;
-                //<editor-fold defaultstate="collapsed" desc="ngu 15 phut">
-                System.out.println("Lay du 1000 bai, Thread ngu 15 minutes");
+                //<editor-fold defaultstate="collapsed" desc="ngu 20 phut">
+                System.out.println("\nLay du 1000 bai, Thread ngu 20 minutes");
                 try {
-                    Thread.sleep(900000);
+                    Thread.sleep(1200000);
                 } catch (InterruptedException ex) {
                     Logger.getLogger(ArticleObject.class.getName()).log(Level.SEVERE, null, ex);
                 }
 //</editor-fold>
             } else {
-                //<editor-fold defaultstate="collapsed" desc="ngu 5 phut">
-                System.out.println("Lay du 200 bai, Thread insert ngu 5 minutes");
+                //<editor-fold defaultstate="collapsed" desc="ngu 10 phut">
+                System.out.println("\nLay du 200 bai, Thread insert ngu 10 minutes");
                 try {
-                    Thread.sleep(300000);
+                    Thread.sleep(600000);
                 } catch (InterruptedException ex) {
                     Logger.getLogger(ConnectUrl.class.getName()).log(Level.SEVERE, null, ex);
                 }

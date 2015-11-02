@@ -41,16 +41,16 @@ public class ArticleTuoiTre extends ArticleObject {
         this.subCmt = new SubCmtTuoiTre();
     }
 
-    @Override
-    public ArticleDTO getArticleInformation(String source_url) {
+    private ArticleDTO getArticleInformation1(String source_url, Boolean isServerPrevented) {
 
         // TODO Auto-generated method stub
         ArticleDTO art = new ArticleDTO();
         String tempt = null;
-        String url = null;
-
+        Element meta = null;
+        Timestamp time = null;
+        Date d = null;
+        Elements metas = null;
         Document doc = jsoupConnect(source_url);
-        
 
         // get category id. and convert it to number
         //<editor-fold defaultstate="collapsed" desc="category id">
@@ -99,17 +99,14 @@ public class ArticleTuoiTre extends ArticleObject {
 //</editor-fold>
 
         // parse document
-        Elements metas = doc.select("meta[property]");
+        metas = doc.select("meta[property]");
 
-        // set article url
-        art.setUrl(source_url);
-
-        // set magazine
-        art.setIDTableMagazine(3);
-        Date d = null;
-        Timestamp time = null;
         // date => chua lam
-        Element meta = doc.select(".date").first();
+        meta = doc.select(".date").first();
+        if (meta == null) {
+            isServerPrevented = true;
+            return null;
+        }
         tempt = meta.text();
         tempt = tempt.substring(0, tempt.indexOf('G'));
         tempt = tempt.trim();
@@ -125,6 +122,11 @@ public class ArticleTuoiTre extends ArticleObject {
         }
         art.setArticleDate(time);
 
+        // set article url
+        art.setUrl(source_url);
+
+        // set magazine
+        art.setIDTableMagazine(3);
         // Description
         meta = metas.select("meta[property=og:description").first();
         art.setDescription(meta.attr("content")); // ok
@@ -154,7 +156,24 @@ public class ArticleTuoiTre extends ArticleObject {
             // TODO Auto-generated catch block
             e1.printStackTrace();
         }
+        return art;
+    }
 
+    @Override
+    public ArticleDTO getArticleInformation(String source_url) {
+        Boolean isServerPrevented = false;
+        ArticleDTO art = getArticleInformation1(source_url, isServerPrevented);
+        while (art == null && isServerPrevented == true) {
+            System.out.println("\nArticle Thanh nien return null");
+
+            try {
+                Thread.sleep(900000);
+            } catch (InterruptedException ex) {
+                Logger.getLogger(ArticleTuoiTre.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            isServerPrevented = false;
+            art = getArticleInformation1(source_url, isServerPrevented);
+        }
         return art;
     }
 
@@ -257,7 +276,7 @@ public class ArticleTuoiTre extends ArticleObject {
             while (true) {
 
                 doc = jsoupConnectTuoiTrePost(menuUrl, pageCount);
-                
+
                 //<editor-fold defaultstate="collapsed" desc="class highligh">
                 //temptElement = doc.select("#newhot_most_content").first();
                 temptElements = doc.select(".block-left");
@@ -300,8 +319,9 @@ public class ArticleTuoiTre extends ArticleObject {
         Element ele = doc.select("span.sl").first();
         if (ele.text().trim().length() > 0) {
             return Integer.parseInt(ele.text().trim());
+        } else {
+            return 0;
         }
-        else return 0;
     }
 
 }

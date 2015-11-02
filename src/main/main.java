@@ -68,34 +68,23 @@ class Insert extends Thread {
 
         System.out.println("Running " + threadName);
         calendar = new GregorianCalendar();
+        lasttime = artBUS.getMaxArticleTime();
 
-        while (true) {
-            //calendar = new GregorianCalendar();
-//            calendar.set(Calendar.MINUTE, 0);
-//            calendar.set(Calendar.SECOND, 0);
-//            calendar.set(Calendar.HOUR_OF_DAY, 0);
+        if (lasttime == null) {
+            calendar.set(Calendar.MINUTE, 0);
+            calendar.set(Calendar.SECOND, 0);
+            calendar.set(Calendar.HOUR_OF_DAY, 0);
+            calendar.set(Calendar.DAY_OF_YEAR, calendar.get(Calendar.DAY_OF_YEAR) -13);
+            lasttime = new Timestamp(calendar.getTimeInMillis());
+            calendar = new GregorianCalendar();
+        }
+        newtime = new Timestamp(calendar.getTimeInMillis());
 
-            // calendar.set(Calendar.DAY_OF_MONTH, 23);
-            // calendar.set(Calendar.MONTH, 10 - 1);
-            lasttime = artBUS.getMaxArticleTime();
-            if (lasttime == null) {
-                calendar.set(Calendar.MINUTE, 0);
-                calendar.set(Calendar.SECOND, 0);
-                calendar.set(Calendar.HOUR_OF_DAY, 0);
-                calendar.set(Calendar.DAY_OF_YEAR, calendar.get(Calendar.DAY_OF_YEAR) - 90);
-                lasttime = new Timestamp(calendar.getTimeInMillis());
-                calendar = new GregorianCalendar();
-            }
-
-            // calendar.set(Calendar.DAY_OF_MONTH, calendar.get(Calendar.DAY_OF_MONTH) + 1);
-            //  calendar.set(Calendar.MONTH, 10 - 1);
-            newtime = new Timestamp(calendar.getTimeInMillis());
-         // 0h ngay 10.7 den 15h ngay 9.10
-
-            //insert
-            for (String url : lurl) {
+      //  while (true) {
+            
+           for (String url : lurl) {
                 System.out.println("Bắt đầu insert : " + url + "\n");
-                listIns.add(new ThreadInsert(username, password, url, newtime,lasttime));
+                listIns.add(new ThreadInsert(username, password, url, newtime, lasttime));
             }
 
             try {
@@ -106,7 +95,7 @@ class Insert extends Thread {
             } catch (InterruptedException ex) {
                 Logger.getLogger(Insert.class.getName()).log(Level.SEVERE, null, ex);
             }
-        }
+       // }
     }
 
     @Override
@@ -182,7 +171,7 @@ public class main {
         insert.start();
 
         Update update = new Update("Update", username, password);
-        //update.start();
+        update.start();
     }
 
 }

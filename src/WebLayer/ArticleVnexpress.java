@@ -39,25 +39,23 @@ public class ArticleVnexpress extends ArticleObject {
 
     // get article Information, don't get information of video => remove link
     // video in code
-
-    @Override
-    public ArticleDTO getArticleInformation(String source_url) {
+    public ArticleDTO getArticleInformation1(String source_url,Boolean isServerPrevented ) {
         if (source_url.matches("(.*)http://video.vnexpress.net(.*)") == true
                 || source_url.matches("(.*)http://vnexpress.net/interactive(.*)") == true) {
             return null;
         }
 
         ArticleDTO art = new ArticleDTO();
-        String url = null;
-
         String tempt = null;
         Document doc = jsoupConnect(source_url);
-        
 
-//</editor-fold>
         // Category ID
         //<editor-fold defaultstate="collapsed" desc="Category id">
         Element meta = doc.select("#menu_web > .active").first();
+        if (meta == null) {
+            isServerPrevented = true;
+            return null;
+        }
         tempt = meta.text();
         tempt = tempt.trim();
         CategoryCommon cate;
@@ -96,7 +94,7 @@ public class ArticleVnexpress extends ArticleObject {
         // remove all &nbsp
         // Elements metas = doc.select(":containsOwn(\u00a0)").remove();
         Elements metas = doc.select("meta[name]");
-
+        
         // set article url
         art.setUrl(source_url);
 
@@ -104,6 +102,7 @@ public class ArticleVnexpress extends ArticleObject {
         art.setIDTableMagazine(2);
         // Date
         meta = doc.select(".block_timer_share > .block_timer").first();
+        
         // System.out.println(source_url);
         tempt = meta.text();
         tempt = tempt.replace('|', ' ');
@@ -158,7 +157,26 @@ public class ArticleVnexpress extends ArticleObject {
         return art;
     }
 
+    @Override
+     public ArticleDTO getArticleInformation(String source_url) {
+        Boolean isServerPrevented = false;
+        ArticleDTO art = getArticleInformation1(source_url, isServerPrevented);
+        while (art == null && isServerPrevented == true) {
+            System.out.println("\nArticle Thanh nien return null");
+
+            try {
+                Thread.sleep(900000);
+            } catch (InterruptedException ex) {
+                Logger.getLogger(ArticleTuoiTre.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            isServerPrevented = false;
+            art = getArticleInformation1(source_url, isServerPrevented);
+        }
+        return art;
+    }
+
     // get Like
+
     @Override
     public int getArticleLike(int objectID) {
         String url = apiVNELikeStart + objectID + apiVNELikeEnd;
@@ -166,15 +184,6 @@ public class ArticleVnexpress extends ArticleObject {
         int count = 0;
         String tempt = "";
         String data = jsoupConnectJson(url);
-//        try {
-//            data = IOUtils.toString(new URL(url).openStream(), "UTF-8");
-//        } catch (MalformedURLException e) {
-//            // TODO Auto-generated catch block
-//            e.printStackTrace();
-//        } catch (IOException e) {
-//            // TODO Auto-generated catch block
-//            e.printStackTrace();
-//        }
         int index = data.indexOf(";;");
         for (int i = index; i > 0; i--) {
             if (data.charAt(i) == ' ') {
@@ -249,7 +258,7 @@ public class ArticleVnexpress extends ArticleObject {
             outLoop:
             while (true) {
                 doc = jsoupConnect(String.format(menuUrl + "%d.html", pageCount));
-                
+
                 Elements temptElements = null;
                 Element temptElement = null;
                 if (pageCount == 1) {

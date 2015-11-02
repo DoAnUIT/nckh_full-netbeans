@@ -28,16 +28,15 @@ import java.util.logging.Logger;
 public class ArticleThanhNien extends ArticleObject {
 //    private String username = null;
 //    private String password = null;
-    
-    public ArticleThanhNien(String username, String password){
+
+    public ArticleThanhNien(String username, String password) {
         this.username = username;
-        this.password= password;
+        this.password = password;
         this.parCmt = new ParentCmtThanhNien();
         this.subCmt = new SubCmtThanhNien();
     }
 
-    @Override
-    public ArticleDTO getArticleInformation(String source_url) {
+    public ArticleDTO getArticleInformation1(String source_url, Boolean isServerPrevented) {
         // TODO Auto-generated method stub
         ArticleDTO art = new ArticleDTO();
         String tempt = null;
@@ -89,8 +88,6 @@ public class ArticleThanhNien extends ArticleObject {
         art.setIDTableCategory(cate.getValue());
 //</editor-fold>
         Document doc = jsoupConnect(source_url);
-        
-
         // set article url
         art.setUrl(source_url);
 
@@ -99,8 +96,16 @@ public class ArticleThanhNien extends ArticleObject {
         // parse document
         Elements metas = doc.select("meta[property]");
 
+        if (metas == null) {
+            isServerPrevented = true;
+            return null;
+        }
         // date
         Element meta = metas.select("meta[property=article:published_time").first();
+        if (meta == null) {
+            isServerPrevented = true;
+            return null;
+        }
         tempt = meta.attr("content");
         tempt = tempt.substring(0, tempt.lastIndexOf('T'));
         tempt = tempt.replace('T', ' ');
@@ -152,7 +157,26 @@ public class ArticleThanhNien extends ArticleObject {
         return art;
     }
 
+    @Override
+    public ArticleDTO getArticleInformation(String source_url) {
+        Boolean isServerPrevented = false;
+        ArticleDTO art = getArticleInformation1(source_url, isServerPrevented);
+        while (art == null && isServerPrevented == true) {
+            System.out.println("\nArticle Thanh nien return null");
+
+            try {
+                Thread.sleep(900000);
+            } catch (InterruptedException ex) {
+                Logger.getLogger(ArticleTuoiTre.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            isServerPrevented = false;
+            art = getArticleInformation1(source_url, isServerPrevented);
+        }
+        return art;
+    }
+
     // Get menu Web
+
     @Override
     public List<String> getMenuWeb(String source_url) {
 
@@ -207,13 +231,13 @@ public class ArticleThanhNien extends ArticleObject {
         for (int i = 0; i < arrayMenu.size(); i++) {
             // get page of each menu
             menuUrl = arrayMenu.get(i) + "/trang-";
-            
+
             pageCount = 0;
-            
+
             outLoop:
             while (true) {
                 doc = jsoupConnect(String.format(menuUrl + "%d.html", pageCount));
-                
+
                 Elements temptElements = null;
                 Element temptElement = null;
 

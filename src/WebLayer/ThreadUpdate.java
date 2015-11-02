@@ -34,10 +34,9 @@ public class ThreadUpdate {
         this.artTuoiTre = artTuoiTre;
         this.artThanhNien = artThanhNien;
         this.artVnExpress = artVnexpress;
-        
 
         updateNewsThread = new Thread(new Runnable() {
-            
+
             public void run() {
                 while (true) {
                     listArtToUpdate = tempArt.getArticleDTOByUpdateType(_idType);
@@ -50,8 +49,8 @@ public class ThreadUpdate {
                     }
 
                     // khi da lay xong tung loai, set bien dem so bai lay duoc count ve lai 0
-                    System.out.println("Thread " + _idType + " TN :" + artThanhNien.getCount() + " VNE : "+artVnExpress.getCount() +
-                            "  TT : " + artTuoiTre.getCount());
+                    System.out.println("Thread " + _idType + " TN :" + artThanhNien.getCount() + " VNE : " + artVnExpress.getCount()
+                            + "  TT : " + artTuoiTre.getCount());
                     _art = null;
                     Timestamp ttTimestamp = udBUS.GetTimeUpdateByID(_idType).getQuantumTime();
                     long timeSleep = (ttTimestamp.getHours() * 60 * 60 + ttTimestamp.getMinutes() * 60 + ttTimestamp.getSeconds()) * 1000;
@@ -71,9 +70,8 @@ public class ThreadUpdate {
         updateNewsThread.setName("Update loai " + _idType);
     }
 
-    
     public void updateArticle(ArticleDTO _artUp) {
-         //ArticleDTO result = new ArticleDTO();
+        //ArticleDTO result = new ArticleDTO();
         int _idMaga = _artUp.getIDTableMagazine();
 
         //<editor-fold defaultstate="collapsed" desc="switch de chon _art phu hop">
@@ -84,7 +82,7 @@ public class ThreadUpdate {
             }
             break;
             case 2: {
-               // _art = new ArticleVnexpress(_user, _pass);
+                // _art = new ArticleVnexpress(_user, _pass);
                 _art = artVnExpress;
             }
             break;
@@ -96,23 +94,22 @@ public class ThreadUpdate {
         }
 //</editor-fold>
 
-        synchronized(_art){
-        FacebookDTO fbData = null;
-        try {
-            fbData = _art.getContentOfFacebook(_artUp.getUrl());
-        } catch (IOException ex) {
-            System.out.println(ex.toString());
-        }
-        _artUp.setArticleLike(_art.getArticleLike(_artUp.getObjectID()));
-        _artUp.facebook = fbData;
+        synchronized (_art) {
+            FacebookDTO fbData = null;
+            try {
+                fbData = _art.getContentOfFacebook(_artUp.getUrl());
+            } catch (IOException ex) {
+                System.out.println(ex.toString());
+            }
+            _artUp.setArticleLike(_art.getArticleLike(_artUp.getObjectID()));
+            _artUp.facebook = fbData;
 
-        try {
-            _art.updateDatabase(_artUp);
-        } catch (SQLException ex) {
-            System.out.println(ex.toString());
-            System.out.println("can not update article");
+            try {
+                _art.updateDatabase(_artUp);
+            } catch (SQLException ex) {
+                System.out.println(ex.toString());
+                System.out.println("can not update article");
+            }
         }
-        }
-
     }
 }

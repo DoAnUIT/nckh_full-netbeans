@@ -202,6 +202,7 @@ public class ArticleDAO extends DataSource {
             call = connection.prepareCall("delete * from article where article.IDTableArticle = _id");
             call.executeQuery();
         } catch (Exception e) {
+            e.printStackTrace();
         } finally {
             try {
                 if (connection != null) {
@@ -311,7 +312,7 @@ public class ArticleDAO extends DataSource {
             return result;
         } catch (Exception e) {
             //System.out.println("Can not get list article by id table update time");
-            System.out.println(e.toString());
+            e.printStackTrace();
         } finally {
             try {
                 if (connection != null) {

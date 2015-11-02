@@ -35,7 +35,7 @@ public class ConnectUrl {
         Response response = null;
         changeCookie(change);
         try {
-            response = Jsoup.connect(source_url).timeout(0).followRedirects(true)
+            response = Jsoup.connect(source_url).timeout(60000).followRedirects(true)
                     .userAgent(userAgent).cookie(cookiename, cookievalue)
                     .execute();
         } catch (IOException e) {
@@ -50,6 +50,11 @@ public class ConnectUrl {
             Logger.getLogger(ArticleObject.class.getName()).log(Level.SEVERE, null, ex);
         }
 
+//        try {
+//            Thread.sleep(1000);
+//        } catch (InterruptedException ex) {
+//            Logger.getLogger(ConnectUrl.class.getName()).log(Level.SEVERE, null, ex);
+//        }
         return doc;
     }
 
@@ -57,7 +62,7 @@ public class ConnectUrl {
         doc = jsoupConnect1(source_url);
         while (doc == null) {
             try {
-                Thread.sleep(120000);
+                Thread.sleep(360000);
             } catch (InterruptedException ex) {
                 Logger.getLogger(ConnectUrl.class.getName()).log(Level.SEVERE, null, ex);
             }
@@ -72,7 +77,7 @@ public class ConnectUrl {
         changeCookie(change);
 
         try {
-            response = Jsoup.connect(source_url).timeout(0)
+            response = Jsoup.connect(source_url).timeout(60000)
                     .userAgent(userAgent).validateTLSCertificates(true)//.cookie(cookiename, cookievalue)
                     .ignoreContentType(true)
                     .execute();
@@ -82,6 +87,11 @@ public class ConnectUrl {
             e.printStackTrace();
             return null;
         }
+//        try {
+//            Thread.sleep(1000);
+//        } catch (InterruptedException ex) {
+//            Logger.getLogger(ConnectUrl.class.getName()).log(Level.SEVERE, null, ex);
+//        }
         return response.body();
        
     }
@@ -107,7 +117,7 @@ public class ConnectUrl {
             // connect source
             doc = Jsoup.connect(url)
                     .data("page_number", String.valueOf(pageCount))
-                    .timeout(0).cookie(cookiename, cookievalue)
+                    .timeout(60000).cookie(cookiename, cookievalue)
                     .userAgent(
                             "Mozilla/5.0 (Windows NT 6.3; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/43.0.2357.134 Safari/537.36")
                     .post();
@@ -123,7 +133,7 @@ public class ConnectUrl {
         doc = jsoupConnectTuoiTrePost1(url, pageCount);
         while(doc == null){
             try {
-                Thread.sleep(120000);
+                Thread.sleep(360000);
             } catch (InterruptedException ex) {
                 Logger.getLogger(ConnectUrl.class.getName()).log(Level.SEVERE, null, ex);
             }

@@ -102,7 +102,7 @@ public class ArticleBUS {
         return true;
     }
 
-    public boolean update(ArticleDTO art) {
+    public synchronized boolean update(ArticleDTO art) {
 
        // if (isArticleExistsForUpdate(art) == 1) {
             if (updateArticle(art) == false) {
