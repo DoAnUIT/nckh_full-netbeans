@@ -15,6 +15,7 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
+import java.io.File;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -24,6 +25,9 @@ import java.util.Calendar;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.apache.commons.io.IOUtils;
+import org.jdom.Element;
+import org.jdom.JDOMException;
+import org.jdom.input.SAXBuilder;
 import org.jsoup.Connection.Response;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -40,6 +44,10 @@ public abstract class ArticleObject extends ConnectUrl {
     protected IParentCmt parCmt = null;
     protected ISubCmt subCmt = null;
     private int count = 0;
+    private int article1 = 0;
+    private int article200 = 0;
+    private int article1000 = 0;
+    
     
 
     // count
@@ -145,7 +153,7 @@ public abstract class ArticleObject extends ConnectUrl {
         temptSub = null;
         parentIDHasSub.clear();
           try {
-            Thread.sleep(10000);
+            Thread.sleep(article1);
         } catch (InterruptedException ex) {
             Logger.getLogger(ConnectUrl.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -180,7 +188,7 @@ public abstract class ArticleObject extends ConnectUrl {
         temptSub = null;
         parentIDHasSub.clear();
           try {
-            Thread.sleep(10000);
+            Thread.sleep(article1);
         } catch (InterruptedException ex) {
             Logger.getLogger(ConnectUrl.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -195,7 +203,7 @@ public abstract class ArticleObject extends ConnectUrl {
                 //<editor-fold defaultstate="collapsed" desc="ngu 20 phut">
                 System.out.println("\nLay du 1000 bai, Thread ngu 20 minutes");
                 try {
-                    Thread.sleep(1200000);
+                    Thread.sleep(article1000);
                 } catch (InterruptedException ex) {
                     Logger.getLogger(ArticleObject.class.getName()).log(Level.SEVERE, null, ex);
                 }
@@ -204,7 +212,7 @@ public abstract class ArticleObject extends ConnectUrl {
                 //<editor-fold defaultstate="collapsed" desc="ngu 10 phut">
                 System.out.println("\nLay du 200 bai, Thread insert ngu 10 minutes");
                 try {
-                    Thread.sleep(600000);
+                    Thread.sleep(article200);
                 } catch (InterruptedException ex) {
                     Logger.getLogger(ConnectUrl.class.getName()).log(Level.SEVERE, null, ex);
                 }
@@ -213,4 +221,23 @@ public abstract class ArticleObject extends ConnectUrl {
         }
     }
 
+    protected void parseXML(){
+        SAXBuilder builder = new SAXBuilder();
+        File xmlFile = new File("config.xml");
+
+        try {
+
+            org.jdom.Document document = (org.jdom.Document) builder.build(xmlFile);
+            Element node = document.getRootElement();
+
+            article1 = Integer.parseInt(node.getChildText("article1"));
+            article200 = Integer.parseInt(node.getChildText("article200"));
+            article1000 = Integer.parseInt(node.getChildText("article1000"));
+
+        } catch (IOException io) {
+            System.out.println(io.getMessage());
+        } catch (JDOMException jdomex) {
+            System.out.println(jdomex.getMessage());
+        }
+    }
 }

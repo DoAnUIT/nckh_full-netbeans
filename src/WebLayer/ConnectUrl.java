@@ -50,11 +50,6 @@ public class ConnectUrl {
             Logger.getLogger(ArticleObject.class.getName()).log(Level.SEVERE, null, ex);
         }
 
-//        try {
-//            Thread.sleep(1000);
-//        } catch (InterruptedException ex) {
-//            Logger.getLogger(ConnectUrl.class.getName()).log(Level.SEVERE, null, ex);
-//        }
         return doc;
     }
 
@@ -87,11 +82,6 @@ public class ConnectUrl {
             e.printStackTrace();
             return null;
         }
-//        try {
-//            Thread.sleep(1000);
-//        } catch (InterruptedException ex) {
-//            Logger.getLogger(ConnectUrl.class.getName()).log(Level.SEVERE, null, ex);
-//        }
         return response.body();
        
     }

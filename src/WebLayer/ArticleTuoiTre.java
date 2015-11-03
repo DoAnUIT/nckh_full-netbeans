@@ -39,6 +39,7 @@ public class ArticleTuoiTre extends ArticleObject {
         this.password = password;
         this.parCmt = new ParentCmtTuoiTre();
         this.subCmt = new SubCmtTuoiTre();
+        this.parseXML();
     }
 
     private ArticleDTO getArticleInformation1(String source_url, Boolean isServerPrevented) {

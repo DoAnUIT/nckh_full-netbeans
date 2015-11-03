@@ -171,7 +171,7 @@ public class main {
         insert.start();
 
         Update update = new Update("Update", username, password);
-        update.start();
+        //update.start();
     }
 
 }

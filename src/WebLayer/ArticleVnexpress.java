@@ -35,6 +35,7 @@ public class ArticleVnexpress extends ArticleObject {
         this.password = password;
         this.parCmt = new ParentCmtVnexpress();
         this.subCmt = new SubCmtVnexpress();
+        this.parseXML();
     }
 
     // get article Information, don't get information of video => remove link

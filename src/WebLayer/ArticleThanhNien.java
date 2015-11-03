@@ -34,6 +34,7 @@ public class ArticleThanhNien extends ArticleObject {
         this.password = password;
         this.parCmt = new ParentCmtThanhNien();
         this.subCmt = new SubCmtThanhNien();
+        this.parseXML();
     }
 
     public ArticleDTO getArticleInformation1(String source_url, Boolean isServerPrevented) {
