@@ -171,12 +171,3 @@ end//
 
 delimiter ;
 
-delimiter //
-create procedure GetTableUpdateTime
-(
-    IN idTable int
-)
-begin
-SELECT * FROM updatetime
-WHERE updatetime.IDTableUpdateTime = idTable;
-end//
