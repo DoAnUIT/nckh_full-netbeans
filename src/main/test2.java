@@ -79,7 +79,7 @@ public class test2 {//file nao chay on nhat?
         //List<ArticleDTO> larticle = ar.getNewsOfEachMenuDependOnTime(url, newtime, lasttime);
 //</editor-fold>
 
-        String a = "http://www.thanhnien.com.vn/chinh-tri-xa-hoi/vac-kiem-di-thanh-toan-doi-thu-bi-phat-3-trieu-dong-624212.html";
+        String a = "http://www.thanhnien.com.vn/chinh-tri-xa-hoi/toi-chi-sai-chu-khong-an-chan-tien-cua-nguoi-tam-than-629255.html";
 //        //String a = "http://tuoitre.vn/tin/chinh-tri-xa-hoi/20151009/nhieu-vu-bao-chi-noi-am-am-nhung-dai-bieu-im-thin-thit/982477.html";
 //        //String a = "http://www.thanhnien.com.vn/chinh-tri-xa-hoi/clip-bi-don-vi-cai-csgt-toi-bi-danh-mieng-sung-vu-mau-chay-nhieu-605535.html";
 //        try {

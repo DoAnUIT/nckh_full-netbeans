@@ -88,6 +88,7 @@ class Insert extends Thread {
             }
 
             try {
+                System.out.println("Thread insert bao ngu 8 tieng");
                 lasttime = newtime;
                 calendar.set(Calendar.HOUR_OF_DAY, calendar.get(Calendar.HOUR_OF_DAY) + 8);
                 newtime = new Timestamp(calendar.getTimeInMillis());
@@ -171,7 +172,7 @@ public class main {
         insert.start();
 
         Update update = new Update("Update", username, password);
-        //update.start();
+        update.start();
     }
 
 }

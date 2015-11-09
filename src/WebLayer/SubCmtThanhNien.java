@@ -23,7 +23,7 @@ public class SubCmtThanhNien extends ConnectUrl implements ISubCmt {
         SubCmtDTO temptSubComment = null;
 
         Document doc = jsoupConnect(article.getUrl());
-        
+
         Element meta = doc.select("#posturl").first();
         String tempt = meta.attr("value");
         String url = source_url;
@@ -74,6 +74,7 @@ public class SubCmtThanhNien extends ConnectUrl implements ISubCmt {
 
                     // get like
                     tempt = meta.select(".comments-likes-number").first().text();
+                    tempt = tempt.replaceAll("[^0-9]", "");
                     temptSubComment.setCmtLike(Integer.parseInt(tempt));
 
                     // get content of comment

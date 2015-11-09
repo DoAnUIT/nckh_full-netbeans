@@ -56,6 +56,7 @@ public class ParentCmtThanhNien extends ConnectUrl implements IParentCmt {
 
                 // get parent comment like
                 tempt = meta.select(".comments-likes-number").first().text();
+                tempt = tempt.replaceAll("[^0-9]", "");
                 parent.setCmtLike(Integer.parseInt(tempt));
 
                 // get content of comment
