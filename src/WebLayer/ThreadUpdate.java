@@ -8,8 +8,10 @@ import java.io.IOException;
 import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+import java.util.TimeZone;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -53,7 +55,7 @@ public class ThreadUpdate {
                             + "  TT : " + artTuoiTre.getCount());
                     _art = null;
                     Timestamp ttTimestamp = udBUS.GetTimeUpdateByID(_idType).getQuantumTime();
-                    long timeSleep = (ttTimestamp.getHours() * 60 * 60 + ttTimestamp.getMinutes() * 60 + ttTimestamp.getSeconds()) * 1000;
+                    long timeSleep = ttTimestamp.getTime() + TimeZone.getDefault().getRawOffset();
                     try {
                         System.out.println("Thread update bao loai " + _idType + " ngu ");
                         Thread.sleep(timeSleep);

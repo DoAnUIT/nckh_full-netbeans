@@ -13,7 +13,7 @@ import java.sql.Statement;
 
 import javax.xml.ws.BindingProvider;
 
-// khong dung pool ling
+//dung connecton poolling
 public class DataSource {
 
     protected Connection connection = null;
@@ -22,8 +22,6 @@ public class DataSource {
     protected static String username = null;
     protected static String password = null;
     
-    private Statement st = null;
-
     public DataSource() {
     }
 
@@ -35,7 +33,7 @@ public class DataSource {
             cpds = new ComboPooledDataSource();
             cpds.setDriverClass("com.mysql.jdbc.Driver");
             //cpds.setJdbcUrl("jdbc:mysql://localhost:3306/nckh?useUnicode=true");&characterEncoding=UTF-8
-            cpds.setJdbcUrl("jdbc:mysql://localhost:3306/nckh_test_2?useUnicode=true");
+            cpds.setJdbcUrl("jdbc:mysql://localhost:3306/nckh_hot_news?characterEncoding=UTF-8");
             cpds.setUser(username);
             cpds.setPassword(password);
 
@@ -60,9 +58,6 @@ public class DataSource {
         Connection a = null;
         try {
             a= this.cpds.getConnection();
-            st = a.createStatement();
-            st.execute("SET NAMES utf8mb4 COLLATE utf8mb4_unicode_ci");
-            
         } catch (SQLException ex) {
             Logger.getLogger(DataSource.class.getName()).log(Level.SEVERE, null, ex);
         }

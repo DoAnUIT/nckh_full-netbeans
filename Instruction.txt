@@ -1,0 +1,11 @@
+﻿database name : nckh_hot_news
+Bước 1: Mở mysql, chạy 2 câu lệnh 
+		+ SET NAMES utf8mb4 COLLATE utf8mb4_unicode_ci;
+		+ set character_set_server = 'utf8mb4';
+
+Bước 2: Chạy file nckh.sql và nckh_procedure.sql
+Bước 3: Run file nckh.jar
+
+* Hướng dẫn dùng file config.xml
+aritcle1 : thời gian nghỉ sau khi lấy 1 bài
+article200: thời gian nghỉ sau khi lấy 200 bài

@@ -25,18 +25,15 @@ public class ConnectUrl {
     // connect jsou
     //private String userAgent = "Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/39.0.2171.71 Safari/537.36";
     private String userAgent = "Mozilla/5.0 (Windows NT 6.3; WOW64; rv:39.0) Gecko/20100101 Firefox/39.0";
-    private String cookiename = "a";
-    private String cookievalue = "1";
-    private boolean change = true;
+   
     private Document doc = null;
 
     private Document jsoupConnect1(String source_url) {
         Document doc = null;
         Response response = null;
-        changeCookie(change);
         try {
             response = Jsoup.connect(source_url).timeout(60000).followRedirects(true)
-                    .userAgent(userAgent).cookie(cookiename, cookievalue)
+                    .userAgent(userAgent)
                     .execute();
         } catch (IOException e) {
             // TODO Auto-generated catch block
@@ -69,12 +66,10 @@ public class ConnectUrl {
 
     private String jsoupConnectJson1(String source_url) {
         Response response = null;
-        changeCookie(change);
-
         try {
             response = Jsoup.connect(source_url).timeout(60000)
-                    .userAgent(userAgent).validateTLSCertificates(true)//.cookie(cookiename, cookievalue)
-                    .ignoreContentType(true)
+                    .userAgent(userAgent)
+                    .ignoreContentType(true).followRedirects(true)
                     .execute();
              
         } catch (IOException e) {
@@ -102,14 +97,12 @@ public class ConnectUrl {
 
     private Document jsoupConnectTuoiTrePost1(String url, int pageCount) {
         Document doc = null;
-        changeCookie(change);
         try {
             // connect source
             doc = Jsoup.connect(url)
                     .data("page_number", String.valueOf(pageCount))
-                    .timeout(60000).cookie(cookiename, cookievalue)
-                    .userAgent(
-                            "Mozilla/5.0 (Windows NT 6.3; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/43.0.2357.134 Safari/537.36")
+                    .timeout(60000)
+                    .userAgent(userAgent)
                     .post();
         } catch (IOException e) {
             e.printStackTrace();
@@ -132,15 +125,4 @@ public class ConnectUrl {
         return doc;
     }
 
-    private void changeCookie(boolean change) {
-        if (change == true) {
-            change = false;
-            cookiename = "a";
-            cookievalue = "1";
-        } else {
-            change = true;
-            cookiename = "b";
-            cookievalue = "2";
-        }
-    }
-}
+  }

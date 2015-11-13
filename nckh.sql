@@ -1,6 +1,6 @@
 
-create database nckh_test_2 default character set utf8mb4;
-use nckh_test_2;
+create database nckh_hot_news default character set utf8mb4;
+use nckh_hot_news;
 
 create table MAGAZINE(
 	IDTableMagazine int,

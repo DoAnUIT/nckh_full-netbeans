@@ -24,13 +24,9 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import org.apache.commons.io.IOUtils;
 import org.jdom.Element;
 import org.jdom.JDOMException;
 import org.jdom.input.SAXBuilder;
-import org.jsoup.Connection.Response;
-import org.jsoup.Jsoup;
-import org.jsoup.nodes.Document;
 
 public abstract class ArticleObject extends ConnectUrl {
 
