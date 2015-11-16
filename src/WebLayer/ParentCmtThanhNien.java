@@ -26,7 +26,7 @@ public class ParentCmtThanhNien extends ConnectUrl implements IParentCmt {
 
         doc = jsoupConnect(article.getUrl());
 
-        Element meta = doc.select("#posturl").first();
+        Element meta = doc.select("input[id^=posturl]").first();
         String tempt = meta.attr("value");
         String url = source_url;
         url += tempt + "&page=";
@@ -50,12 +50,12 @@ public class ParentCmtThanhNien extends ConnectUrl implements IParentCmt {
                 parent.setParentID(Integer.parseInt(tempt));
 
                 // check to see if parentId has Sub
-                if (meta.select(".Comments-item-replies").first().text().length() > 2) {
+                if (meta.select(".reply").first() != null) {
                     parentIDHasSub.add(parent.getParentID());
                 }
 
                 // get parent comment like
-                tempt = meta.select(".comments-likes-number").first().text();
+                tempt = meta.select(".likebtn").first().text();
                 tempt = tempt.replaceAll("[^0-9]", "");
                 parent.setCmtLike(Integer.parseInt(tempt));
 

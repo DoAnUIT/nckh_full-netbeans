@@ -24,7 +24,7 @@ public class SubCmtThanhNien extends ConnectUrl implements ISubCmt {
 
         Document doc = jsoupConnect(article.getUrl());
 
-        Element meta = doc.select("#posturl").first();
+        Element meta = doc.select("input[id^=posturl]").first();
         String tempt = meta.attr("value");
         String url = source_url;
         url += tempt + "&page=";
@@ -55,8 +55,7 @@ public class SubCmtThanhNien extends ConnectUrl implements ISubCmt {
                 if (meta == null) {
                     break;
                 }
-                meta = meta.select(".Comments-item-replies").first();
-                elesubcomment = meta.select(".Comments-item-reply");
+                elesubcomment = meta.select(".reply");
 
                 for (int j = 0; j < elesubcomment.size(); j++) {
                     meta = elesubcomment.get(j);
@@ -73,7 +72,7 @@ public class SubCmtThanhNien extends ConnectUrl implements ISubCmt {
                     temptSubComment.setChildID(Integer.parseInt(tempt));
 
                     // get like
-                    tempt = meta.select(".comments-likes-number").first().text();
+                    tempt = meta.select(".likebtn").first().text();
                     tempt = tempt.replaceAll("[^0-9]", "");
                     temptSubComment.setCmtLike(Integer.parseInt(tempt));
 
