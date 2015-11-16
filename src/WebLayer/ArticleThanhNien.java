@@ -177,7 +177,6 @@ public class ArticleThanhNien extends ArticleObject {
     }
 
     // Get menu Web
-
     @Override
     public List<String> getMenuWeb(String source_url) {
 
@@ -232,7 +231,7 @@ public class ArticleThanhNien extends ArticleObject {
             // get page of each menu
             menuUrl = arrayMenu.get(i) + "/trang-";
 
-            pageCount = 0;
+            pageCount = 1;
 
             outLoop:
             while (true) {
@@ -245,6 +244,9 @@ public class ArticleThanhNien extends ArticleObject {
                 // parse html để lấy link
                 temptElement = doc.select(".cate-list").first();
                 temptElements = temptElement.select(".clearfix");
+                temptElements.remove(temptElements.size() - 1);
+                temptElements.remove(temptElements.size() - 1);
+
                 for (Element element : temptElements) {
                     temptElement = element.select("a[href]").first();
                     url = temptElement.attr("href");
