@@ -14,7 +14,7 @@ import DTO.SubCmtDTO;
 
 public class SubCmtThanhNien extends ConnectUrl implements ISubCmt {
 
-    private String source_url = "http://www.thanhnien.com.vn/ajax/comment.aspx?&order=like&cid=";
+    private String source_url = "http://thanhnien.vn/ajax/comment.aspx?&order=like&cid=";
 
     @Override
     public List<SubCmtDTO> getContentSubComment(ArticleDTO article, List<Integer> parentcomment) {

@@ -36,7 +36,7 @@ import java.util.logging.Logger;
 class Insert extends Thread {
 //<editor-fold defaultstate="collapsed" desc="code inside">
 
-    String lurl[] = {"http://www.thanhnien.com.vn", "http://vnexpress.net", "http://tuoitre.vn"};
+    String lurl[] = {"http://thanhnien.vn", "http://vnexpress.net", "http://tuoitre.vn"};
 
     Calendar calendar = null;
     Timestamp lasttime = null;
@@ -165,14 +165,14 @@ public class main {
 
     public static void main(String[] args) throws IOException, NamingException, SQLException {
         // TODO Auto-generated method stub
-        String username = "nhat";
-        String password = "mysql!@3";
+        String username = "root";
+        String password = "rootmysql!@3";
 
         Insert insert = new Insert("Insert", username, password);
         insert.start();
 
         Update update = new Update("Update", username, password);
-        update.start();
+       // update.start();
     }
 
 }

@@ -55,15 +55,15 @@ public class ArticleThanhNien extends ArticleObject {
         // Văn hóa - Giải trí, Công nghệ
         CategoryCommon cate;
         switch (tempt) {
-            case "chinh-tri-xa-hoi":
-            case "quan-su":
+            case "thoi-su":
+            case "phap-luat":
             case "doi-song":
                 cate = CategoryCommon.THOI_SU;
                 break;
             case "the-gioi":
                 cate = CategoryCommon.THE_GIOI;
                 break;
-            case "kinh-te":
+            case "kinh-doanh":
                 cate = CategoryCommon.KINH_DOANH;
                 break;
             case "giao-duc":
@@ -72,10 +72,10 @@ public class ArticleThanhNien extends ArticleObject {
             case "the-thao":
                 cate = CategoryCommon.THE_THAO;
                 break;
-            case "van-hoa-nghe-thuat":
+            case "van-hoa":
                 cate = CategoryCommon.GIAI_TRI;
                 break;
-            case "cong-nghe-thong-tin":
+            case "cong-nghe":
                 cate = CategoryCommon.KHOA_HOC_CONG_NGHE;
                 break;
             default:
@@ -185,7 +185,7 @@ public class ArticleThanhNien extends ArticleObject {
         Document doc = jsoupConnect(source_url);
 
         // get all category
-        Elements categories = doc.select("#mainMenu .top-level > a");
+        Elements categories = doc.select(".menu-heading");
         // categories = categories.select("li.top-level");
         // System.out.println(categories);
         Element category = null;
@@ -195,7 +195,7 @@ public class ArticleThanhNien extends ArticleObject {
             if (category.text().length() == 0) {
                 continue;
             }
-            String realCate = "Chính trị - Xã hội, Quân sự , Thế giới, Kinh tế, Giáo dục, Đời sống, Văn hóa - Giải trí, Công nghệ";
+            String realCate = "Thời sự, Thế giới, Văn hóa, Pháp luật, Đời sống,Kinh doanh, Giáo dục, Công nghệ";
             if (realCate.matches("(.*)" + category.text() + "(.*)") == false) {
                 continue;
             }
@@ -204,7 +204,7 @@ public class ArticleThanhNien extends ArticleObject {
             if (tempt.charAt(tempt.length() - 1) == '/') {
                 tempt = tempt.substring(0, tempt.length() - 1);
             }
-            if (tempt.matches("(.*)thanhnien.com.vn(.*)") == true) {
+            if (tempt.matches("(.*)thanhnien.(.*)") == true) {
                 arrayMenu.add(tempt);
             } else {
                 arrayMenu.add(source_url + tempt);
@@ -216,7 +216,6 @@ public class ArticleThanhNien extends ArticleObject {
 
     // Get news of each menu depend on time
     @Override
-    @SuppressWarnings("empty-statement")
     public void setNewsOfEachMenuDependOnTime(String source_url, Timestamp newtime, Timestamp lasttime) {
         Document doc = null;
         ArticleDTO art = new ArticleDTO();
@@ -244,8 +243,8 @@ public class ArticleThanhNien extends ArticleObject {
 
                 //<editor-fold defaultstate="collapsed" desc="class lvkd-content id divtoptin">
                 // parse html để lấy link
-                temptElement = doc.select(".lvkd-content").first();
-                temptElements = temptElement.select("#divtoptin");
+                temptElement = doc.select(".cate-list").first();
+                temptElements = temptElement.select(".clearfix");
                 for (Element element : temptElements) {
                     temptElement = element.select("a[href]").first();
                     url = temptElement.attr("href");

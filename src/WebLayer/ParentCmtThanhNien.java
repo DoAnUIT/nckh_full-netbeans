@@ -14,7 +14,7 @@ import DTO.ParentCmtDTO;
 
 public class ParentCmtThanhNien extends ConnectUrl implements IParentCmt {
 
-    private String source_url = "http://www.thanhnien.com.vn/ajax/comment.aspx?&order=like&cid=";
+    private String source_url = "http://thanhnien.vn/ajax/comment.aspx?&order=like&cid=";
 
     // get parent comment and return the parent comment had sub comment 
     @Override

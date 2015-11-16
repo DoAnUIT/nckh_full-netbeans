@@ -47,7 +47,7 @@ public class WebLayer {
             case "http://vnexpress.net":
                 art = new ArticleVnexpress(username,password);
                 break;
-            case "http://www.thanhnien.com.vn":
+            case "http://thanhnien.vn":
                 art = new ArticleThanhNien(username,password);
                 break;
             case "http://tuoitre.vn":
@@ -78,7 +78,7 @@ public class WebLayer {
                 artObject = new ArticleVnexpress(username,password);
                 
                 break;
-            case "http://www.thanhnien.com.vn":
+            case "http://thanhnien.vn":
                 lOldArt = artBUS.getArticleToUpdate(IDTableUpdate, 1);
                 artObject = new ArticleThanhNien(username,password);
                 break;
