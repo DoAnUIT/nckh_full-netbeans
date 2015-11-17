@@ -198,16 +198,10 @@ public class ArticleThanhNien extends ArticleObject {
             if (realCate.matches("(.*)" + category.text() + "(.*)") == false) {
                 continue;
             }
-            // writer.println("Content : " + category.text());
-            String tempt = category.attr("href");
-            if (tempt.charAt(tempt.length() - 1) == '/') {
-                tempt = tempt.substring(0, tempt.length() - 1);
-            }
-            if (tempt.matches("(.*)thanhnien.(.*)") == true) {
-                arrayMenu.add(tempt);
-            } else {
-                arrayMenu.add(source_url + tempt);
-            }
+
+            String tempt = category.attr("rel");
+            arrayMenu.add(tempt);
+
         }
 
         return arrayMenu;
@@ -228,8 +222,9 @@ public class ArticleThanhNien extends ArticleObject {
         // get article each menu
         int pageCount = 0;
         for (int i = 0; i < arrayMenu.size(); i++) {
+
             // get page of each menu
-            menuUrl = arrayMenu.get(i) + "/trang-";
+            menuUrl = "http://thanhnien.vn/ajax/zone2-" + arrayMenu.get(i) + "-";
 
             pageCount = 1;
 
@@ -242,11 +237,8 @@ public class ArticleThanhNien extends ArticleObject {
 
                 //<editor-fold defaultstate="collapsed" desc="class lvkd-content id divtoptin">
                 // parse html để lấy link
-                temptElement = doc.select(".cate-list").first();
-                temptElements = temptElement.select(".clearfix");
-                temptElements.remove(temptElements.size() - 1);
-                temptElements.remove(temptElements.size() - 1);
-
+//                   
+                temptElements = doc.select("article");
                 for (Element element : temptElements) {
                     temptElement = element.select("a[href]").first();
                     url = temptElement.attr("href");
