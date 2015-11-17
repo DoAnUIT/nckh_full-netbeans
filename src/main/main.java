@@ -80,7 +80,7 @@ class Insert extends Thread {
         }
         newtime = new Timestamp(calendar.getTimeInMillis());
 
-      //  while (true) {
+        while (true) {
             
            for (String url : lurl) {
                 System.out.println("Bắt đầu insert : " + url + "\n");
@@ -96,7 +96,7 @@ class Insert extends Thread {
             } catch (InterruptedException ex) {
                 Logger.getLogger(Insert.class.getName()).log(Level.SEVERE, null, ex);
             }
-       // }
+        }
     }
 
     @Override
@@ -166,13 +166,16 @@ public class main {
     public static void main(String[] args) throws IOException, NamingException, SQLException {
         // TODO Auto-generated method stub
         String username = "root";
-        String password = "rootmysql!@3";
+        String password = "kh0ngbietnua";
+        ArticleBUS.getInstance(username, password);
+        ParentCmtBUS.getInstance(username, password);
+        SubCmtBUS.getInstance(username, password);
 
         Insert insert = new Insert("Insert", username, password);
         insert.start();
 
         Update update = new Update("Update", username, password);
-       // update.start();
+        update.start();
     }
 
 }
