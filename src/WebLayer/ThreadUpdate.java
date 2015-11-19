@@ -98,6 +98,10 @@ public class ThreadUpdate {
 
         synchronized (_art) {
             FacebookDTO fbData = null;
+            ArticleDTO tempt = _art.getArticleInformation(_artUp.getUrl());
+            if (tempt.getTitle().equals(_artUp) == false) {
+                return;
+            }
             try {
                 fbData = _art.getContentOfFacebook(_artUp.getUrl());
             } catch (IOException ex) {
