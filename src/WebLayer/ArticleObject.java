@@ -15,6 +15,7 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
+import com.sun.org.apache.xalan.internal.lib.ExsltDatetime;
 import java.io.File;
 import java.io.IOException;
 import java.net.MalformedURLException;
@@ -22,8 +23,10 @@ import java.net.URL;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.print.attribute.standard.DateTimeAtCompleted;
 import org.jdom.Element;
 import org.jdom.JDOMException;
 import org.jdom.input.SAXBuilder;
@@ -43,6 +46,7 @@ public abstract class ArticleObject extends ConnectUrl {
     private int article1 = 0;
     private int article200 = 0;
     private int article1000 = 0;
+    public static int countFB = 0;
     
     
 
@@ -66,6 +70,7 @@ public abstract class ArticleObject extends ConnectUrl {
     // get article like
     public abstract int getArticleLike(int objectID);
 
+    
     // facebook
     public FacebookDTO getContentOfFacebook(String source_url) throws MalformedURLException, IOException {
         String url = apiFBStart + source_url + apiFBEnd;
@@ -82,6 +87,14 @@ public abstract class ArticleObject extends ConnectUrl {
 
         Gson gson = new Gson();
         fb = gson.fromJson(data, FacebookDTO.class);
+        try {
+            Thread.sleep(18*8*1000);
+        } catch (InterruptedException ex) {
+            Logger.getLogger(ArticleObject.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        System.out.println("Date time now: "+ (Calendar.getInstance()).getTime().toString());
+        System.out.println("FB count: "+ countFB);
+        countFB++;
 //        try {
 //            Thread.sleep(7000);
 //        } catch (InterruptedException ex) {
