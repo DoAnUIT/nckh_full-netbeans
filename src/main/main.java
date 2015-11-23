@@ -166,7 +166,7 @@ public class main {
     public static void main(String[] args) throws IOException, NamingException, SQLException {
         // TODO Auto-generated method stub
         String username = "root";
-        String password = "kh0ngbietnua";
+        String password = "";
         ArticleBUS.getInstance(username, password);
         ParentCmtBUS.getInstance(username, password);
         SubCmtBUS.getInstance(username, password);

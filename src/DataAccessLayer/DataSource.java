@@ -33,7 +33,7 @@ public class DataSource {
             cpds = new ComboPooledDataSource();
             cpds.setDriverClass("com.mysql.jdbc.Driver");
             //cpds.setJdbcUrl("jdbc:mysql://localhost:3306/nckh?useUnicode=true");&characterEncoding=UTF-8
-            cpds.setJdbcUrl("jdbc:mysql://localhost:3306/nckh_hot_news?characterEncoding=UTF-8");
+            cpds.setJdbcUrl("jdbc:mysql://localhost:3306/nckh?characterEncoding=UTF-8");
             cpds.setUser(username);
             cpds.setPassword(password);
 
