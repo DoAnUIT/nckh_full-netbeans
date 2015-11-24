@@ -46,8 +46,6 @@ public abstract class ArticleObject extends ConnectUrl {
     private int article1 = 0;
     private int article200 = 0;
     private int article1000 = 0;
-    public static int countFB = 0;
-    
     
 
     // count
@@ -92,9 +90,6 @@ public abstract class ArticleObject extends ConnectUrl {
         } catch (InterruptedException ex) {
             Logger.getLogger(ArticleObject.class.getName()).log(Level.SEVERE, null, ex);
         }
-        System.out.println("Date time now: "+ (Calendar.getInstance()).getTime().toString());
-        System.out.println("FB count: "+ countFB);
-        countFB++;
 //        try {
 //            Thread.sleep(7000);
 //        } catch (InterruptedException ex) {
