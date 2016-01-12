@@ -7,5 +7,6 @@ Bước 2: Chạy file nckh.sql và nckh_procedure.sql
 Bước 3: Run file nckh.jar
 
 * Hướng dẫn dùng file config.xml
+facebookSleep : thời gian giãn cách giữa 2 request facebook.
 aritcle1 : thời gian nghỉ sau khi lấy 1 bài
 article200: thời gian nghỉ sau khi lấy 200 bài

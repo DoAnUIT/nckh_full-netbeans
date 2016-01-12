@@ -29,11 +29,12 @@ public class DataSource {
         try {
             System.setProperty("com.mchange.v2.log.MLog", "com.mchange.v2.log.FallbackMLog");
             System.setProperty("com.mchange.v2.log.FallbackMLog.DEFAULT_CUTOFF_LEVEL", "WARNING");
+            System.setProperty("com.mchange.v2.c3p0.contextClassLoaderSource", "library");
 
             cpds = new ComboPooledDataSource();
             cpds.setDriverClass("com.mysql.jdbc.Driver");
             //cpds.setJdbcUrl("jdbc:mysql://localhost:3306/nckh?useUnicode=true");&characterEncoding=UTF-8
-            cpds.setJdbcUrl("jdbc:mysql://localhost:3306/nckh?characterEncoding=UTF-8");
+            cpds.setJdbcUrl("jdbc:mysql://localhost:3306/nckh_hot_news?characterEncoding=UTF-8");
             cpds.setUser(username);
             cpds.setPassword(password);
 

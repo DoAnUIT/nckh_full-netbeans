@@ -74,7 +74,7 @@ class Insert extends Thread {
             calendar.set(Calendar.MINUTE, 0);
             calendar.set(Calendar.SECOND, 0);
             calendar.set(Calendar.HOUR_OF_DAY, 0);
-            calendar.set(Calendar.DAY_OF_YEAR, calendar.get(Calendar.DAY_OF_YEAR) -13);
+            calendar.set(Calendar.DAY_OF_YEAR, calendar.get(Calendar.DAY_OF_YEAR) -1);
             lasttime = new Timestamp(calendar.getTimeInMillis());
             calendar = new GregorianCalendar();
         }
@@ -166,7 +166,7 @@ public class main {
     public static void main(String[] args) throws IOException, NamingException, SQLException {
         // TODO Auto-generated method stub
         String username = "root";
-        String password = "";
+        String password = "rootmysql!@3";
         ArticleBUS.getInstance(username, password);
         ParentCmtBUS.getInstance(username, password);
         SubCmtBUS.getInstance(username, password);

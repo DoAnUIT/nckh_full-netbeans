@@ -199,7 +199,7 @@ public class ArticleDAO extends DataSource {
             while (connection == null) {
                 connection = DataSource.getInstance().getConnection();
             }
-            call = connection.prepareCall("delete * from article where article.IDTableArticle = _id");
+            call = connection.prepareCall("delete * from ARTICLE where ARTICLE.IDTableArticle = _id");
             call.executeQuery();
         } catch (Exception e) {
             e.printStackTrace();
@@ -233,7 +233,7 @@ public class ArticleDAO extends DataSource {
                 connection = DataSource.getInstance().getConnection();
             }
 
-            call = connection.prepareCall("Select * from article where article.IDTableArticle = " + _id);
+            call = connection.prepareCall("Select * from ARTICLE where ARTICLE.IDTableArticle = " + _id);
             ResultSet rs = call.executeQuery();
             while (rs.next()) {
                 result.setIDTableArticle(rs.getInt("IDTableArticle"));
@@ -286,7 +286,7 @@ public class ArticleDAO extends DataSource {
             while (connection == null) {
                 connection = DataSource.getInstance().getConnection();
             }
-            call = connection.prepareCall("select * from article where article.Idtableupdatetime = " + _idType);
+            call = connection.prepareCall("select * from ARTICLE where ARTICLE.Idtableupdatetime = " + _idType);
             ResultSet rs = call.executeQuery();
             while (rs.next()) {
                 ArticleDTO art = new ArticleDTO();

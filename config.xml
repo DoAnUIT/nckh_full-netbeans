@@ -1,6 +1,8 @@
 <?xml version="1.0"?>
+<!-- don vi thoi gian tinh theo giay. 5 -> 5s -->
 <sleep>
-<article1>10000</article1>
-<article200>600000</article200>
-<article1000>1200000</article1000>
+<article1>0</article1> <!-- 0 -->
+<article200>60</article200>
+<article1000>1200</article1000>
+<facebookSleep>18</facebookSleep> <!-- 18 -->
 </sleep>

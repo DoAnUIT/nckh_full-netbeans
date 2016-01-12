@@ -22,7 +22,7 @@ public class UpdateTimeDAO extends DataSource{
             while (connection == null) {                
                 connection = DataSource.getInstance().getConnection();
             }
-            Call = connection.prepareCall("select * from updatetime");
+            Call = connection.prepareCall("select * from UPDATETIME");
             ResultSet rs = Call.executeQuery();
             while (rs.next()) {                
                 result.add(rs.getInt("idtableupdatetime"));
@@ -61,7 +61,7 @@ public class UpdateTimeDAO extends DataSource{
             while (connection == null) {                
                 connection = DataSource.getInstance().getConnection();
             }
-            Call = connection.prepareCall("select max(idtableupdatetime) from updatetime");
+            Call = connection.prepareCall("select max(idtableupdatetime) from UPDATETIME");
             ResultSet rs = Call.executeQuery();
             while (rs.next()) {                
                 return rs.getInt("max(idtableupdatetime)");

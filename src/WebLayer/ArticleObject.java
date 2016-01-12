@@ -46,16 +46,18 @@ public abstract class ArticleObject extends ConnectUrl {
     private int article1 = 0;
     private int article200 = 0;
     private int article1000 = 0;
-    
+    private int facebookSleep = 0;
+    private static Object lock = null;
 
     // count
-    public void setCount(int a){
+    public void setCount(int a) {
         this.count = a;
     }
-    
-    public int getCount (){
+
+    public int getCount() {
         return this.count;
     }
+
     // Lấy thông tin của từng bài báo
     public abstract ArticleDTO getArticleInformation(String source_url);
 
@@ -68,36 +70,35 @@ public abstract class ArticleObject extends ConnectUrl {
     // get article like
     public abstract int getArticleLike(int objectID);
 
-    
     // facebook
     public FacebookDTO getContentOfFacebook(String source_url) throws MalformedURLException, IOException {
-        String url = apiFBStart + source_url + apiFBEnd;
-
-        FacebookDTO fb = new FacebookDTO();
-        String json = jsoupConnectJson(url);
-        
-        JsonParser parser = new JsonParser();
-
-        JsonElement element = parser.parse(json);
-        JsonObject root = element.getAsJsonObject();
-        JsonArray datas = root.getAsJsonArray("data");
-        JsonObject data = datas.get(0).getAsJsonObject();
-
-        Gson gson = new Gson();
-        fb = gson.fromJson(data, FacebookDTO.class);
-        try {
-            Thread.sleep(18*8*1000);
-        } catch (InterruptedException ex) {
-            Logger.getLogger(ArticleObject.class.getName()).log(Level.SEVERE, null, ex);
+        if (lock == null) {
+            lock = new Object();
         }
-//        try {
-//            Thread.sleep(7000);
-//        } catch (InterruptedException ex) {
-//            Logger.getLogger(ArticleObject.class.getName()).log(Level.SEVERE, null, ex);
-//        }
-        //System.out.println("Parse fb successful");
-        return fb;
-        // khong quan trong
+        synchronized (lock) {
+            String url = apiFBStart + source_url + apiFBEnd;
+
+            FacebookDTO fb = new FacebookDTO();
+            String json = jsoupConnectJson(url);
+
+            JsonParser parser = new JsonParser();
+
+            JsonElement element = parser.parse(json);
+            JsonObject root = element.getAsJsonObject();
+            JsonArray datas = root.getAsJsonArray("data");
+            JsonObject data = datas.get(0).getAsJsonObject();
+
+            Gson gson = new Gson();
+            fb = gson.fromJson(data, FacebookDTO.class);
+            try {
+                Thread.sleep(facebookSleep);
+            } catch (InterruptedException ex) {
+                Logger.getLogger(ArticleObject.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            return fb;
+            // khong quan trong
+        }
+
     }
 
     // Check if date of month valid
@@ -124,9 +125,9 @@ public abstract class ArticleObject extends ConnectUrl {
     }
 
     protected void insertDatabase(ArticleDTO art) throws SQLException {
-        ArticleBUS artBUS =  ArticleBUS.getInstance(username, password);
-        ParentCmtBUS parBUS =  ParentCmtBUS.getInstance(username, password);
-        SubCmtBUS subBUS =  SubCmtBUS.getInstance(username, password);
+        ArticleBUS artBUS = ArticleBUS.getInstance(username, password);
+        ParentCmtBUS parBUS = ParentCmtBUS.getInstance(username, password);
+        SubCmtBUS subBUS = SubCmtBUS.getInstance(username, password);
 
         // insert art to database => art have idtablearticle
         // nếu đã tồn tại thì return
@@ -156,7 +157,7 @@ public abstract class ArticleObject extends ConnectUrl {
         temptPar = null;
         temptSub = null;
         parentIDHasSub.clear();
-          try {
+        try {
             Thread.sleep(article1);
         } catch (InterruptedException ex) {
             Logger.getLogger(ConnectUrl.class.getName()).log(Level.SEVERE, null, ex);
@@ -165,9 +166,9 @@ public abstract class ArticleObject extends ConnectUrl {
     }
 
     protected void updateDatabase(ArticleDTO art) throws SQLException {
-        ArticleBUS artBUS =  ArticleBUS.getInstance(username, password);
-        ParentCmtBUS parBUS =  ParentCmtBUS.getInstance(username, password);
-        SubCmtBUS subBUS =  SubCmtBUS.getInstance(username, password);
+        ArticleBUS artBUS = ArticleBUS.getInstance(username, password);
+        ParentCmtBUS parBUS = ParentCmtBUS.getInstance(username, password);
+        SubCmtBUS subBUS = SubCmtBUS.getInstance(username, password);
 
         count++;
         checkAmountArticleToSleep(count);
@@ -191,7 +192,7 @@ public abstract class ArticleObject extends ConnectUrl {
         temptPar = null;
         temptSub = null;
         parentIDHasSub.clear();
-          try {
+        try {
             Thread.sleep(article1);
         } catch (InterruptedException ex) {
             Logger.getLogger(ConnectUrl.class.getName()).log(Level.SEVERE, null, ex);
@@ -225,7 +226,7 @@ public abstract class ArticleObject extends ConnectUrl {
         }
     }
 
-    protected void parseXML(){
+    protected void parseXML() {
         SAXBuilder builder = new SAXBuilder();
         File xmlFile = new File("config.xml");
 
@@ -234,9 +235,10 @@ public abstract class ArticleObject extends ConnectUrl {
             org.jdom.Document document = (org.jdom.Document) builder.build(xmlFile);
             Element node = document.getRootElement();
 
-            article1 = Integer.parseInt(node.getChildText("article1"));
-            article200 = Integer.parseInt(node.getChildText("article200"));
-            article1000 = Integer.parseInt(node.getChildText("article1000"));
+            article1 = Integer.parseInt(node.getChildText("article1")) * 1000;
+            article200 = Integer.parseInt(node.getChildText("article200")) * 1000;
+            article1000 = Integer.parseInt(node.getChildText("article1000")) * 1000;
+            facebookSleep = Integer.parseInt(node.getChildText("facebookSleep")) * 1000;
 
         } catch (IOException io) {
             System.out.println(io.getMessage());

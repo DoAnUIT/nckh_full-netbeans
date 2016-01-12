@@ -3,14 +3,13 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/D:/UIT_Project/nckh_full-netbeans/src/main/main.java</file>
-            <file>file:/D:/UIT_Project/nckh_full-netbeans/src/WebLayer/WebLayer.java</file>
-            <file>file:/D:/UIT_Project/nckh_full-netbeans/src/WebLayer/ThreadInsert.java</file>
-            <file>file:/D:/UIT_Project/nckh_full-netbeans/src/main/test2.java</file>
-            <file>file:/D:/UIT_Project/nckh_full-netbeans/src/WebLayer/SubCmtThanhNien.java</file>
-            <file>file:/D:/UIT_Project/nckh_full-netbeans/src/WebLayer/ParentCmtVnexpress.java</file>
-            <file>file:/D:/UIT_Project/nckh_full-netbeans/src/WebLayer/ParentCmtThanhNien.java</file>
-            <file>file:/D:/UIT_Project/nckh_full-netbeans/src/WebLayer/ArticleThanhNien.java</file>
+            <file>file:/D:/UIT_Project/nckh_module_crawler/src/DataAccessLayer/ArticleDAO.java</file>
+            <file>file:/D:/UIT_Project/nckh_module_crawler/src/DataAccessLayer/DataSource.java</file>
+            <file>file:/D:/UIT_Project/nckh_module_crawler/src/DataAccessLayer/SubCmtDAO.java</file>
+            <file>file:/D:/UIT_Project/nckh_module_crawler/src/WebLayer/ArticleObject.java</file>
+            <file>file:/D:/UIT_Project/nckh_module_crawler/src/main/main.java</file>
+            <file>file:/D:/UIT_Project/nckh_module_crawler/src/DataAccessLayer/ParentCmtDAO.java</file>
+            <file>file:/D:/UIT_Project/nckh_module_crawler/src/DataAccessLayer/UpdateTimeDAO.java</file>
         </group>
     </open-files>
 </project-private>
